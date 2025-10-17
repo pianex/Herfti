@@ -30,10 +30,7 @@ class UserTypePage extends StatelessWidget {
             SizedBox(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
-              child: Image.asset(
-                "assets/images/workers.jpg",
-                fit: BoxFit.cover,
-              ),
+              child: Image.asset("assets/images/step.jpg", fit: BoxFit.cover),
             ),
             Container(
               width: MediaQuery.of(context).size.width,
