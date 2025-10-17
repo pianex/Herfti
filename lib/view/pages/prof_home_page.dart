@@ -36,6 +36,10 @@ class ProfHomePage extends StatelessWidget {
           ),
           centerTitle: true,
           actions: [
+            IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.message, color: Colors.white),
+            ),
             GestureDetector(
               onTap: () {
                 Navigator.push(
