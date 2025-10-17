@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:project_a/core/constants/app_theme.dart';
+import 'package:project_a/view/pages/prof_home_page.dart';
 import 'package:project_a/view/widgets/cust_button.dart';
 import 'package:project_a/view/widgets/cust_text_form_field.dart';
 
@@ -21,7 +23,7 @@ class ProfInfoPage extends StatelessWidget {
             icon: Icon(Icons.arrow_back, color: Colors.white),
           ),
           title: Text(
-            "حسابي",
+            "معلومات الحساب",
             style: TextStyle(
               color: appBarTextColor,
               fontWeight: FontWeight.bold,
@@ -58,7 +60,16 @@ class ProfInfoPage extends StatelessWidget {
               label: "البريد الإلكتروني",
               controller: TextEditingController(),
             ),
-            CustButton(title: "حفظ", icon: Icons.save),
+            CustButton(
+              title: "حفظ",
+              icon: Icons.save,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute(builder: (context) => ProfHomePage()),
+                );
+              },
+            ),
           ],
         ),
       ),
