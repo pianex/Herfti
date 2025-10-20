@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "543505337205",
+    "project_id": "step-herfti",
+    "storage_bucket": "step-herfti.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:543505337205:android:78f40c9cdc1f1686dba13c",
+        "android_client_info": {
+          "package_name": "com.example.project_a"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVn_ROSuOIcAKvQzwA6RSyAcScWa0nES4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
