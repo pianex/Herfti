@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_a/core/constants/app_theme.dart';
+import 'package:project_a/core/functions/google_functions.dart';
 import 'package:project_a/view/pages/auth/prof_info_page.dart';
 import 'package:project_a/view/widgets/title_text.dart';
 
@@ -57,10 +58,17 @@ class ProfLoginPage extends StatelessWidget {
                   TitleText(title: "سجل باستخدام Google"),
                   GestureDetector(
                     onTap: () {
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(builder: (context) => ProfInfoPage()),
-                        (context) => false,
+                      signInWithGoogle(
+                        context: context,
+                        onSuccess: () {
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ProfInfoPage(),
+                            ),
+                            (context) => false,
+                          );
+                        },
                       );
                     },
                     child: CircleAvatar(

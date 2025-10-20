@@ -30,7 +30,7 @@ void signInWithGoogle({
       // sharedPref.setString('email', user.email!);
       // debugPrint("/////////////////////////// ${user.photoURL}");
       // sharedPref.setString('photoUrl', user.photoURL!);
-      // onSuccess();
+      onSuccess();
       // _otpIsVerified = true;
     }
     // sharedPref.setString("userEmail", user!.email!);
