@@ -61,12 +61,11 @@ class ProfLoginPage extends StatelessWidget {
                       signInWithGoogle(
                         context: context,
                         onSuccess: () {
-                          Navigator.pushAndRemoveUntil(
+                          Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => ProfInfoPage(),
                             ),
-                            (context) => false,
                           );
                         },
                       );
