@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:project_a/main.dart';
 
 void signInWithGoogle({
   required BuildContext context,
@@ -27,7 +28,8 @@ void signInWithGoogle({
 
     if (user != null) {
       // _uid = user.uid;
-      // sharedPref.setString('email', user.email!);
+      sharedPref.setString('email', user.email!);
+      sharedPref.setString('name', user.displayName!);
       // debugPrint("/////////////////////////// ${user.photoURL}");
       // sharedPref.setString('photoUrl', user.photoURL!);
       onSuccess();
@@ -37,4 +39,9 @@ void signInWithGoogle({
   } on FirebaseAuthException catch (e) {
     debugPrint(e.message);
   }
+}
+
+Future googleSignOut() async {
+  GoogleSignIn googleSignIn = GoogleSignIn();
+  googleSignIn.disconnect();
 }
