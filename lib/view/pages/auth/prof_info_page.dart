@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:csc_picker/csc_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:project_a/core/constants/app_theme.dart';
@@ -20,10 +21,14 @@ class _ProfInfoPageState extends State<ProfInfoPage> {
   TextEditingController nameController = TextEditingController();
   TextEditingController descController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
+  String countryValue = '';
+  String stateValue = '';
+  String cityValue = '';
   @override
   Widget build(BuildContext context) {
     String name = sharedPref.getString("name")!;
     String email = sharedPref.getString("email")!;
+
     nameController.text = name;
     return Directionality(
       textDirection: TextDirection.rtl,
@@ -70,7 +75,30 @@ class _ProfInfoPageState extends State<ProfInfoPage> {
               label: "رقم الهاتف",
               controller: TextEditingController(),
             ),
-
+            Padding(
+              padding: const EdgeInsets.all(15),
+              child: CSCPicker(
+                currentCountry: "🇩🇿    Algeria",
+                disableCountry: true,
+                countryFilter: [CscCountry.Algeria],
+                dropdownItemStyle: TextStyle(color: Colors.black),
+                selectedItemStyle: TextStyle(color: Colors.white, fontSize: 20),
+                defaultCountry: CscCountry.Algeria,
+                dropdownDecoration: BoxDecoration(
+                  color: Colors.blue,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                disabledDropdownDecoration: BoxDecoration(
+                  color: Colors.grey,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                onCountryChanged: (country) {
+                  print(country);
+                },
+                onStateChanged: (state) {},
+                onCityChanged: (city) {},
+              ),
+            ),
             CustButton(
               title: "حفظ",
               icon: Icons.save,

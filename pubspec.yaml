@@ -43,8 +43,11 @@ dependencies:
   cloud_firestore: ^5.6.12
   geolocator: ^14.0.2
   geocoding: ^4.0.0
-  csc_picker: ^0.2.7
-
+  country_state_city_picker: ^1.2.8
+  csc_picker:
+    git:
+      url: https://github.com/Ostrich-Cyber-Risk/csc_picker 
+    
 dev_dependencies:
   flutter_test:
     sdk: flutter
