@@ -2,6 +2,8 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:project_a/core/functions/google_functions.dart';
+import 'package:project_a/main.dart';
 import 'package:project_a/view/pages/auth/user_type_page.dart';
 
 class SettingsListTile extends StatelessWidget {
@@ -63,13 +65,16 @@ class SettingsListTile extends StatelessWidget {
                     GestureDetector(
                       onDoubleTap: () {},
                       onTap: () async {
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => UserTypePage(),
-                          ),
-                          (context) => false,
-                        );
+                        sharedPref.clear();
+                        googleSignOut().whenComplete(() {
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            CupertinoPageRoute(
+                              builder: (context) => UserTypePage(),
+                            ),
+                            (context) => false,
+                          );
+                        });
                       },
                       child: const Text(
                         "تسجيل الخروج",

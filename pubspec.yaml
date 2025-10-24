@@ -41,6 +41,9 @@ dependencies:
   firebase_core: ^3.9.0
   shared_preferences: ^2.5.3
   cloud_firestore: ^5.6.12
+  geolocator: ^14.0.2
+  geocoding: ^4.0.0
+  csc_picker: ^0.2.7
 
 dev_dependencies:
   flutter_test:
