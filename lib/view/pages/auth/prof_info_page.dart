@@ -21,7 +21,7 @@ class _ProfInfoPageState extends State<ProfInfoPage> {
   TextEditingController nameController = TextEditingController();
   TextEditingController descController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
-  String countryValue = '';
+  String countryValue = '🇩🇿    Algeria';
   String stateValue = '';
   String cityValue = '';
   @override
@@ -67,14 +67,8 @@ class _ProfInfoPageState extends State<ProfInfoPage> {
 
             CustTextFormField(label: "الإسم", controller: nameController),
 
-            CustTextFormField(
-              label: "الوصف",
-              controller: TextEditingController(),
-            ),
-            CustTextFormField(
-              label: "رقم الهاتف",
-              controller: TextEditingController(),
-            ),
+            CustTextFormField(label: "الوصف", controller: descController),
+            CustTextFormField(label: "رقم الهاتف", controller: phoneController),
             Padding(
               padding: const EdgeInsets.all(15),
               child: CSCPicker(
@@ -92,11 +86,17 @@ class _ProfInfoPageState extends State<ProfInfoPage> {
                   color: Colors.grey,
                   borderRadius: BorderRadius.circular(10),
                 ),
-                onCountryChanged: (country) {
-                  print(country);
+                onCountryChanged: (country) {},
+                onStateChanged: (state) {
+                  if (state != null) {
+                    stateValue = state;
+                  }
                 },
-                onStateChanged: (state) {},
-                onCityChanged: (city) {},
+                onCityChanged: (city) {
+                  if (city != null) {
+                    cityValue = city;
+                  }
+                },
               ),
             ),
             CustButton(
@@ -111,9 +111,13 @@ class _ProfInfoPageState extends State<ProfInfoPage> {
                   phone: phoneController.text,
                   email: email,
                   description: descController.text,
+
                   type: 100,
                   saves: 0,
                   timeAdded: DateTime.now().toString(),
+                  country: countryValue,
+                  state: stateValue,
+                  city: cityValue,
                 ).toJson();
                 FirebaseFirestore.instance
                     .collection("Profs")
