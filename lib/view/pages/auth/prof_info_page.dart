@@ -9,6 +9,7 @@ import 'package:project_a/main.dart';
 import 'package:project_a/view/pages/prof_home_page.dart';
 import 'package:project_a/view/widgets/cust_button.dart';
 import 'package:project_a/view/widgets/cust_text_form_field.dart';
+import 'package:project_a/view/widgets/id_category_card.dart';
 
 class ProfInfoPage extends StatefulWidget {
   const ProfInfoPage({super.key});
@@ -97,6 +98,71 @@ class _ProfInfoPageState extends State<ProfInfoPage> {
                     cityValue = city;
                   }
                 },
+              ),
+            ),
+            SizedBox(
+              // height: MediaQuery.of(context).size.height * 0.7,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 20, right: 20),
+                child: GridView(
+                  physics: const BouncingScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                  ),
+                  shrinkWrap: true,
+                  children: [
+                    IdCategoryCard(
+                      category: "نجار",
+                      image: "assets/images/najjar.jpg",
+                      sellerType: 0,
+                    ),
+                    IdCategoryCard(
+                      category: "نجار",
+                      image: "assets/images/najjar.jpg",
+                      sellerType: 0,
+                    ),
+                    IdCategoryCard(
+                      category: "نجار",
+                      image: "assets/images/najjar.jpg",
+                      sellerType: 0,
+                    ),
+                    IdCategoryCard(
+                      category: "نجار",
+                      image: "assets/images/najjar.jpg",
+                      sellerType: 0,
+                    ),
+                    IdCategoryCard(
+                      category: "نجار",
+                      image: "assets/images/najjar.jpg",
+                      sellerType: 0,
+                    ),
+                    IdCategoryCard(
+                      category: "نجار",
+                      image: "assets/images/najjar.jpg",
+                      sellerType: 0,
+                    ),
+                    IdCategoryCard(
+                      category: "نجار",
+                      image: "assets/images/najjar.jpg",
+                      sellerType: 0,
+                    ),
+                    IdCategoryCard(
+                      category: "نجار",
+                      image: "assets/images/najjar.jpg",
+                      sellerType: 0,
+                    ),
+                    IdCategoryCard(
+                      category: "نجار",
+                      image: "assets/images/najjar.jpg",
+                      sellerType: 0,
+                    ),
+                    IdCategoryCard(
+                      category: "نجار",
+                      image: "assets/images/najjar.jpg",
+                      sellerType: 0,
+                    ),
+                  ],
+                ),
               ),
             ),
             CustButton(
