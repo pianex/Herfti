@@ -29,7 +29,6 @@ class _ProfInfoPageState extends State<ProfInfoPage> {
   Widget build(BuildContext context) {
     String name = sharedPref.getString("name")!;
     String email = sharedPref.getString("email")!;
-
     nameController.text = name;
     return Directionality(
       textDirection: TextDirection.rtl,
@@ -56,6 +55,7 @@ class _ProfInfoPageState extends State<ProfInfoPage> {
           centerTitle: true,
         ),
         body: ListView(
+          physics: BouncingScrollPhysics(),
           children: [
             Padding(
               padding: const EdgeInsets.all(15),
@@ -100,69 +100,61 @@ class _ProfInfoPageState extends State<ProfInfoPage> {
                 },
               ),
             ),
-            SizedBox(
-              // height: MediaQuery.of(context).size.height * 0.7,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 20, right: 20),
-                child: GridView(
-                  physics: const BouncingScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                  ),
-                  shrinkWrap: true,
-                  children: [
-                    IdCategoryCard(
-                      category: "نجار",
-                      image: "assets/images/najjar.jpg",
-                      sellerType: 0,
-                    ),
-                    IdCategoryCard(
-                      category: "نجار",
-                      image: "assets/images/najjar.jpg",
-                      sellerType: 0,
-                    ),
-                    IdCategoryCard(
-                      category: "نجار",
-                      image: "assets/images/najjar.jpg",
-                      sellerType: 0,
-                    ),
-                    IdCategoryCard(
-                      category: "نجار",
-                      image: "assets/images/najjar.jpg",
-                      sellerType: 0,
-                    ),
-                    IdCategoryCard(
-                      category: "نجار",
-                      image: "assets/images/najjar.jpg",
-                      sellerType: 0,
-                    ),
-                    IdCategoryCard(
-                      category: "نجار",
-                      image: "assets/images/najjar.jpg",
-                      sellerType: 0,
-                    ),
-                    IdCategoryCard(
-                      category: "نجار",
-                      image: "assets/images/najjar.jpg",
-                      sellerType: 0,
-                    ),
-                    IdCategoryCard(
-                      category: "نجار",
-                      image: "assets/images/najjar.jpg",
-                      sellerType: 0,
-                    ),
-                    IdCategoryCard(
-                      category: "نجار",
-                      image: "assets/images/najjar.jpg",
-                      sellerType: 0,
-                    ),
-                    IdCategoryCard(
-                      category: "نجار",
-                      image: "assets/images/najjar.jpg",
-                      sellerType: 0,
-                    ),
-                  ],
+            Padding(
+              padding: const EdgeInsets.only(left: 20, right: 20),
+              child: GridView(
+                physics: const BouncingScrollPhysics(),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
                 ),
+                shrinkWrap: true,
+                children: [
+                  IdCategoryCard(
+                    category: "كهربائي",
+                    image: "assets/images/Electrician.jpeg",
+                    sellerType: 1,
+                  ),
+                  IdCategoryCard(
+                    category: "خبير التبريد",
+                    image: "assets/images/frigouriste.jpeg",
+                    sellerType: 2,
+                  ),
+                  IdCategoryCard(
+                    category: "بناء",
+                    image: "assets/images/macon.png",
+                    sellerType: 3,
+                  ),
+                  IdCategoryCard(
+                    category: "ميكانيكي",
+                    image: "assets/images/mechanic.jpg",
+                    sellerType: 4,
+                  ),
+                  IdCategoryCard(
+                    category: "طلاء",
+                    image: "assets/images/painter.jpg",
+                    sellerType: 5,
+                  ),
+                  IdCategoryCard(
+                    category: "سباك",
+                    image: "assets/images/plumber.jpg",
+                    sellerType: 6,
+                  ),
+                  IdCategoryCard(
+                    category: "تلحيم",
+                    image: "assets/images/soudeur.jpeg",
+                    sellerType: 7,
+                  ),
+                  IdCategoryCard(
+                    category: "نجار",
+                    image: "assets/images/najjar.jpg",
+                    sellerType: 8,
+                  ),
+                  IdCategoryCard(
+                    category: "خياط",
+                    image: "assets/images/knitting.jpeg",
+                    sellerType: 9,
+                  ),
+                ]..shuffle(),
               ),
             ),
             CustButton(

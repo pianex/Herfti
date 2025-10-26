@@ -55,14 +55,14 @@ List shuffledCategories() {
     CategoryCard(
       category: "نجار",
       image: "assets/images/najjar.jpg",
-      sellerType: 7,
+      sellerType: 8,
       iconData: Icons.door_sliding_sharp,
       isGrid: false,
     ),
     CategoryCard(
       category: "خياط",
       image: "assets/images/knitting.jpeg",
-      sellerType: 7,
+      sellerType: 9,
       isGrid: false,
 
       iconData: Icons.approval_sharp,

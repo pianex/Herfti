@@ -64,7 +64,15 @@ class IdCategoryCard extends StatelessWidget {
               height: 80,
               clipBehavior: Clip.hardEdge,
               decoration: BoxDecoration(
-                color: Colors.black.withAlpha(120),
+                gradient: LinearGradient(
+                  begin: AlignmentGeometry.topCenter,
+                  end: AlignmentGeometry.bottomCenter,
+                  colors: [
+                    Colors.black.withAlpha(200),
+                    Colors.black.withAlpha(120),
+                    Colors.black.withAlpha(0),
+                  ],
+                ),
                 borderRadius: BorderRadius.circular(15),
               ),
               child: Text(
