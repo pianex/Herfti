@@ -8,7 +8,7 @@ nameValidator(String? text) {
   }
 }
 
-numberValidator(String? text) {
+phoneValidator(String? text) {
   if (text!.isEmpty) {
     return "لا يمكن أن يبقى الحقل فارغا.";
   } else if (text.length < 10 ||
