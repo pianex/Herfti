@@ -6,8 +6,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:csc_picker/csc_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:project_a/core/constants/app_theme.dart';
 import 'package:project_a/core/functions/google_functions.dart';
+import 'package:project_a/core/functions/image_functions.dart';
 import 'package:project_a/core/functions/validators.dart';
 import 'package:project_a/core/models/prof_model.dart';
 import 'package:project_a/main.dart';
@@ -34,6 +36,11 @@ class _ProfInfoPageState extends State<ProfInfoPage> {
   String countryValue = '🇩🇿    Algeria';
   String stateValue = '';
   String cityValue = '';
+  void selectImage({required ImageSource imageSource}) async {
+    image = await pickImage(context, imageSource);
+    setState(() {});
+  }
+
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -72,10 +79,29 @@ class _ProfInfoPageState extends State<ProfInfoPage> {
             children: [
               Padding(
                 padding: const EdgeInsets.all(15),
-                child: CircleAvatar(
-                  radius: 80,
-                  backgroundColor: appBarColor,
-                  child: Icon(Icons.person, size: 80, color: Colors.white),
+                child: Center(
+                  child: Stack(
+                    alignment: AlignmentGeometry.bottomRight,
+
+                    children: [
+                      CircleAvatar(
+                        radius: 80,
+                        backgroundColor: appBarColor,
+                        child: Icon(
+                          Icons.person,
+                          size: 80,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsetsGeometry.all(10),
+                        child: CircleAvatar(
+                          radius: 15,
+                          child: Icon(Icons.camera_alt),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
 
