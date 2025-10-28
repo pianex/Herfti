@@ -1,20 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:project_a/main.dart';
+import 'package:project_a/view/pages/auth/prof_info_page.dart';
 
-class IdCategoryCard extends StatelessWidget {
+class IdCategoryCard extends StatefulWidget {
   const IdCategoryCard({
     super.key,
     required this.category,
     required this.image,
     required this.sellerType,
+    this.onTap,
   });
   final String category;
   final String image;
   final int sellerType;
+  final Function? onTap;
 
   @override
+  State<IdCategoryCard> createState() => _IdCategoryCardState();
+}
+
+class _IdCategoryCardState extends State<IdCategoryCard> {
+  @override
   Widget build(BuildContext context) {
-    final userType = sharedPref.getString('userType');
     return Container(
       margin: const EdgeInsets.only(right: 10, left: 10),
       width: 130,
@@ -26,26 +32,12 @@ class IdCategoryCard extends StatelessWidget {
       ),
       child: GestureDetector(
         onTap: () {
-          if (userType == 'seller') {
-            sharedPref.setInt("sellerType", sellerType);
-            sharedPref.setString("currentStep", "userInfoPage");
-            // Navigator.pushAndRemoveUntil(
-            //   context,
-            //   MaterialPageRoute(builder: (context) => const UserInfoPage()),
-            //   (route) => false,
-            // );
-          } else {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //     builder: (context) => SellersListPage(
-            //       appBarTitle: category,
-            //       sellerType: sellerType,
-            //       backImage: image,
-            //     ),
-            //   ),
-            // );
+          if (widget.onTap != null) {
+            widget.onTap!();
           }
+          setState(() {
+            selectedCategory = widget.sellerType;
+          });
         },
         child: Stack(
           children: [
@@ -57,7 +49,7 @@ class IdCategoryCard extends StatelessWidget {
                 color: Colors.transparent,
                 borderRadius: BorderRadius.circular(15),
               ),
-              child: Image.asset(image, fit: BoxFit.cover),
+              child: Image.asset(widget.image, fit: BoxFit.cover),
             ),
             Container(
               width: 130,
@@ -76,7 +68,7 @@ class IdCategoryCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(15),
               ),
               child: Text(
-                category,
+                widget.category,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   color: Colors.white,
@@ -85,6 +77,35 @@ class IdCategoryCard extends StatelessWidget {
                 ),
               ),
             ),
+            selectedCategory == widget.sellerType
+                ? Container(
+                    padding: EdgeInsets.all(5),
+                    width: 130,
+                    height: 80,
+                    clipBehavior: Clip.hardEdge,
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      border: Border.all(width: 5, color: Colors.green),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: selectedCategory == widget.sellerType
+                        ? Align(
+                            alignment: AlignmentGeometry.bottomCenter,
+                            child: CircleAvatar(
+                              radius: 15,
+                              backgroundColor: Colors.green,
+                              child: Icon(
+                                Icons.done,
+                                color: Colors.white,
+                                size: 27,
+                                fontWeight: FontWeight.bold,
+                                weight: 20,
+                              ),
+                            ),
+                          )
+                        : SizedBox(),
+                  )
+                : SizedBox(),
           ],
         ),
       ),

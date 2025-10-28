@@ -11,6 +11,8 @@ import 'package:project_a/view/widgets/cust_button.dart';
 import 'package:project_a/view/widgets/cust_text_form_field.dart';
 import 'package:project_a/view/widgets/id_category_card.dart';
 
+int selectedCategory = 0;
+
 class ProfInfoPage extends StatefulWidget {
   const ProfInfoPage({super.key});
 
@@ -113,48 +115,93 @@ class _ProfInfoPageState extends State<ProfInfoPage> {
                     category: "كهربائي",
                     image: "assets/images/Electrician.jpeg",
                     sellerType: 1,
+                    onTap: () {
+                      setState(() {
+                        selectedCategory = 1;
+                      });
+                    },
                   ),
                   IdCategoryCard(
                     category: "خبير التبريد",
                     image: "assets/images/frigouriste.jpeg",
                     sellerType: 2,
+                    onTap: () {
+                      setState(() {
+                        selectedCategory = 2;
+                      });
+                    },
                   ),
                   IdCategoryCard(
                     category: "بناء",
                     image: "assets/images/macon.png",
                     sellerType: 3,
+                    onTap: () {
+                      setState(() {
+                        selectedCategory = 3;
+                      });
+                    },
                   ),
                   IdCategoryCard(
                     category: "ميكانيكي",
                     image: "assets/images/mechanic.jpg",
                     sellerType: 4,
+                    onTap: () {
+                      setState(() {
+                        selectedCategory = 4;
+                      });
+                    },
                   ),
                   IdCategoryCard(
                     category: "طلاء",
                     image: "assets/images/painter.jpg",
                     sellerType: 5,
+                    onTap: () {
+                      setState(() {
+                        selectedCategory = 5;
+                      });
+                    },
                   ),
                   IdCategoryCard(
                     category: "سباك",
                     image: "assets/images/plumber.jpg",
                     sellerType: 6,
+                    onTap: () {
+                      setState(() {
+                        selectedCategory = 6;
+                      });
+                    },
                   ),
                   IdCategoryCard(
                     category: "تلحيم",
                     image: "assets/images/soudeur.jpeg",
                     sellerType: 7,
+                    onTap: () {
+                      setState(() {
+                        selectedCategory = 7;
+                      });
+                    },
                   ),
                   IdCategoryCard(
                     category: "نجار",
                     image: "assets/images/najjar.jpg",
                     sellerType: 8,
+                    onTap: () {
+                      setState(() {
+                        selectedCategory = 8;
+                      });
+                    },
                   ),
                   IdCategoryCard(
                     category: "خياط",
                     image: "assets/images/knitting.jpeg",
                     sellerType: 9,
+                    onTap: () {
+                      setState(() {
+                        selectedCategory = 9;
+                      });
+                    },
                   ),
-                ]..shuffle(),
+                ],
               ),
             ),
             CustButton(
