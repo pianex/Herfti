@@ -43,6 +43,7 @@ class _ProfInfoPageState extends State<ProfInfoPage> {
             onPressed: () async {
               sharedPref.clear();
               await googleSignOut();
+              // ignore: use_build_context_synchronously
               Navigator.pop(context);
             },
             icon: Icon(Icons.arrow_back, color: Colors.white),
@@ -209,7 +210,6 @@ class _ProfInfoPageState extends State<ProfInfoPage> {
               title: "حفظ",
               icon: Icons.save,
               onTap: () {
-                String uid = DateTime.now().millisecondsSinceEpoch.toString();
                 Map<String, dynamic> json = ProfModel(
                   uid: email,
                   name: name,
