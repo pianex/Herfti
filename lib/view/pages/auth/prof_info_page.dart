@@ -12,6 +12,7 @@ import 'package:project_a/view/widgets/cust_text_form_field.dart';
 import 'package:project_a/view/widgets/id_category_card.dart';
 
 int selectedCategory = 0;
+String selectedCategoryString = "";
 
 class ProfInfoPage extends StatefulWidget {
   const ProfInfoPage({super.key});
@@ -210,14 +211,15 @@ class _ProfInfoPageState extends State<ProfInfoPage> {
               onTap: () {
                 String uid = DateTime.now().millisecondsSinceEpoch.toString();
                 Map<String, dynamic> json = ProfModel(
-                  uid: uid,
+                  uid: email,
                   name: name,
                   imagePath: "imagePath",
                   phone: phoneController.text,
                   email: email,
                   description: descController.text,
 
-                  type: 100,
+                  type: selectedCategory,
+                  category: selectedCategoryString,
                   saves: 0,
                   timeAdded: DateTime.now().toString(),
                   country: countryValue,
@@ -226,11 +228,11 @@ class _ProfInfoPageState extends State<ProfInfoPage> {
                 ).toJson();
                 FirebaseFirestore.instance
                     .collection("Profs")
-                    .doc(uid)
+                    .doc(email)
                     .set(json)
                     .whenComplete(() {
                       sharedPref.setString("userType", "prof");
-                      sharedPref.setString("uid", uid);
+                      sharedPref.setString("uid", email);
                     });
                 Navigator.push(
                   context,

@@ -37,6 +37,7 @@ class _IdCategoryCardState extends State<IdCategoryCard> {
           }
           setState(() {
             selectedCategory = widget.sellerType;
+            selectedCategoryString = widget.category;
           });
         },
         child: Stack(

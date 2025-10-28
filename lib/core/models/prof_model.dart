@@ -6,6 +6,7 @@ class ProfModel {
   final String email;
   final String description;
   final int type;
+  final String category;
   final String country;
   final String state;
   final String city;
@@ -22,6 +23,7 @@ class ProfModel {
     required this.state,
     required this.city,
     required this.type,
+    required this.category,
     required this.saves,
     required this.timeAdded,
   });
@@ -33,6 +35,7 @@ class ProfModel {
     "phone": phone,
     "description": description,
     "type": type,
+    "category": category,
     "saves": saves,
     "timeAdded": timeAdded,
     "country": country,
