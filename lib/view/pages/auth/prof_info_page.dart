@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:csc_picker/csc_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -46,6 +47,7 @@ class _ProfInfoPageState extends State<ProfInfoPage> {
   Widget build(BuildContext context) {
     String name = sharedPref.getString("name")!;
     String email = sharedPref.getString("email")!;
+    String googleImagePath = sharedPref.getString("imagePath")!;
     nameController.text = name;
     return Directionality(
       textDirection: TextDirection.rtl,
@@ -98,11 +100,15 @@ class _ProfInfoPageState extends State<ProfInfoPage> {
                           ),
                           child: image != null
                               ? Image.file(image!, fit: BoxFit.cover)
-                              : Icon(
-                                  Icons.person,
-                                  size: 80,
-                                  color: Colors.white,
+                              : Image.network(
+                                  googleImagePath,
+                                  fit: BoxFit.cover,
                                 ),
+                          //  Icon(
+                          //     Icons.person,
+                          //     size: 80,
+                          //     color: Colors.white,
+                          //   ),
                         ),
 
                         Padding(
@@ -278,15 +284,27 @@ class _ProfInfoPageState extends State<ProfInfoPage> {
               CustButton(
                 title: "حفظ",
                 icon: Icons.save,
-                onTap: () {
+                onTap: () async {
                   if (image != null) {
                     if (_formKey.currentState!.validate()) {
                       if (stateValue.isNotEmpty && cityValue.isNotEmpty) {
                         if (selectedCategory != 0) {
+                          String imagePath = '';
+                          UploadTask uploadTask = FirebaseStorage.instance
+                              .ref()
+                              .child(
+                                "Profs/ProPics/${email.toLowerCase().replaceAll("@gmail.com", "")}.jpg",
+                              )
+                              .putFile(image!);
+                          TaskSnapshot snapshot = await uploadTask;
+                          // ignore: unused_local_variable
+                          String downloadlUrl = await snapshot.ref
+                              .getDownloadURL()
+                              .then((link) => imagePath = link);
                           Map<String, dynamic> json = ProfModel(
                             uid: email,
                             name: name,
-                            imagePath: "imagePath",
+                            imagePath: imagePath,
                             phone: phoneController.text,
                             email: email,
                             description: descController.text,
@@ -306,13 +324,14 @@ class _ProfInfoPageState extends State<ProfInfoPage> {
                               .whenComplete(() {
                                 sharedPref.setString("userType", "prof");
                                 sharedPref.setString("uid", email);
+                                sharedPref.setString("imagePath", imagePath);
+                                Navigator.push(
+                                  context,
+                                  CupertinoPageRoute(
+                                    builder: (context) => ProfHomePage(),
+                                  ),
+                                );
                               });
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                              builder: (context) => ProfHomePage(),
-                            ),
-                          );
                         }
                       }
                     }
