@@ -47,7 +47,7 @@ class _ProfInfoPageState extends State<ProfInfoPage> {
   Widget build(BuildContext context) {
     String name = sharedPref.getString("name")!;
     String email = sharedPref.getString("email")!;
-    String googleImagePath = sharedPref.getString("imagePath")!;
+    String googleImagePath = sharedPref.getString("googleImagePath")!;
     nameController.text = name;
     return Directionality(
       textDirection: TextDirection.rtl,
@@ -285,11 +285,11 @@ class _ProfInfoPageState extends State<ProfInfoPage> {
                 title: "حفظ",
                 icon: Icons.save,
                 onTap: () async {
-                  if (image != null) {
-                    if (_formKey.currentState!.validate()) {
-                      if (stateValue.isNotEmpty && cityValue.isNotEmpty) {
-                        if (selectedCategory != 0) {
-                          String imagePath = '';
+                  if (_formKey.currentState!.validate()) {
+                    if (stateValue.isNotEmpty && cityValue.isNotEmpty) {
+                      if (selectedCategory != 0) {
+                        String imagePath = '';
+                        if (image != null) {
                           UploadTask uploadTask = FirebaseStorage.instance
                               .ref()
                               .child(
@@ -301,38 +301,41 @@ class _ProfInfoPageState extends State<ProfInfoPage> {
                           String downloadlUrl = await snapshot.ref
                               .getDownloadURL()
                               .then((link) => imagePath = link);
-                          Map<String, dynamic> json = ProfModel(
-                            uid: email,
-                            name: name,
-                            imagePath: imagePath,
-                            phone: phoneController.text,
-                            email: email,
-                            description: descController.text,
-
-                            type: selectedCategory,
-                            category: selectedCategoryString,
-                            saves: 0,
-                            timeAdded: DateTime.now().toString(),
-                            country: countryValue,
-                            state: stateValue,
-                            city: cityValue,
-                          ).toJson();
-                          FirebaseFirestore.instance
-                              .collection("Profs")
-                              .doc(email)
-                              .set(json)
-                              .whenComplete(() {
-                                sharedPref.setString("userType", "prof");
-                                sharedPref.setString("uid", email);
-                                sharedPref.setString("imagePath", imagePath);
-                                Navigator.push(
-                                  context,
-                                  CupertinoPageRoute(
-                                    builder: (context) => ProfHomePage(),
-                                  ),
-                                );
-                              });
+                          sharedPref.setString("imagePath", imagePath);
                         }
+
+                        Map<String, dynamic> json = ProfModel(
+                          uid: email,
+                          name: name,
+                          imagePath: imagePath.isNotEmpty
+                              ? imagePath
+                              : googleImagePath,
+                          phone: phoneController.text,
+                          email: email,
+                          description: descController.text,
+
+                          type: selectedCategory,
+                          category: selectedCategoryString,
+                          saves: 0,
+                          timeAdded: DateTime.now().toString(),
+                          country: countryValue,
+                          state: stateValue,
+                          city: cityValue,
+                        ).toJson();
+                        FirebaseFirestore.instance
+                            .collection("Profs")
+                            .doc(email)
+                            .set(json)
+                            .whenComplete(() {
+                              sharedPref.setString("userType", "prof");
+                              sharedPref.setString("uid", email);
+                              Navigator.push(
+                                context,
+                                CupertinoPageRoute(
+                                  builder: (context) => ProfHomePage(),
+                                ),
+                              );
+                            });
                       }
                     }
                   }

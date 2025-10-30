@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_a/core/constants/app_theme.dart';
+import 'package:project_a/main.dart';
 import 'package:project_a/view/pages/account_page.dart';
 import 'package:project_a/view/widgets/cust_drawer.dart';
 import 'package:project_a/view/widgets/post_card.dart';
@@ -10,6 +11,9 @@ class ProfHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String? imagePath = sharedPref.getString("imagePath");
+    String googleImagePath = sharedPref.getString("googleImagePath")!;
+    print(googleImagePath);
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
@@ -47,12 +51,18 @@ class ProfHomePage extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => AccountPage()),
                 );
               },
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: CircleAvatar(
-                  backgroundColor: Colors.blue[900],
-                  child: Icon(Icons.person, color: Colors.white),
+              child: Container(
+                margin: EdgeInsets.all(8),
+                height: 40,
+                width: 40,
+                clipBehavior: Clip.hardEdge,
+                decoration: BoxDecoration(
+                  color: Colors.blue[700],
+                  shape: BoxShape.circle,
                 ),
+
+                child: Image.network(imagePath ?? googleImagePath),
+                // Icon(Icons.person, color: Colors.white),
               ),
             ),
           ],

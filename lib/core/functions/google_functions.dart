@@ -30,7 +30,7 @@ void signInWithGoogle({
       // _uid = user.uid;
       sharedPref.setString('email', user.email!);
       sharedPref.setString('name', user.displayName!);
-      sharedPref.setString("imagePath", user.photoURL!);
+      sharedPref.setString("googleImagePath", user.photoURL!);
       // debugPrint("/////////////////////////// ${user.photoURL}");
       // sharedPref.setString('photoUrl', user.photoURL!);
       onSuccess();
