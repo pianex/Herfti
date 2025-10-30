@@ -48,7 +48,7 @@ dependencies:
     git:
       url: https://github.com/Ostrich-Cyber-Risk/csc_picker 
   image_picker: ^1.2.0
-  awesome_dialog: ^3.3.0
+ 
     
 dev_dependencies:
   flutter_test:

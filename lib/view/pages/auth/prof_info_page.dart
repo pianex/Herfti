@@ -2,7 +2,6 @@
 
 import 'dart:io';
 
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:csc_picker/csc_picker.dart';
 import 'package:flutter/cupertino.dart';
@@ -82,64 +81,30 @@ class _ProfInfoPageState extends State<ProfInfoPage> {
                 padding: const EdgeInsets.all(15),
                 child: Center(
                   child: GestureDetector(
-                    onTap: () => AwesomeDialog(
-                      context: context,
-                      dialogType: DialogType.question,
-                      dialogBorderRadius: BorderRadius.circular(15),
-                      dialogBackgroundColor: Colors.grey[600],
-                      alignment: Alignment.center,
-                      autoDismiss: true,
-                      headerAnimationLoop: false,
-                      body: Column(
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              selectImage(imageSource: ImageSource.gallery);
-                              Navigator.pop(context);
-                            },
-                            child: Container(
-                              margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-                              height: 60,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                color: Colors.grey[800],
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              child: Center(child: Text("من المعرض")),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              selectImage(imageSource: ImageSource.camera);
-                              Navigator.pop(context);
-                            },
-                            child: Container(
-                              margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-                              height: 60,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                color: Colors.grey[800],
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              child: Center(child: Text("من الكاميرا")),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ).show(),
+                    onTap: () {
+                      selectImage(imageSource: ImageSource.camera);
+                    },
                     child: Stack(
                       alignment: AlignmentGeometry.bottomRight,
 
                       children: [
-                        CircleAvatar(
-                          radius: 80,
-                          backgroundColor: appBarColor,
-                          child: Icon(
-                            Icons.person,
-                            size: 80,
-                            color: Colors.white,
+                        Container(
+                          width: 150,
+                          height: 150,
+                          clipBehavior: Clip.hardEdge,
+                          decoration: BoxDecoration(
+                            color: appBarColor,
+                            shape: BoxShape.circle,
                           ),
+                          child: image != null
+                              ? Image.file(image!, fit: BoxFit.cover)
+                              : Icon(
+                                  Icons.person,
+                                  size: 80,
+                                  color: Colors.white,
+                                ),
                         ),
+
                         Padding(
                           padding: EdgeInsetsGeometry.all(10),
                           child: CircleAvatar(
