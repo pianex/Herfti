@@ -11,6 +11,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:project_a/core/constants/app_theme.dart';
 import 'package:project_a/core/functions/google_functions.dart';
 import 'package:project_a/core/functions/image_functions.dart';
+import 'package:project_a/core/functions/show_alert.dart';
+import 'package:project_a/core/functions/show_progress_dialog.dart';
 import 'package:project_a/core/functions/validators.dart';
 import 'package:project_a/core/models/prof_model.dart';
 import 'package:project_a/main.dart';
@@ -45,6 +47,8 @@ class _ProfInfoPageState extends State<ProfInfoPage> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    // selectedCategory = 0;
+    // selectedCategoryString = "";
     String name = sharedPref.getString("name")!;
     String email = sharedPref.getString("email")!;
     String googleImagePath = sharedPref.getString("googleImagePath")!;
@@ -287,56 +291,74 @@ class _ProfInfoPageState extends State<ProfInfoPage> {
                 onTap: () async {
                   if (_formKey.currentState!.validate()) {
                     if (stateValue.isNotEmpty && cityValue.isNotEmpty) {
-                      if (selectedCategory != 0) {
-                        String imagePath = '';
-                        if (image != null) {
-                          UploadTask uploadTask = FirebaseStorage.instance
-                              .ref()
-                              .child(
-                                "Profs/ProPics/${email.toLowerCase().replaceAll("@gmail.com", "")}.jpg",
-                              )
-                              .putFile(image!);
-                          TaskSnapshot snapshot = await uploadTask;
-                          // ignore: unused_local_variable
-                          String downloadlUrl = await snapshot.ref
-                              .getDownloadURL()
-                              .then((link) => imagePath = link);
-                          sharedPref.setString("imagePath", imagePath);
+                      if (selectedCategory != 0 &&
+                          selectedCategoryString.isNotEmpty) {
+                        showProgressDialog(
+                          context,
+                          Size(
+                            MediaQuery.of(context).size.width / 2,
+                            MediaQuery.of(context).size.width / 2,
+                          ),
+                        );
+                        if (selectedCategory != 0) {
+                          String imagePath = '';
+                          if (image != null) {
+                            UploadTask uploadTask = FirebaseStorage.instance
+                                .ref()
+                                .child(
+                                  "Profs/ProPics/${email.toLowerCase().replaceAll("@gmail.com", "")}.jpg",
+                                )
+                                .putFile(image!);
+                            TaskSnapshot snapshot = await uploadTask;
+                            // ignore: unused_local_variable
+                            String downloadlUrl = await snapshot.ref
+                                .getDownloadURL()
+                                .then((link) => imagePath = link);
+                            sharedPref.setString("imagePath", imagePath);
+                          }
+
+                          Map<String, dynamic> json = ProfModel(
+                            uid: email,
+                            name: name,
+                            imagePath: imagePath.isNotEmpty
+                                ? imagePath
+                                : googleImagePath,
+                            phone: phoneController.text,
+                            email: email,
+                            description: descController.text,
+
+                            type: selectedCategory,
+                            category: selectedCategoryString,
+                            saves: 0,
+                            timeAdded: DateTime.now().toString(),
+                            country: countryValue,
+                            state: stateValue,
+                            city: cityValue,
+                          ).toJson();
+                          FirebaseFirestore.instance
+                              .collection("Profs")
+                              .doc(email)
+                              .set(json)
+                              .whenComplete(() {
+                                sharedPref.setString("userType", "prof");
+                                sharedPref.setString("uid", email);
+                                Navigator.pushAndRemoveUntil(
+                                  context,
+                                  CupertinoPageRoute(
+                                    builder: (context) => ProfHomePage(),
+                                  ),
+                                  (route) => false,
+                                );
+                              });
                         }
-
-                        Map<String, dynamic> json = ProfModel(
-                          uid: email,
-                          name: name,
-                          imagePath: imagePath.isNotEmpty
-                              ? imagePath
-                              : googleImagePath,
-                          phone: phoneController.text,
-                          email: email,
-                          description: descController.text,
-
-                          type: selectedCategory,
-                          category: selectedCategoryString,
-                          saves: 0,
-                          timeAdded: DateTime.now().toString(),
-                          country: countryValue,
-                          state: stateValue,
-                          city: cityValue,
-                        ).toJson();
-                        FirebaseFirestore.instance
-                            .collection("Profs")
-                            .doc(email)
-                            .set(json)
-                            .whenComplete(() {
-                              sharedPref.setString("userType", "prof");
-                              sharedPref.setString("uid", email);
-                              Navigator.push(
-                                context,
-                                CupertinoPageRoute(
-                                  builder: (context) => ProfHomePage(),
-                                ),
-                              );
-                            });
+                      } else {
+                        showAlert(context, "من فضلك اختر المهنة الخاصة بك.");
                       }
+                    } else {
+                      showAlert(
+                        context,
+                        "أدخل معلومات الولاية و المدينة من فضلك.",
+                      );
                     }
                   }
                 },
