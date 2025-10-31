@@ -83,6 +83,11 @@ class _ProfLoginPageState extends State<ProfLoginPage> {
                                   ),
                                 );
                               },
+                              onFail: () {
+                                setState(() {
+                                  isLoading = false;
+                                });
+                              },
                             );
                           },
                           child: CircleAvatar(

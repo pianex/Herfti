@@ -6,6 +6,7 @@ import 'package:project_a/main.dart';
 void signInWithGoogle({
   required BuildContext context,
   required Function onSuccess,
+  required Function onFail,
 }) async {
   // Trigger the authentication flow
   try {
@@ -35,6 +36,8 @@ void signInWithGoogle({
       // sharedPref.setString('photoUrl', user.photoURL!);
       onSuccess();
       // _otpIsVerified = true;
+    } else {
+      onFail();
     }
 
     // sharedPref.setString("userEmail", user!.email!);
