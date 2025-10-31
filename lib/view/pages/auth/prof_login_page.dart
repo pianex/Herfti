@@ -2,11 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:project_a/core/constants/app_theme.dart';
 import 'package:project_a/core/functions/google_functions.dart';
 import 'package:project_a/view/pages/auth/prof_info_page.dart';
+import 'package:project_a/view/widgets/cust_progress_indicator.dart';
 import 'package:project_a/view/widgets/title_text.dart';
 
-class ProfLoginPage extends StatelessWidget {
+class ProfLoginPage extends StatefulWidget {
   const ProfLoginPage({super.key});
 
+  @override
+  State<ProfLoginPage> createState() => _ProfLoginPageState();
+}
+
+class _ProfLoginPageState extends State<ProfLoginPage> {
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     return Directionality(
@@ -43,45 +50,55 @@ class ProfLoginPage extends StatelessWidget {
               height: MediaQuery.of(context).size.height,
               decoration: BoxDecoration(color: Colors.black.withAlpha(180)),
             ),
-            Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  TitleText(title: "قم بتسجيل الدخول"),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 40,
-                      vertical: 5,
-                    ),
-                    child: Divider(thickness: 2),
-                  ),
-                  TitleText(title: "سجل باستخدام Google"),
-                  GestureDetector(
-                    onTap: () {
-                      signInWithGoogle(
-                        context: context,
-                        onSuccess: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ProfInfoPage(),
+            isLoading
+                ? CustProgressIndicator()
+                : Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        TitleText(title: "قم بتسجيل الدخول"),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 40,
+                            vertical: 5,
+                          ),
+                          child: Divider(thickness: 2),
+                        ),
+                        TitleText(title: "سجل باستخدام Google"),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              isLoading = true;
+                            });
+                            signInWithGoogle(
+                              context: context,
+                              onSuccess: () {
+                                setState(() {
+                                  isLoading = false;
+                                });
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ProfInfoPage(),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                          child: CircleAvatar(
+                            backgroundColor: Colors.white,
+                            radius: 20,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Image.asset(
+                                'assets/images/google_png.png',
+                              ),
                             ),
-                          );
-                        },
-                      );
-                    },
-                    child: CircleAvatar(
-                      backgroundColor: Colors.white,
-                      radius: 20,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Image.asset('assets/images/google_png.png'),
-                      ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
-            ),
           ],
         ),
       ),

@@ -36,6 +36,7 @@ void signInWithGoogle({
       onSuccess();
       // _otpIsVerified = true;
     }
+
     // sharedPref.setString("userEmail", user!.email!);
   } on FirebaseAuthException catch (e) {
     debugPrint(e.message);
