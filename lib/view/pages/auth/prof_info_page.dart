@@ -314,7 +314,6 @@ class _ProfInfoPageState extends State<ProfInfoPage> {
                             String downloadlUrl = await snapshot.ref
                                 .getDownloadURL()
                                 .then((link) => imagePath = link);
-                            sharedPref.setString("imagePath", imagePath);
                           }
 
                           Map<String, dynamic> json = ProfModel(
@@ -342,6 +341,16 @@ class _ProfInfoPageState extends State<ProfInfoPage> {
                               .whenComplete(() {
                                 sharedPref.setString("userType", "prof");
                                 sharedPref.setString("uid", email);
+                                sharedPref.setString("name", name);
+                                sharedPref.setString(
+                                  "desc",
+                                  descController.text,
+                                );
+                                sharedPref.setString(
+                                  "phone",
+                                  phoneController.text,
+                                );
+                                sharedPref.setString("imagePath", imagePath);
                                 Navigator.pushAndRemoveUntil(
                                   context,
                                   CupertinoPageRoute(

@@ -61,7 +61,10 @@ class ProfHomePage extends StatelessWidget {
                   shape: BoxShape.circle,
                 ),
 
-                child: Image.network(imagePath ?? googleImagePath),
+                child: Image.network(
+                  imagePath ?? googleImagePath,
+                  fit: BoxFit.cover,
+                ),
                 // Icon(Icons.person, color: Colors.white),
               ),
             ),

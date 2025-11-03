@@ -1,13 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:project_a/core/constants/app_theme.dart';
+import 'package:project_a/main.dart';
 import 'package:project_a/view/widgets/cust_button.dart';
 import 'package:project_a/view/widgets/cust_text_form_field.dart';
 
-class AccountPage extends StatelessWidget {
+class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
 
   @override
+  State<AccountPage> createState() => _AccountPageState();
+}
+
+class _AccountPageState extends State<AccountPage> {
+  TextEditingController nameController = TextEditingController();
+  TextEditingController descController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    String email = sharedPref.getString("email")!;
+    String name = sharedPref.getString("name")!;
+    nameController.text = name;
+    String desc = sharedPref.getString("desc")!;
+    descController.text = desc;
+    String phone = sharedPref.getString("phone")!;
+    phoneController.text = phone;
+    String imagePath = sharedPref.getString("imagePath")!;
+
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
@@ -32,32 +55,17 @@ class AccountPage extends StatelessWidget {
         ),
         body: ListView(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(15),
-              child: CircleAvatar(
-                radius: 80,
-                backgroundColor: appBarColor,
-                child: Icon(Icons.person, size: 80, color: Colors.white),
-              ),
+            Container(
+              height: 40,
+              width: 40,
+              margin: EdgeInsetsGeometry.all(15),
+              clipBehavior: Clip.hardEdge,
+              decoration: BoxDecoration(shape: BoxShape.circle),
+              child: Image.network(imagePath, fit: BoxFit.cover),
             ),
-
-            CustTextFormField(
-              label: "الإسم",
-              controller: TextEditingController(),
-            ),
-
-            CustTextFormField(
-              label: "الوصف",
-              controller: TextEditingController(),
-            ),
-            CustTextFormField(
-              label: "رقم الهاتف",
-              controller: TextEditingController(),
-            ),
-            CustTextFormField(
-              label: "البريد الإلكتروني",
-              controller: TextEditingController(),
-            ),
+            CustTextFormField(label: "الإسم", controller: nameController),
+            CustTextFormField(label: "الوصف", controller: descController),
+            CustTextFormField(label: "رقم الهاتف", controller: phoneController),
             CustButton(title: "حفظ", icon: Icons.save),
           ],
         ),
