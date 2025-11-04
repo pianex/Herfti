@@ -351,6 +351,13 @@ class _ProfInfoPageState extends State<ProfInfoPage> {
                                   phoneController.text,
                                 );
                                 sharedPref.setString("imagePath", imagePath);
+                                sharedPref.setString("state", stateValue);
+                                sharedPref.setString("city", cityValue);
+                                sharedPref.setInt("category", selectedCategory);
+                                sharedPref.setString(
+                                  "categoryStr",
+                                  selectedCategoryString,
+                                );
                                 Navigator.pushAndRemoveUntil(
                                   context,
                                   CupertinoPageRoute(
