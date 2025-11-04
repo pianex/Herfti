@@ -1,7 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:project_a/core/constants/app_theme.dart';
 import 'package:project_a/core/functions/google_functions.dart';
+import 'package:project_a/main.dart';
 import 'package:project_a/view/pages/auth/prof_info_page.dart';
+import 'package:project_a/view/pages/prof_home_page.dart';
 import 'package:project_a/view/widgets/cust_progress_indicator.dart';
 import 'package:project_a/view/widgets/title_text.dart';
 
@@ -76,12 +80,51 @@ class _ProfLoginPageState extends State<ProfLoginPage> {
                                 setState(() {
                                   isLoading = false;
                                 });
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ProfInfoPage(),
-                                  ),
-                                );
+                                String email = sharedPref.getString('email')!;
+                                Future<DocumentSnapshot<Map<String, dynamic>>>
+                                doc = FirebaseFirestore.instance
+                                    .collection("Profs")
+                                    .doc(email)
+                                    .get();
+                                doc.then((doc) {
+                                  if (doc.exists) {
+                                    sharedPref.setString("userType", "prof");
+                                    sharedPref.setString(
+                                      "uid",
+                                      doc.data()!["uid"],
+                                    );
+                                    sharedPref.setString(
+                                      "name",
+                                      doc.data()!["name"],
+                                    );
+                                    sharedPref.setString(
+                                      "desc",
+                                      doc.data()!["description"],
+                                    );
+                                    sharedPref.setString(
+                                      "phone",
+                                      doc.data()!["phone"],
+                                    );
+                                    sharedPref.setString(
+                                      "imagePath",
+                                      doc.data()!["imagePath"],
+                                    );
+                                    Navigator.pushAndRemoveUntil(
+                                      context,
+                                      CupertinoPageRoute(
+                                        builder: (context) => ProfHomePage(),
+                                      ),
+                                      (route) => false,
+                                    );
+                                  } else {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ProfInfoPage(),
+                                      ),
+                                    );
+                                  }
+                                });
                               },
                               onFail: () {
                                 setState(() {

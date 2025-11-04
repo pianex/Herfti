@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:project_a/core/constants/app_theme.dart';
 import 'package:project_a/main.dart';
@@ -15,6 +17,7 @@ class _AccountPageState extends State<AccountPage> {
   TextEditingController nameController = TextEditingController();
   TextEditingController descController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
+  File? image;
   @override
   void initState() {
     super.initState();
@@ -56,8 +59,8 @@ class _AccountPageState extends State<AccountPage> {
         body: ListView(
           children: [
             Container(
-              height: 40,
-              width: 40,
+              height: 150,
+              width: 150,
               margin: EdgeInsetsGeometry.all(15),
               clipBehavior: Clip.hardEdge,
               decoration: BoxDecoration(shape: BoxShape.circle),
