@@ -64,6 +64,9 @@ class ProfHomePage extends StatelessWidget {
                 child: Image.network(
                   imagePath ?? googleImagePath,
                   fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Icon(Icons.person, color: Colors.white, size: 25);
+                  },
                 ),
                 // Icon(Icons.person, color: Colors.white),
               ),

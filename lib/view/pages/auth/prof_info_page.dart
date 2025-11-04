@@ -313,7 +313,10 @@ class _ProfInfoPageState extends State<ProfInfoPage> {
                             // ignore: unused_local_variable
                             String downloadlUrl = await snapshot.ref
                                 .getDownloadURL()
-                                .then((link) => imagePath = link);
+                                .then((link) => imagePath = link)
+                                .whenComplete(() {
+                                  sharedPref.setString("imagePath", imagePath);
+                                });
                           }
 
                           Map<String, dynamic> json = ProfModel(
@@ -350,7 +353,11 @@ class _ProfInfoPageState extends State<ProfInfoPage> {
                                   "phone",
                                   phoneController.text,
                                 );
-                                sharedPref.setString("imagePath", imagePath);
+                                sharedPref.setString(
+                                  "googleImagePath",
+                                  googleImagePath,
+                                );
+
                                 sharedPref.setString("state", stateValue);
                                 sharedPref.setString("city", cityValue);
                                 sharedPref.setInt("category", selectedCategory);
