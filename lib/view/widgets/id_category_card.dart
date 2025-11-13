@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_a/view/pages/account_page.dart';
 import 'package:project_a/view/pages/auth/prof_info_page.dart';
 
 class IdCategoryCard extends StatefulWidget {
@@ -7,12 +8,14 @@ class IdCategoryCard extends StatefulWidget {
     required this.category,
     required this.image,
     required this.sellerType,
+    this.isAccPage = false,
     this.onTap,
   });
   final String category;
   final String image;
   final int sellerType;
   final Function? onTap;
+  final bool? isAccPage;
 
   @override
   State<IdCategoryCard> createState() => _IdCategoryCardState();
@@ -35,10 +38,17 @@ class _IdCategoryCardState extends State<IdCategoryCard> {
           if (widget.onTap != null) {
             widget.onTap!();
           }
-          setState(() {
-            selectedCategory = widget.sellerType;
-            selectedCategoryString = widget.category;
-          });
+          if (widget.isAccPage!) {
+            setState(() {
+              accSelectedCategory = widget.sellerType;
+              accSselectedCategoryString = widget.category;
+            });
+          } else {
+            setState(() {
+              selectedCategory = widget.sellerType;
+              selectedCategoryString = widget.category;
+            });
+          }
         },
         child: Stack(
           children: [

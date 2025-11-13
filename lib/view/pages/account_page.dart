@@ -16,8 +16,8 @@ import 'package:project_a/view/widgets/cust_button.dart';
 import 'package:project_a/view/widgets/cust_text_form_field.dart';
 import 'package:project_a/view/widgets/id_category_card.dart';
 
-int selectedCategory = 0;
-String selectedCategoryString = "";
+int accSelectedCategory = 0;
+String accSselectedCategoryString = "";
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
@@ -48,6 +48,15 @@ class _AccountPageState extends State<AccountPage> {
   }
 
   @override
+  void dispose() {
+    setState(() {
+      accSelectedCategory = 0;
+      accSselectedCategoryString = '';
+    });
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     String email = sharedPref.getString("email")!;
     String name = sharedPref.getString("name")!;
@@ -56,7 +65,11 @@ class _AccountPageState extends State<AccountPage> {
     descController.text = desc;
     String phone = sharedPref.getString("phone")!;
     phoneController.text = phone;
-    String currentImagePath = sharedPref.getString("imagePath")!;
+    String? currentImagePath = sharedPref.getString("imagePath");
+    String googleImagePath = sharedPref.getString("googleImagePath")!;
+    String state = sharedPref.getString("state")!;
+
+    String city = sharedPref.getString("city")!;
 
     return Directionality(
       textDirection: TextDirection.rtl,
@@ -104,7 +117,7 @@ class _AccountPageState extends State<AccountPage> {
                         child: image != null
                             ? Image.file(image!, fit: BoxFit.cover)
                             : Image.network(
-                                currentImagePath,
+                                currentImagePath ?? googleImagePath,
                                 fit: BoxFit.cover,
                               ),
                         //  Icon(
@@ -174,7 +187,7 @@ class _AccountPageState extends State<AccountPage> {
                     sellerType: 1,
                     onTap: () {
                       setState(() {
-                        selectedCategory = 1;
+                        accSelectedCategory = 1;
                       });
                     },
                   ),
@@ -184,7 +197,7 @@ class _AccountPageState extends State<AccountPage> {
                     sellerType: 2,
                     onTap: () {
                       setState(() {
-                        selectedCategory = 2;
+                        accSelectedCategory = 2;
                       });
                     },
                   ),
@@ -194,7 +207,7 @@ class _AccountPageState extends State<AccountPage> {
                     sellerType: 3,
                     onTap: () {
                       setState(() {
-                        selectedCategory = 3;
+                        accSelectedCategory = 3;
                       });
                     },
                   ),
@@ -204,7 +217,7 @@ class _AccountPageState extends State<AccountPage> {
                     sellerType: 4,
                     onTap: () {
                       setState(() {
-                        selectedCategory = 4;
+                        accSelectedCategory = 4;
                       });
                     },
                   ),
@@ -214,7 +227,7 @@ class _AccountPageState extends State<AccountPage> {
                     sellerType: 5,
                     onTap: () {
                       setState(() {
-                        selectedCategory = 5;
+                        accSelectedCategory = 5;
                       });
                     },
                   ),
@@ -224,7 +237,7 @@ class _AccountPageState extends State<AccountPage> {
                     sellerType: 6,
                     onTap: () {
                       setState(() {
-                        selectedCategory = 6;
+                        accSelectedCategory = 6;
                       });
                     },
                   ),
@@ -234,7 +247,7 @@ class _AccountPageState extends State<AccountPage> {
                     sellerType: 7,
                     onTap: () {
                       setState(() {
-                        selectedCategory = 7;
+                        accSelectedCategory = 7;
                       });
                     },
                   ),
@@ -244,7 +257,7 @@ class _AccountPageState extends State<AccountPage> {
                     sellerType: 8,
                     onTap: () {
                       setState(() {
-                        selectedCategory = 8;
+                        accSelectedCategory = 8;
                       });
                     },
                   ),
@@ -254,7 +267,7 @@ class _AccountPageState extends State<AccountPage> {
                     sellerType: 9,
                     onTap: () {
                       setState(() {
-                        selectedCategory = 9;
+                        accSelectedCategory = 9;
                       });
                     },
                   ),
@@ -267,8 +280,8 @@ class _AccountPageState extends State<AccountPage> {
               onTap: () async {
                 if (_formKey.currentState!.validate()) {
                   if (stateValue.isNotEmpty && cityValue.isNotEmpty) {
-                    if (selectedCategory != 0 &&
-                        selectedCategoryString.isNotEmpty) {
+                    if (accSelectedCategory != 0 &&
+                        accSselectedCategoryString.isNotEmpty) {
                       showProgressDialog(
                         context,
                         Size(
@@ -276,7 +289,7 @@ class _AccountPageState extends State<AccountPage> {
                           MediaQuery.of(context).size.width / 2,
                         ),
                       );
-                      if (selectedCategory != 0) {
+                      if (accSelectedCategory != 0) {
                         String imagePath = '';
                         if (image != null) {
                           UploadTask uploadTask = FirebaseStorage.instance
@@ -297,13 +310,13 @@ class _AccountPageState extends State<AccountPage> {
                           name: name,
                           imagePath: imagePath.isNotEmpty
                               ? imagePath
-                              : currentImagePath,
+                              : currentImagePath ?? googleImagePath,
                           phone: phoneController.text,
                           email: email,
                           description: descController.text,
 
-                          type: selectedCategory,
-                          category: selectedCategoryString,
+                          type: accSelectedCategory,
+                          category: accSselectedCategoryString,
                           saves: 0,
                           timeAdded: DateTime.now().toString(),
                           country: countryValue,
