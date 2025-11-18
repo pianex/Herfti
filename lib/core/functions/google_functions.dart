@@ -32,7 +32,7 @@ void signInWithGoogle({
       sharedPref.setString('email', user.email!);
       sharedPref.setString('name', user.displayName!);
       sharedPref.setString("googleImagePath", user.photoURL!);
-      // debugPrint("/////////////////////////// ${user.photoURL}");
+      debugPrint("/////////////////////////// ${user.photoURL}");
       // sharedPref.setString('photoUrl', user.photoURL!);
       onSuccess();
       // _otpIsVerified = true;

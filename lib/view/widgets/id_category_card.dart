@@ -88,7 +88,8 @@ class _IdCategoryCardState extends State<IdCategoryCard> {
                 ),
               ),
             ),
-            selectedCategory == widget.sellerType
+            selectedCategory == widget.sellerType ||
+                    accSelectedCategory == widget.sellerType
                 ? Container(
                     padding: EdgeInsets.all(5),
                     width: 130,

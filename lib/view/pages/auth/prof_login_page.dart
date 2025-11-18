@@ -109,6 +109,27 @@ class _ProfLoginPageState extends State<ProfLoginPage> {
                                       "imagePath",
                                       doc.data()!["imagePath"],
                                     );
+                                    sharedPref.setString(
+                                      "state",
+                                      doc.data()!["state"],
+                                    );
+                                    sharedPref.setString(
+                                      "city",
+                                      doc.data()!["city"],
+                                    );
+                                    sharedPref.setString(
+                                      "country",
+                                      doc.data()!["country"],
+                                    );
+                                    sharedPref.setInt(
+                                      "category",
+                                      doc.data()!["type"],
+                                    );
+                                    sharedPref.setString(
+                                      "categoryStr",
+                                      doc.data()!["category"],
+                                    );
+
                                     Navigator.pushAndRemoveUntil(
                                       context,
                                       CupertinoPageRoute(
