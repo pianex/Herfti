@@ -38,6 +38,7 @@ class _AccountPageState extends State<AccountPage> {
   String cityValue = '';
   String finalState = "";
   String finalCity = "";
+  bool infosLoaded = false;
   void selectImage({required ImageSource imageSource}) async {
     image = await pickImage(context, imageSource);
     setState(() {});
@@ -62,19 +63,22 @@ class _AccountPageState extends State<AccountPage> {
 
   @override
   Widget build(BuildContext context) {
-    String email = sharedPref.getString("email")!;
-    String name = sharedPref.getString("name")!;
-    nameController.text = name;
-    String desc = sharedPref.getString("desc")!;
-    descController.text = desc;
-    String phone = sharedPref.getString("phone")!;
-    phoneController.text = phone;
     String? currentImagePath = sharedPref.getString("imagePath");
     String googleImagePath = sharedPref.getString("googleImagePath")!;
+    String email = sharedPref.getString("email")!;
+    String name = sharedPref.getString("name")!;
+    String desc = sharedPref.getString("desc")!;
+    String phone = sharedPref.getString("phone")!;
     String state = sharedPref.getString("state")!;
-    stateValue = state;
     String city = sharedPref.getString("city")!;
-    cityValue = city;
+    if (!infosLoaded) {
+      nameController.text = name;
+      descController.text = desc;
+      phoneController.text = phone;
+      stateValue = state;
+      cityValue = city;
+      infosLoaded = true;
+    }
     if (accSelectedCategory == 0) {
       accSelectedCategory = sharedPref.getInt("category")!;
       accSselectedCategoryString = sharedPref.getString("categoryStr")!;
@@ -401,6 +405,14 @@ class _AccountPageState extends State<AccountPage> {
 
                                 sharedPref.setString("state", stateValue);
                                 sharedPref.setString("city", cityValue);
+                                sharedPref.setInt(
+                                  "category",
+                                  accSelectedCategory,
+                                );
+                                sharedPref.setString(
+                                  "categoryStr",
+                                  accSselectedCategoryString,
+                                );
                               })
                               .whenComplete(() {
                                 Navigator.pushAndRemoveUntil(
