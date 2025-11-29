@@ -104,6 +104,10 @@ class ProfHomePage extends StatelessWidget {
             ),
           ],
         ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {},
+          child: Icon(Icons.post_add, size: 30),
+        ),
       ),
     );
   }
