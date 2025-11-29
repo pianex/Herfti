@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:project_a/core/constants/app_theme.dart';
 import 'package:project_a/main.dart';
 import 'package:project_a/view/pages/account_page.dart';
+import 'package:project_a/view/pages/new_post_page.dart';
 import 'package:project_a/view/widgets/cust_drawer.dart';
 import 'package:project_a/view/widgets/post_card.dart';
 import 'package:project_a/view/widgets/title_text.dart';
@@ -105,7 +107,12 @@ class ProfHomePage extends StatelessWidget {
           ],
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              CupertinoPageRoute(builder: (context) => NewPostPage()),
+            );
+          },
           child: Icon(Icons.post_add, size: 30),
         ),
       ),

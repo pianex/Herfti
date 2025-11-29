@@ -5,7 +5,7 @@ class PostModel {
   final String profName;
   final String profImagePath;
   final String text;
-  final String image;
+  final List<String> imagePaths;
   final int likesCount;
   final int commentsCount;
   PostModel({
@@ -15,7 +15,7 @@ class PostModel {
     required this.profName,
     required this.profImagePath,
     required this.text,
-    required this.image,
+    required this.imagePaths,
     required this.likesCount,
     required this.commentsCount,
   });
@@ -27,7 +27,7 @@ class PostModel {
     "profName": profName,
     "profImagePath": profImagePath,
     "text": text,
-    "image": image,
+    "imagePths": imagePaths,
     "likesCount": likesCount,
     "commentsCount": commentsCount,
   };
@@ -39,7 +39,7 @@ class PostModel {
     profName: json["profName"],
     profImagePath: json["profImagePath"],
     text: json["text"],
-    image: json["image"],
+    imagePaths: json["imagePaths"],
     likesCount: json["likesCount"],
     commentsCount: json["commentsCount"],
   );
