@@ -1,9 +1,36 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:project_a/core/constants/app_theme.dart';
+import 'package:project_a/core/functions/image_functions.dart';
 import 'package:project_a/view/widgets/cust_button.dart';
 
-class NewPostPage extends StatelessWidget {
+class NewPostPage extends StatefulWidget {
   const NewPostPage({super.key});
+
+  @override
+  State<NewPostPage> createState() => _NewPostPageState();
+}
+
+class _NewPostPageState extends State<NewPostPage> {
+  List<File?> images = [];
+  void _selectImage({required ImageSource imageSource}) async {
+    File? image = await pickImage(context, imageSource);
+    if (image != null && images.length < 5) {
+      images.add(image);
+    } else if (images.length >= 5) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            "لا يمكنك إضافة أكثر من 5 صور",
+            style: TextStyle(color: Colors.white, fontSize: 25),
+          ),
+        ),
+      );
+    }
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +81,55 @@ class NewPostPage extends StatelessWidget {
                 ),
               ),
             ),
-            CustButton(title: "إضافة صورة", icon: Icons.photo),
+            GridView.builder(
+              padding: EdgeInsets.all(10),
+              physics: const BouncingScrollPhysics(),
+              itemCount: images.length,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+              ),
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                return Container(
+                  alignment: Alignment.topRight,
+                  margin: EdgeInsets.all(5),
+                  padding: EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    image: DecorationImage(
+                      image: FileImage(images[index]!),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  child: CircleAvatar(
+                    radius: 15,
+                    backgroundColor: Colors.black.withAlpha(130),
+                    child: IconButton(
+                      padding: EdgeInsets.zero,
+                      icon: Icon(Icons.close, color: Colors.white, size: 20),
+                      onPressed: () {
+                        images.removeAt(index);
+                        setState(() {});
+                      },
+                    ),
+                  ),
+                );
+              },
+            ),
+            CustButton(
+              title: "إضافة صورة من المعرض",
+              icon: Icons.image,
+              onTap: () {
+                _selectImage(imageSource: ImageSource.gallery);
+              },
+            ),
+            CustButton(
+              title: "إضافة صورة من الكاميرا",
+              icon: Icons.camera_alt,
+              onTap: () {
+                _selectImage(imageSource: ImageSource.camera);
+              },
+            ),
             CustButton(title: "نشر", icon: Icons.post_add_outlined),
           ],
         ),
