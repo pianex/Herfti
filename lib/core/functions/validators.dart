@@ -8,6 +8,14 @@ nameValidator(String? text) {
   }
 }
 
+postValidator(String? text) {
+  if (text!.length > 200) {
+    return "المشور طويل جدا.";
+  } else {
+    return null;
+  }
+}
+
 phoneValidator(String? text) {
   if (text!.isEmpty) {
     return "لا يمكن أن يبقى الحقل فارغا.";
