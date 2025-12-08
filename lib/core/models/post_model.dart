@@ -2,8 +2,7 @@ class PostModel {
   final String uid;
   final String timeAdded;
   final String profUid;
-  final String profName;
-  final String profImagePath;
+
   final String text;
   final List<String> imagePaths;
   final int likesCount;
@@ -12,8 +11,7 @@ class PostModel {
     required this.uid,
     required this.timeAdded,
     required this.profUid,
-    required this.profName,
-    required this.profImagePath,
+
     required this.text,
     required this.imagePaths,
     required this.likesCount,
@@ -24,8 +22,7 @@ class PostModel {
     "uid": uid,
     "timeAdded": timeAdded,
     "profUid": profUid,
-    "profName": profName,
-    "profImagePath": profImagePath,
+
     "text": text,
     "imagePths": imagePaths,
     "likesCount": likesCount,
@@ -36,8 +33,7 @@ class PostModel {
     uid: json["uid"],
     timeAdded: json["timeAdded"],
     profUid: json["profUid"],
-    profName: json["profName"],
-    profImagePath: json["profImagePath"],
+
     text: json["text"],
     imagePaths: json["imagePaths"],
     likesCount: json["likesCount"],

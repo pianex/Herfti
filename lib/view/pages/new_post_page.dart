@@ -1,11 +1,13 @@
 import 'dart:io';
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:project_a/core/constants/app_theme.dart';
 import 'package:project_a/core/functions/image_functions.dart';
 import 'package:project_a/core/functions/validators.dart';
 import 'package:project_a/core/models/post_model.dart';
+import 'package:project_a/main.dart';
 import 'package:project_a/view/widgets/cust_button.dart';
 
 class NewPostPage extends StatefulWidget {
@@ -148,15 +150,30 @@ class _NewPostPageState extends State<NewPostPage> {
             CustButton(
               title: "نشر",
               icon: Icons.post_add_outlined,
-              onTap: () {
+              onTap: () async {
+                String email = sharedPref.getString("uid")!;
+                List<String> imagePaths = [];
+                if (images.isNotEmpty) {
+                  for (File? image in images) {
+                    UploadTask uploadTask = FirebaseStorage.instance
+                        .ref()
+                        .child(
+                          "Profs/ProPics/${email.toLowerCase().replaceAll("@gmail.com", "")}.jpg",
+                        )
+                        .putFile(image!);
+                    TaskSnapshot snapshot = await uploadTask;
+                    // ignore: unused_local_variable
+                    String downloadlUrl = await snapshot.ref.getDownloadURL();
+                    imagePaths.add(downloadlUrl);
+                  }
+                }
+
                 Map<String, dynamic> json = PostModel(
-                  uid: "uid",
-                  timeAdded: "timeAdded",
-                  profUid: "profUid",
-                  profName: "profName",
-                  profImagePath: "profImagePath",
-                  text: "text",
-                  imagePaths: [],
+                  uid: DateTime.now().millisecondsSinceEpoch.toString(),
+                  timeAdded: DateTime.now().toString(),
+                  profUid: email,
+                  text: _postController.text.trim(),
+                  imagePaths: imagePaths,
                   likesCount: 0,
                   commentsCount: 0,
                 ).toJson();
