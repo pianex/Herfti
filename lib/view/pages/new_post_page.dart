@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:project_a/core/constants/app_theme.dart';
 import 'package:project_a/core/functions/image_functions.dart';
@@ -17,7 +16,6 @@ class NewPostPage extends StatefulWidget {
 }
 
 class _NewPostPageState extends State<NewPostPage> {
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController _postController = TextEditingController();
   List<File?> images = [];
   void _selectImage({required ImageSource imageSource}) async {
@@ -72,32 +70,28 @@ class _NewPostPageState extends State<NewPostPage> {
                 color: appBarColor,
                 borderRadius: BorderRadius.circular(15),
               ),
-              child: Form(
-                key: _formKey,
+              child: TextFormField(
+                controller: _postController,
+                validator: (text) {
+                  return postValidator(text);
+                },
+                maxLength: 200,
 
-                child: TextFormField(
-                  controller: _postController,
-                  validator: (text) {
-                    return postValidator(text);
-                  },
-                  maxLength: 200,
-
-                  style: TextStyle(color: Colors.white, fontSize: 25),
-                  maxLines: 4,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                      borderSide: BorderSide.none,
-                    ),
-                    counterStyle: TextStyle(
-                      color: Colors.white,
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    hint: Text(
-                      "أكتب ما تفكر به ...",
-                      style: TextStyle(color: Colors.grey, fontSize: 25),
-                    ),
+                style: TextStyle(color: Colors.white, fontSize: 25),
+                maxLines: 4,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15),
+                    borderSide: BorderSide.none,
+                  ),
+                  counterStyle: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  hint: Text(
+                    "أكتب ما تفكر به ...",
+                    style: TextStyle(color: Colors.grey, fontSize: 25),
                   ),
                 ),
               ),
@@ -155,14 +149,13 @@ class _NewPostPageState extends State<NewPostPage> {
               title: "نشر",
               icon: Icons.post_add_outlined,
               onTap: () {
-                if (_formKey.currentState!.validate()) {}
-                final json = PostModel(
-                  uid: DateTime.now().millisecondsSinceEpoch.toString(),
-                  timeAdded: DateTime.now().toString(),
+                Map<String, dynamic> json = PostModel(
+                  uid: "uid",
+                  timeAdded: "timeAdded",
                   profUid: "profUid",
                   profName: "profName",
                   profImagePath: "profImagePath",
-                  text: _postController.text,
+                  text: "text",
                   imagePaths: [],
                   likesCount: 0,
                   commentsCount: 0,
