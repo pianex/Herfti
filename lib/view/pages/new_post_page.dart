@@ -1,10 +1,12 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:project_a/core/constants/app_theme.dart';
 import 'package:project_a/core/functions/image_functions.dart';
+import 'package:project_a/core/functions/show_progress_dialog.dart';
 import 'package:project_a/core/functions/validators.dart';
 import 'package:project_a/core/models/post_model.dart';
 import 'package:project_a/main.dart';
@@ -151,25 +153,37 @@ class _NewPostPageState extends State<NewPostPage> {
               title: "نشر",
               icon: Icons.post_add_outlined,
               onTap: () async {
+                showProgressDialog(
+                  context,
+                  Size(
+                    MediaQuery.of(context).size.width / 2,
+                    MediaQuery.of(context).size.width / 2,
+                  ),
+                );
                 String email = sharedPref.getString("uid")!;
+                String uid = DateTime.now().millisecondsSinceEpoch.toString();
                 List<String> imagePaths = [];
                 if (images.isNotEmpty) {
                   for (File? image in images) {
+                    String uid2 = DateTime.now().microsecondsSinceEpoch
+                        .toString();
                     UploadTask uploadTask = FirebaseStorage.instance
                         .ref()
-                        .child(
-                          "Profs/ProPics/${email.toLowerCase().replaceAll("@gmail.com", "")}.jpg",
-                        )
+                        .child("Profs/PostImages/$email/$uid/-$uid2.jpg")
                         .putFile(image!);
                     TaskSnapshot snapshot = await uploadTask;
                     // ignore: unused_local_variable
-                    String downloadlUrl = await snapshot.ref.getDownloadURL();
-                    imagePaths.add(downloadlUrl);
+                    String downloadlUrl = await snapshot.ref
+                        .getDownloadURL()
+                        .then((link) {
+                          imagePaths.add(link);
+                          return link;
+                        });
                   }
                 }
 
                 Map<String, dynamic> json = PostModel(
-                  uid: DateTime.now().millisecondsSinceEpoch.toString(),
+                  uid: uid,
                   timeAdded: DateTime.now().toString(),
                   profUid: email,
                   text: _postController.text.trim(),
@@ -177,6 +191,14 @@ class _NewPostPageState extends State<NewPostPage> {
                   likesCount: 0,
                   commentsCount: 0,
                 ).toJson();
+                FirebaseFirestore.instance
+                    .collection("Posts")
+                    .doc(uid)
+                    .set(json)
+                    .then((value) {
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                    });
               },
             ),
           ],

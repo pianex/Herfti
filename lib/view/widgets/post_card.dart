@@ -78,7 +78,7 @@ class _PostCardState extends State<PostCard> {
                           tag: widget.firstTag,
                           child: CircleAvatar(
                             backgroundColor: Colors.blue[900],
-                            backgroundImage: AssetImage(widget.imagePath),
+                            backgroundImage: NetworkImage(widget.imagePath),
                           ),
                         ),
                         SizedBox(width: 10),
@@ -144,7 +144,7 @@ class _PostCardState extends State<PostCard> {
                               width: 5,
                             ),
                           ),
-                          child: Image.asset(
+                          child: Image.network(
                             widget.imagePath,
                             fit: BoxFit.cover,
                           ),
@@ -164,7 +164,7 @@ class _PostCardState extends State<PostCard> {
                       color: Colors.transparent,
                       borderRadius: BorderRadius.circular(15),
                     ),
-                    child: Image.asset(widget.imagePath, fit: BoxFit.cover),
+                    child: Image.network(widget.imagePath, fit: BoxFit.cover),
                   ),
                 ),
               ),

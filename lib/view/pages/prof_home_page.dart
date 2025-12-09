@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:project_a/core/constants/app_theme.dart';
+import 'package:project_a/core/functions/post_functions.dart';
 import 'package:project_a/main.dart';
 import 'package:project_a/view/pages/account_page.dart';
 import 'package:project_a/view/pages/new_post_page.dart';
@@ -84,25 +85,35 @@ class ProfHomePage extends StatelessWidget {
             // ),
             // CategoriesSlider(),
             TitleText(title: "آخر المنشورات"),
-            PostCard(
-              firstTag: "aaa",
-              secondTag: "assets/images/plumber.jpg",
-              name: "مصطفى",
-              type: "سباك",
-              time: "2 دقيقة",
-              imagePath: "assets/images/plumber.jpg",
-              text: "أحد أعمالي، أرجوا أن تنال إعجابكم!",
-              likes: 165,
-            ),
-            PostCard(
-              firstTag: "ccc",
-              secondTag: "assets/images/najjar.jpg",
-              name: "أشرف",
-              type: "نجار",
-              time: "37 دقيقة",
-              imagePath: "assets/images/najjar.jpg",
-              text: "نخدموا غير الخدمة المليحة صاحبي",
-              likes: 165,
+            StreamBuilder(
+              stream: readPosts(),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return Text('حدث خطأ ما! ${snapshot.error}');
+                } else if (snapshot.hasData) {
+                  final posts = snapshot.data!;
+                  return ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: posts.length,
+                    itemBuilder: (context, index) {
+                      return PostCard(
+                        name: "name",
+                        type: "type",
+                        time: "time",
+                        imagePath: snapshot.data![index].imagePaths[0]
+                            .toString(),
+                        text: snapshot.data![index].text,
+                        likes: snapshot.data![index].likesCount,
+                        firstTag: "firstTag",
+                        secondTag: "secondTag",
+                      );
+                    },
+                  );
+                } else {
+                  return Center(child: CircularProgressIndicator());
+                }
+              },
             ),
           ],
         ),

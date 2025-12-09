@@ -4,7 +4,7 @@ class PostModel {
   final String profUid;
 
   final String text;
-  final List<String> imagePaths;
+  final List<dynamic> imagePaths;
   final int likesCount;
   final int commentsCount;
   PostModel({
@@ -22,9 +22,8 @@ class PostModel {
     "uid": uid,
     "timeAdded": timeAdded,
     "profUid": profUid,
-
     "text": text,
-    "imagePths": imagePaths,
+    "imagePaths": imagePaths,
     "likesCount": likesCount,
     "commentsCount": commentsCount,
   };
@@ -33,7 +32,6 @@ class PostModel {
     uid: json["uid"],
     timeAdded: json["timeAdded"],
     profUid: json["profUid"],
-
     text: json["text"],
     imagePaths: json["imagePaths"],
     likesCount: json["likesCount"],
