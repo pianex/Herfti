@@ -49,6 +49,7 @@ dependencies:
       url: https://github.com/Ostrich-Cyber-Risk/csc_picker 
   image_picker: ^1.2.0
   firebase_storage: ^12.4.10
+  date_format: ^2.0.9
  
     
 dev_dependencies:

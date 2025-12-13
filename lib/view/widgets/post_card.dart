@@ -12,6 +12,7 @@ class PostCard extends StatefulWidget {
     super.key,
     required this.name,
     required this.type,
+    required this.profImagePath,
     required this.time,
     required this.imagePath,
     required this.text,
@@ -21,6 +22,7 @@ class PostCard extends StatefulWidget {
   });
   final String name;
   final String type;
+  final String profImagePath;
   final String time;
   final String imagePath;
   final String text;
@@ -33,14 +35,14 @@ class PostCard extends StatefulWidget {
 
 class _PostCardState extends State<PostCard> {
   bool isLiked = false;
-  void toggleLike() {
-    setState(() {
-      isLiked == false ? likes++ : likes--;
-      isLiked = !isLiked;
-    });
-  }
+  // void toggleLike() {
+  //   setState(() {
+  //     isLiked == false ? likes++ : likes--;
+  //     isLiked = !isLiked;
+  //   });
+  // }
 
-  int likes = 162;
+  // int likes = 162;
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +80,7 @@ class _PostCardState extends State<PostCard> {
                           tag: widget.firstTag,
                           child: CircleAvatar(
                             backgroundColor: Colors.blue[900],
-                            backgroundImage: NetworkImage(widget.imagePath),
+                            backgroundImage: NetworkImage(widget.profImagePath),
                           ),
                         ),
                         SizedBox(width: 10),
@@ -108,6 +110,7 @@ class _PostCardState extends State<PostCard> {
                   Spacer(),
                   Text(
                     widget.time,
+                    textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.white, fontSize: 19),
                   ),
                 ],
@@ -193,13 +196,13 @@ class _PostCardState extends State<PostCard> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                shrinkLikesFormula(likes),
+                shrinkLikesFormula(widget.likes),
                 style: TextStyle(color: Colors.amber, fontSize: 21),
               ),
               GestureDetector(
                 onDoubleTap: () {},
                 onTap: () {
-                  toggleLike();
+                  // toggleLike();
                 },
                 child: Icon(
                   isLiked ? Icons.star : Icons.star_border,
@@ -209,7 +212,7 @@ class _PostCardState extends State<PostCard> {
               ),
               SizedBox(width: 40),
               Text(
-                shrinkLikesFormula(73),
+                shrinkLikesFormula(0),
                 style: TextStyle(color: Colors.blue[300], fontSize: 21),
               ),
               IconButton(
@@ -223,7 +226,7 @@ class _PostCardState extends State<PostCard> {
                         text: widget.text,
                         type: widget.type,
                         time: widget.time,
-                        likes: likes,
+                        likes: widget.likes,
                         firstTag: widget.firstTag,
                         secondTag: widget.secondTag,
                       ),

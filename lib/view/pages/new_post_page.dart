@@ -186,6 +186,11 @@ class _NewPostPageState extends State<NewPostPage> {
                   uid: uid,
                   timeAdded: DateTime.now().toString(),
                   profUid: email,
+                  profName: sharedPref.getString("name")!,
+                  profType: sharedPref.getString("categoryStr")!,
+                  profImagePath:
+                      sharedPref.getString("imagePath") ??
+                      sharedPref.getString("googleImagePath")!,
                   text: _postController.text.trim(),
                   imagePaths: imagePaths,
                   likesCount: 0,

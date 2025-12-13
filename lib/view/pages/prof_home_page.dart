@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:project_a/core/constants/app_theme.dart';
+import 'package:project_a/core/functions/date_functions.dart';
 import 'package:project_a/core/functions/post_functions.dart';
 import 'package:project_a/main.dart';
 import 'package:project_a/view/pages/account_page.dart';
@@ -9,9 +11,14 @@ import 'package:project_a/view/widgets/cust_drawer.dart';
 import 'package:project_a/view/widgets/post_card.dart';
 import 'package:project_a/view/widgets/title_text.dart';
 
-class ProfHomePage extends StatelessWidget {
+class ProfHomePage extends StatefulWidget {
   const ProfHomePage({super.key});
 
+  @override
+  State<ProfHomePage> createState() => _ProfHomePageState();
+}
+
+class _ProfHomePageState extends State<ProfHomePage> {
   @override
   Widget build(BuildContext context) {
     String? imagePath = sharedPref.getString("imagePath");
@@ -43,10 +50,10 @@ class ProfHomePage extends StatelessWidget {
           ),
           centerTitle: true,
           actions: [
-            IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.message, color: Colors.white),
-            ),
+            // IconButton(
+            //   onPressed: () {},
+            //   icon: Icon(Icons.message, color: Colors.white),
+            // ),
             GestureDetector(
               onTap: () {
                 Navigator.push(
@@ -92,15 +99,32 @@ class ProfHomePage extends StatelessWidget {
                   return Text('حدث خطأ ما! ${snapshot.error}');
                 } else if (snapshot.hasData) {
                   final posts = snapshot.data!;
+                  List<String> profsNames = [];
+
+                  for (var post in posts) {
+                    // if (profsNames.length == posts.length) break;
+                    FirebaseFirestore.instance
+                        .collection("Profs")
+                        .doc(post.profUid)
+                        .get()
+                        .then((doc) {
+                          profsNames.add(doc.data()!["name"]);
+                          print(profsNames);
+                        });
+                  }
+
                   return ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: BouncingScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: posts.length,
                     itemBuilder: (context, index) {
                       return PostCard(
-                        name: "name",
-                        type: "type",
-                        time: "time",
+                        name: snapshot.data![index].profName,
+                        type: snapshot.data![index].profType,
+                        profImagePath: snapshot.data![index].profImagePath,
+                        time: timeAddedFormatted(
+                          snapshot.data![index].timeAdded,
+                        ),
                         imagePath: snapshot.data![index].imagePaths[0]
                             .toString(),
                         text: snapshot.data![index].text,
