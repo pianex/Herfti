@@ -99,7 +99,9 @@ class _ProfHomePageState extends State<ProfHomePage> {
                   return Text('حدث خطأ ما! ${snapshot.error}');
                 } else if (snapshot.hasData) {
                   final posts = snapshot.data!;
-                  List<String> profsNames = [];
+                  // List<String> profsNames = [];
+                  // List<String> profsTypes = [];
+                  // List<String> profsImagePaths = [];
 
                   for (var post in posts) {
                     // if (profsNames.length == posts.length) break;
@@ -108,8 +110,18 @@ class _ProfHomePageState extends State<ProfHomePage> {
                         .doc(post.profUid)
                         .get()
                         .then((doc) {
-                          profsNames.add(doc.data()!["name"]);
-                          print(profsNames);
+                          // profsNames.add(doc.data()!["name"]);
+                          // profsTypes.add(doc.data()!["category"]);
+                          // profsImagePaths.add(doc.data()!["imagePath"]);
+                          // print(profsNames);
+                          FirebaseFirestore.instance
+                              .collection("Posts")
+                              .doc(post.uid)
+                              .update({
+                                "profName": doc.data()!["name"],
+                                "profType": doc.data()!["category"],
+                                "profImagePath": doc.data()!["imagePath"],
+                              });
                         });
                   }
 

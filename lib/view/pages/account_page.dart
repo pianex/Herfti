@@ -370,7 +370,7 @@ class _AccountPageState extends State<AccountPage> {
 
                           Map<String, dynamic> json = ProfModel(
                             uid: email,
-                            name: name,
+                            name: nameController.text,
                             imagePath: imagePath.isNotEmpty
                                 ? imagePath
                                 : currentImagePath ?? googleImagePath,
