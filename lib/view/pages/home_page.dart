@@ -3,7 +3,7 @@ import 'package:project_a/core/constants/app_theme.dart';
 import 'package:project_a/view/pages/account_page.dart';
 import 'package:project_a/view/widgets/categories_slider.dart';
 import 'package:project_a/view/widgets/cust_drawer.dart';
-import 'package:project_a/view/widgets/post_card.dart';
+// import 'package:project_a/view/widgets/post_card.dart';
 import 'package:project_a/view/widgets/title_text.dart';
 
 class HomePage extends StatefulWidget {

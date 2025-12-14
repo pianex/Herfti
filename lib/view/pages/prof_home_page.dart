@@ -137,8 +137,9 @@ class _ProfHomePageState extends State<ProfHomePage> {
                         time: timeAddedFormatted(
                           snapshot.data![index].timeAdded,
                         ),
-                        imagePath: snapshot.data![index].imagePaths[0]
-                            .toString(),
+                        imagePath: snapshot.data![index].imagePaths.isNotEmpty
+                            ? snapshot.data![index].imagePaths[0].toString()
+                            : "",
                         text: snapshot.data![index].text,
                         likes: snapshot.data![index].likesCount,
                         firstTag: "firstTag",

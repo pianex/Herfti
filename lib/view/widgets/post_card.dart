@@ -24,7 +24,7 @@ class PostCard extends StatefulWidget {
   final String type;
   final String profImagePath;
   final String time;
-  final String imagePath;
+  final String? imagePath;
   final String text;
   final int likes;
   final String firstTag;
@@ -46,7 +46,7 @@ class _PostCardState extends State<PostCard> {
 
   @override
   Widget build(BuildContext context) {
-    Image asset = Image.asset(widget.imagePath, fit: BoxFit.cover);
+    Image? asset = Image.asset(widget.imagePath ?? "", fit: BoxFit.cover);
     return Container(
       margin: const EdgeInsets.only(right: 10, left: 10, top: 10, bottom: 10),
       width: double.infinity,
@@ -147,10 +147,12 @@ class _PostCardState extends State<PostCard> {
                               width: 5,
                             ),
                           ),
-                          child: Image.network(
-                            widget.imagePath,
-                            fit: BoxFit.cover,
-                          ),
+                          child: widget.imagePath!.isNotEmpty
+                              ? Image.network(
+                                  widget.imagePath ?? "",
+                                  fit: BoxFit.cover,
+                                )
+                              : Container(),
                         ),
                       ).animate().untint(duration: Duration(milliseconds: 350)),
                     ),
@@ -167,7 +169,12 @@ class _PostCardState extends State<PostCard> {
                       color: Colors.transparent,
                       borderRadius: BorderRadius.circular(15),
                     ),
-                    child: Image.network(widget.imagePath, fit: BoxFit.cover),
+                    child: widget.imagePath!.isNotEmpty
+                        ? Image.network(
+                            widget.imagePath ?? "",
+                            fit: BoxFit.cover,
+                          )
+                        : Container(),
                   ),
                 ),
               ),
