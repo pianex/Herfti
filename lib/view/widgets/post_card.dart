@@ -64,7 +64,7 @@ class _PostCardState extends State<PostCard> {
                 context,
                 MaterialPageRoute(
                   builder: (context) =>
-                      ProfessionalProfile(tag: widget.firstTag),
+                      ProfessionalProfile(tag: widget.profImagePath),
                 ),
               );
             },
@@ -159,7 +159,7 @@ class _PostCardState extends State<PostCard> {
                   );
                 },
                 child: Hero(
-                  tag: widget.secondTag,
+                  tag: widget.imagePath ?? "tag2",
                   child: Container(
                     margin: EdgeInsets.symmetric(horizontal: 15),
                     width: double.infinity,
@@ -229,14 +229,14 @@ class _PostCardState extends State<PostCard> {
                     CupertinoPageRoute(
                       builder: (context) => CommentsPage(
                         profImagePath: widget.profImagePath,
-                        imagePath: widget.imagePath ?? "",
+                        imagePath: widget.imagePath ?? "tag2",
                         name: widget.name,
                         text: widget.text,
                         type: widget.type,
                         time: widget.time,
                         likes: widget.likes,
-                        firstTag: widget.firstTag,
-                        secondTag: widget.secondTag,
+                        firstTag: widget.profImagePath,
+                        secondTag: widget.imagePath ?? "tag2",
                       ),
                     ),
                   );

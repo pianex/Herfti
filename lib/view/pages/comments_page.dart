@@ -139,7 +139,7 @@ class _CommentsPageState extends State<CommentsPage> {
             ),
             widget.imagePath.isNotEmpty
                 ? Hero(
-                    tag: widget.imagePath,
+                    tag: "tag2",
                     child: Container(
                       margin: EdgeInsets.symmetric(horizontal: 15),
                       width: double.infinity,
