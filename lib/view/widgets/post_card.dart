@@ -77,7 +77,7 @@ class _PostCardState extends State<PostCard> {
                     child: Row(
                       children: [
                         Hero(
-                          tag: widget.firstTag,
+                          tag: widget.profImagePath,
                           child: CircleAvatar(
                             backgroundColor: Colors.blue[900],
                             backgroundImage: NetworkImage(widget.profImagePath),
@@ -228,7 +228,8 @@ class _PostCardState extends State<PostCard> {
                     context,
                     CupertinoPageRoute(
                       builder: (context) => CommentsPage(
-                        imagePath: widget.secondTag,
+                        profImagePath: widget.profImagePath,
+                        imagePath: widget.imagePath ?? "",
                         name: widget.name,
                         text: widget.text,
                         type: widget.type,

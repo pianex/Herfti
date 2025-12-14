@@ -14,7 +14,7 @@ class ProfessionalProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Image asset = Image.asset("assets/images/plumber.jpg", fit: BoxFit.cover);
+    Image asset = Image.network(tag, fit: BoxFit.cover);
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
@@ -77,10 +77,7 @@ class ProfessionalProfile extends StatelessWidget {
                               width: 5,
                             ),
                           ),
-                          child: Image.asset(
-                            "assets/images/plumber.jpg",
-                            fit: BoxFit.cover,
-                          ),
+                          child: Image.network(tag, fit: BoxFit.cover),
                         ),
                       ).animate().untint(),
                     ),
@@ -96,10 +93,7 @@ class ProfessionalProfile extends StatelessWidget {
                     // borderRadius: BorderRadius.circular(15),
                     shape: BoxShape.circle,
                   ),
-                  child: Image.asset(
-                    "assets/images/plumber.jpg",
-                    fit: BoxFit.cover,
-                  ),
+                  child: Image.network(tag, fit: BoxFit.contain),
                 ),
               ),
             ),

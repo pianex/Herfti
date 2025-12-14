@@ -8,6 +8,7 @@ class CommentsPage extends StatefulWidget {
   const CommentsPage({
     super.key,
     required this.imagePath,
+    required this.profImagePath,
     required this.name,
     required this.text,
     required this.type,
@@ -16,6 +17,7 @@ class CommentsPage extends StatefulWidget {
     required this.firstTag,
     required this.secondTag,
   });
+  final String profImagePath;
   final String imagePath;
   final String name;
   final String type;
@@ -78,7 +80,7 @@ class _CommentsPageState extends State<CommentsPage> {
                         context,
                         MaterialPageRoute(
                           builder: (context) =>
-                              ProfessionalProfile(tag: widget.firstTag),
+                              ProfessionalProfile(tag: widget.profImagePath),
                         ),
                       );
                     },
@@ -90,7 +92,9 @@ class _CommentsPageState extends State<CommentsPage> {
                             tag: widget.firstTag,
                             child: CircleAvatar(
                               backgroundColor: Colors.blue[900],
-                              backgroundImage: AssetImage(widget.imagePath),
+                              backgroundImage: NetworkImage(
+                                widget.profImagePath,
+                              ),
                             ),
                           ),
                           SizedBox(width: 10),
@@ -133,20 +137,22 @@ class _CommentsPageState extends State<CommentsPage> {
                 style: TextStyle(color: Colors.white, fontSize: 23),
               ),
             ),
-            Hero(
-              tag: widget.imagePath,
-              child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 15),
-                width: double.infinity,
-                height: asset.height,
-                clipBehavior: Clip.hardEdge,
-                decoration: BoxDecoration(
-                  color: Colors.transparent,
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: Image.asset(widget.imagePath, fit: BoxFit.cover),
-              ),
-            ),
+            widget.imagePath.isNotEmpty
+                ? Hero(
+                    tag: widget.imagePath,
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 15),
+                      width: double.infinity,
+                      height: asset.height,
+                      clipBehavior: Clip.hardEdge,
+                      decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Image.network(widget.imagePath, fit: BoxFit.cover),
+                    ),
+                  )
+                : Container(),
             SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
