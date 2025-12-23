@@ -165,7 +165,8 @@ class _CommentsPageState extends State<CommentsPage> {
                   .doc(widget.postUid)
                   .get(),
               builder: (context, asyncSnapshot) {
-                int currentLikes = asyncSnapshot.data?.data()?["likesCount"];
+                int currentLikes =
+                    asyncSnapshot.data?.data()?["likesCount"] ?? widget.likes;
                 int currentComments =
                     asyncSnapshot.data?.data()?["commentsCount"] ??
                     widget.comments;
