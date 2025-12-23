@@ -1,15 +1,18 @@
 import 'dart:ui';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:project_a/core/functions/formatters.dart';
+import 'package:project_a/main.dart';
 import 'package:project_a/view/pages/comments_page.dart';
 import 'package:project_a/view/pages/prof_profile.dart';
 
 class PostCard extends StatefulWidget {
   const PostCard({
     super.key,
+    required this.uid,
     required this.name,
     required this.type,
     required this.profImagePath,
@@ -20,6 +23,7 @@ class PostCard extends StatefulWidget {
     required this.firstTag,
     required this.secondTag,
   });
+  final String uid;
   final String name;
   final String type;
   final String profImagePath;
@@ -47,6 +51,7 @@ class _PostCardState extends State<PostCard> {
   @override
   Widget build(BuildContext context) {
     Image? asset = Image.asset(widget.imagePath ?? "", fit: BoxFit.cover);
+    List<String> likedPosts = sharedPref.getStringList("likedPosts") ?? [];
     return Container(
       margin: const EdgeInsets.only(right: 10, left: 10, top: 10, bottom: 10),
       width: double.infinity,
@@ -209,7 +214,29 @@ class _PostCardState extends State<PostCard> {
               GestureDetector(
                 onDoubleTap: () {},
                 onTap: () {
-                  // toggleLike();
+                  if (likedPosts.contains(widget.uid)) {
+                    likedPosts.remove(widget.uid);
+                    sharedPref.setStringList("likedPosts", likedPosts);
+                    int likes = widget.likes - 1;
+                    FirebaseFirestore.instance
+                        .collection("Posts")
+                        .doc(widget.uid)
+                        .update({"likesCount": likes});
+                    setState(() {
+                      isLiked = false;
+                    });
+                  } else {
+                    likedPosts.add(widget.uid);
+                    sharedPref.setStringList("likedPosts", likedPosts);
+                    int likes = widget.likes + 1;
+                    FirebaseFirestore.instance
+                        .collection("Posts")
+                        .doc(widget.uid)
+                        .update({"likesCount": likes});
+                    setState(() {
+                      isLiked = true;
+                    });
+                  }
                 },
                 child: Icon(
                   isLiked ? Icons.star : Icons.star_border,
