@@ -159,53 +159,65 @@ class _CommentsPageState extends State<CommentsPage> {
                   )
                 : Container(),
             SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  shrinkLikesFormula(widget.likes),
-                  style: TextStyle(color: Colors.amber, fontSize: 21),
-                ),
-                GestureDetector(
-                  onDoubleTap: () {},
-                  onTap: () {
-                    if (likedPosts.contains(widget.postUid)) {
-                      likedPosts.remove(widget.postUid);
-                      sharedPref.setStringList("likedPosts", likedPosts);
-                      int likes = widget.likes - 1;
-                      FirebaseFirestore.instance
-                          .collection("Posts")
-                          .doc(widget.postUid)
-                          .update({"likesCount": likes});
-                      setState(() {
-                        isLiked = false;
-                      });
-                    } else {
-                      likedPosts.add(widget.postUid);
-                      sharedPref.setStringList("likedPosts", likedPosts);
-                      int likes = widget.likes + 1;
-                      FirebaseFirestore.instance
-                          .collection("Posts")
-                          .doc(widget.postUid)
-                          .update({"likesCount": likes});
-                      setState(() {
-                        isLiked = true;
-                      });
-                    }
-                  },
-                  child: Icon(
-                    isLiked ? Icons.star : Icons.star_border,
-                    color: Colors.amber,
-                    size: 30,
-                  ),
-                ),
-                SizedBox(width: 40),
-                Text(
-                  shrinkLikesFormula(73),
-                  style: TextStyle(color: Colors.blue[300], fontSize: 21),
-                ),
-                Icon(Icons.message, color: Colors.blue[300], size: 30),
-              ],
+            FutureBuilder(
+              future: FirebaseFirestore.instance
+                  .collection("Posts")
+                  .doc(widget.postUid)
+                  .get(),
+              builder: (context, asyncSnapshot) {
+                int currentLikes = asyncSnapshot.data?.data()?["likesCount"];
+                int currentComments =
+                    asyncSnapshot.data?.data()?["commentsCount"] ??
+                    widget.comments;
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      shrinkLikesFormula(currentLikes),
+                      style: TextStyle(color: Colors.amber, fontSize: 21),
+                    ),
+                    GestureDetector(
+                      onDoubleTap: () {},
+                      onTap: () {
+                        if (likedPosts.contains(widget.postUid)) {
+                          likedPosts.remove(widget.postUid);
+                          sharedPref.setStringList("likedPosts", likedPosts);
+                          int likes = currentLikes - 1;
+                          FirebaseFirestore.instance
+                              .collection("Posts")
+                              .doc(widget.postUid)
+                              .update({"likesCount": likes});
+                          setState(() {
+                            isLiked = false;
+                          });
+                        } else {
+                          likedPosts.add(widget.postUid);
+                          sharedPref.setStringList("likedPosts", likedPosts);
+                          int likes = currentComments + 1;
+                          FirebaseFirestore.instance
+                              .collection("Posts")
+                              .doc(widget.postUid)
+                              .update({"likesCount": likes});
+                          setState(() {
+                            isLiked = true;
+                          });
+                        }
+                      },
+                      child: Icon(
+                        isLiked ? Icons.star : Icons.star_border,
+                        color: Colors.amber,
+                        size: 30,
+                      ),
+                    ),
+                    SizedBox(width: 40),
+                    Text(
+                      shrinkLikesFormula(currentComments),
+                      style: TextStyle(color: Colors.blue[300], fontSize: 21),
+                    ),
+                    Icon(Icons.message, color: Colors.blue[300], size: 30),
+                  ],
+                );
+              },
             ),
             Comment(),
             Comment(),
