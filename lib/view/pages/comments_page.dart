@@ -1,12 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:project_a/core/constants/app_theme.dart';
 import 'package:project_a/core/functions/formatters.dart';
+import 'package:project_a/main.dart';
 import 'package:project_a/view/pages/prof_profile.dart';
 import 'package:project_a/view/widgets/comment.dart';
 
 class CommentsPage extends StatefulWidget {
   const CommentsPage({
     super.key,
+    required this.postUid,
     required this.imagePath,
     required this.profImagePath,
     required this.name,
@@ -14,9 +17,11 @@ class CommentsPage extends StatefulWidget {
     required this.type,
     required this.time,
     required this.likes,
+    required this.comments,
     required this.firstTag,
     required this.secondTag,
   });
+  final String postUid;
   final String profImagePath;
   final String imagePath;
   final String name;
@@ -24,6 +29,7 @@ class CommentsPage extends StatefulWidget {
   final String time;
   final String text;
   final int likes;
+  final int comments;
   final String firstTag;
   final String secondTag;
 
@@ -33,16 +39,15 @@ class CommentsPage extends StatefulWidget {
 
 class _CommentsPageState extends State<CommentsPage> {
   bool isLiked = false;
-  void toggleLike() {
-    setState(() {
-      isLiked == false ? likes++ : likes--;
-      isLiked = !isLiked;
-    });
-  }
 
-  int likes = 162;
   @override
   Widget build(BuildContext context) {
+    List<String> likedPosts = sharedPref.getStringList("likedPosts") ?? [];
+    if (likedPosts.contains(widget.postUid)) {
+      isLiked = true;
+    } else {
+      isLiked = false;
+    }
     Image asset = Image.asset(widget.imagePath, fit: BoxFit.cover);
     return Directionality(
       textDirection: TextDirection.rtl,
@@ -158,13 +163,35 @@ class _CommentsPageState extends State<CommentsPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  shrinkLikesFormula(likes),
+                  shrinkLikesFormula(widget.likes),
                   style: TextStyle(color: Colors.amber, fontSize: 21),
                 ),
                 GestureDetector(
                   onDoubleTap: () {},
                   onTap: () {
-                    toggleLike();
+                    if (likedPosts.contains(widget.postUid)) {
+                      likedPosts.remove(widget.postUid);
+                      sharedPref.setStringList("likedPosts", likedPosts);
+                      int likes = widget.likes - 1;
+                      FirebaseFirestore.instance
+                          .collection("Posts")
+                          .doc(widget.postUid)
+                          .update({"likesCount": likes});
+                      setState(() {
+                        isLiked = false;
+                      });
+                    } else {
+                      likedPosts.add(widget.postUid);
+                      sharedPref.setStringList("likedPosts", likedPosts);
+                      int likes = widget.likes + 1;
+                      FirebaseFirestore.instance
+                          .collection("Posts")
+                          .doc(widget.postUid)
+                          .update({"likesCount": likes});
+                      setState(() {
+                        isLiked = true;
+                      });
+                    }
                   },
                   child: Icon(
                     isLiked ? Icons.star : Icons.star_border,

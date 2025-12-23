@@ -20,6 +20,7 @@ class PostCard extends StatefulWidget {
     required this.imagePath,
     required this.text,
     required this.likes,
+    required this.comments,
     required this.firstTag,
     required this.secondTag,
   });
@@ -31,6 +32,7 @@ class PostCard extends StatefulWidget {
   final String? imagePath;
   final String text;
   final int likes;
+  final int comments;
   final String firstTag;
   final String secondTag;
   @override
@@ -52,6 +54,11 @@ class _PostCardState extends State<PostCard> {
   Widget build(BuildContext context) {
     Image? asset = Image.asset(widget.imagePath ?? "", fit: BoxFit.cover);
     List<String> likedPosts = sharedPref.getStringList("likedPosts") ?? [];
+    if (likedPosts.contains(widget.uid)) {
+      isLiked = true;
+    } else {
+      isLiked = false;
+    }
     return Container(
       margin: const EdgeInsets.only(right: 10, left: 10, top: 10, bottom: 10),
       width: double.infinity,
@@ -255,6 +262,7 @@ class _PostCardState extends State<PostCard> {
                     context,
                     CupertinoPageRoute(
                       builder: (context) => CommentsPage(
+                        postUid: widget.uid,
                         profImagePath: widget.profImagePath,
                         imagePath: widget.imagePath ?? "tag2",
                         name: widget.name,
@@ -262,6 +270,7 @@ class _PostCardState extends State<PostCard> {
                         type: widget.type,
                         time: widget.time,
                         likes: widget.likes,
+                        comments: widget.comments,
                         firstTag: widget.profImagePath,
                         secondTag: widget.imagePath ?? "tag2",
                       ),

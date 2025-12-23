@@ -143,6 +143,7 @@ class _ProfHomePageState extends State<ProfHomePage> {
                             : "",
                         text: snapshot.data![index].text,
                         likes: snapshot.data![index].likesCount,
+                        comments: snapshot.data![index].commentsCount,
                         firstTag: snapshot.data![index].profImagePath,
                         secondTag: snapshot.data![index].imagePaths.isNotEmpty
                             ? snapshot.data![index].imagePaths[0].toString()
