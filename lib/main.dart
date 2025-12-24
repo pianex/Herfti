@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
     String? userType = sharedPref.getString("userType");
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'خدماتي',
+      title: 'حرفتي',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
       ),
