@@ -193,6 +193,7 @@ class _NewPostPageState extends State<NewPostPage> {
                       sharedPref.getString("googleImagePath")!,
                   text: _postController.text.trim(),
                   imagePaths: imagePaths,
+                  comments: [],
                   likesCount: 0,
                   commentsCount: 0,
                 ).toJson();
