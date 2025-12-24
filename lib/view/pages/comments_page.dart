@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:project_a/core/constants/app_theme.dart';
-import 'package:project_a/core/functions/comment_function.dart';
 import 'package:project_a/core/functions/formatters.dart';
 import 'package:project_a/core/functions/post_functions.dart';
 import 'package:project_a/core/functions/show_progress_dialog.dart';
@@ -51,6 +50,8 @@ class _CommentsPageState extends State<CommentsPage> {
   @override
   Widget build(BuildContext context) {
     List<String> likedPosts = sharedPref.getStringList("likedPosts") ?? [];
+    String userName = sharedPref.getString("name")!;
+    String imagePath = sharedPref.getString("imagePath")!;
     if (likedPosts.contains(widget.postUid)) {
       isLiked = true;
     } else {
@@ -223,7 +224,7 @@ class _CommentsPageState extends State<CommentsPage> {
                                 "likedPosts",
                                 likedPosts,
                               );
-                              int likes = currentComments + 1;
+                              int likes = currentLikes + 1;
                               FirebaseFirestore.instance
                                   .collection("Posts")
                                   .doc(widget.postUid)
@@ -280,9 +281,32 @@ class _CommentsPageState extends State<CommentsPage> {
                           shrinkWrap: true,
                           itemCount: comments.length,
                           itemBuilder: (context, index) {
-                            return Comment(
-                              name: comments[index]["profName"],
-                              text: comments[index]["text"],
+                            return GestureDetector(
+                              onLongPress: () async {
+                                List comments = await FirebaseFirestore.instance
+                                    .collection("Posts")
+                                    .doc(widget.postUid)
+                                    .get()
+                                    .then((doc) {
+                                      return doc.data()!["comments"] ?? [];
+                                    });
+                                comments.removeAt(index);
+                                FirebaseFirestore.instance
+                                    .collection("Posts")
+                                    .doc(widget.postUid)
+                                    .update({
+                                      "comments": comments,
+                                      "commentsCount": comments.length,
+                                    })
+                                    .whenComplete(() {
+                                      setState(() {});
+                                    });
+                              },
+                              child: Comment(
+                                name: comments[index]["profName"],
+                                text: comments[index]["text"],
+                                imagePath: comments[index]["profImagePath"],
+                              ),
                             );
                           },
                         );
@@ -292,6 +316,7 @@ class _CommentsPageState extends State<CommentsPage> {
                     }
                   },
                 ),
+                SizedBox(height: 100),
               ],
             ),
             Container(
@@ -326,9 +351,9 @@ class _CommentsPageState extends State<CommentsPage> {
                       timeAdded: DateTime.now().toString(),
                       postUid: widget.postUid,
                       profUid: widget.profUid,
-                      profName: widget.name,
+                      profName: userName,
                       profType: "النوع",
-                      profImagePath: widget.profImagePath,
+                      profImagePath: imagePath,
                       text: commentController.text,
                     ).toJson();
                     comments.add(json);

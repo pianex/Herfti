@@ -2,9 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:project_a/core/constants/app_theme.dart';
 
 class Comment extends StatelessWidget {
-  const Comment({super.key, required this.name, required this.text});
+  const Comment({
+    super.key,
+    required this.name,
+    required this.text,
+    required this.imagePath,
+  });
   final String name;
   final String text;
+  final String imagePath;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +24,7 @@ class Comment extends StatelessWidget {
             CircleAvatar(
               radius: 20,
               backgroundColor: appBarColor,
-              child: Icon(Icons.person, color: Colors.white),
+              backgroundImage: NetworkImage(imagePath),
             ),
             SizedBox(width: 10),
             Expanded(
