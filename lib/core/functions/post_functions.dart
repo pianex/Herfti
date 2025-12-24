@@ -11,3 +11,14 @@ Stream<List<PostModel>> readPosts() {
             snapshot.docs.map((doc) => PostModel.fromJson(doc.data())).toList(),
       );
 }
+
+Stream<PostModel> readPost(String postUid) {
+  return FirebaseFirestore.instance
+      .collection("Posts")
+      .where("uid", isEqualTo: postUid)
+      .snapshots()
+      .map(
+        (snapshot) =>
+            snapshot.docs.map((doc) => PostModel.fromJson(doc.data())).first,
+      );
+}

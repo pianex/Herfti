@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:project_a/core/constants/app_theme.dart';
 import 'package:project_a/core/functions/comment_function.dart';
 import 'package:project_a/core/functions/formatters.dart';
+import 'package:project_a/core/functions/post_functions.dart';
+import 'package:project_a/core/functions/show_progress_dialog.dart';
+import 'package:project_a/core/models/comment_model.dart';
 import 'package:project_a/main.dart';
 import 'package:project_a/view/pages/prof_profile.dart';
 import 'package:project_a/view/widgets/comment.dart';
@@ -12,6 +15,7 @@ class CommentsPage extends StatefulWidget {
   const CommentsPage({
     super.key,
     required this.postUid,
+    required this.profUid,
     required this.imagePath,
     required this.profImagePath,
     required this.name,
@@ -24,6 +28,7 @@ class CommentsPage extends StatefulWidget {
     required this.secondTag,
   });
   final String postUid;
+  final String profUid;
   final String profImagePath;
   final String imagePath;
   final String name;
@@ -52,6 +57,7 @@ class _CommentsPageState extends State<CommentsPage> {
       isLiked = false;
     }
     Image asset = Image.asset(widget.imagePath, fit: BoxFit.cover);
+
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
@@ -247,13 +253,14 @@ class _CommentsPageState extends State<CommentsPage> {
                   },
                 ),
                 StreamBuilder(
-                  stream: readComments(widget.postUid),
+                  stream: readPost(widget.postUid),
 
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
                       return Text('حدث خطأ ما! ${snapshot.error}');
                     } else if (snapshot.hasData) {
-                      final comments = snapshot.data!;
+                      final comments = snapshot.data!.comments;
+                      print(comments);
                       if (comments.isEmpty) {
                         return Padding(
                           padding: const EdgeInsets.symmetric(vertical: 20),
@@ -273,7 +280,10 @@ class _CommentsPageState extends State<CommentsPage> {
                           shrinkWrap: true,
                           itemCount: comments.length,
                           itemBuilder: (context, index) {
-                            return Comment();
+                            return Comment(
+                              name: comments[index]["profName"],
+                              text: comments[index]["text"],
+                            );
                           },
                         );
                       }
@@ -294,6 +304,48 @@ class _CommentsPageState extends State<CommentsPage> {
               child: CustTextFormField(
                 label: "أكتب تعليقا...",
                 controller: commentController,
+                suffix: GestureDetector(
+                  onDoubleTap: () {},
+                  onTap: () async {
+                    showProgressDialog(
+                      context,
+                      Size(
+                        MediaQuery.of(context).size.width / 2,
+                        MediaQuery.of(context).size.width / 2,
+                      ),
+                    );
+                    List comments = await FirebaseFirestore.instance
+                        .collection("Posts")
+                        .doc(widget.postUid)
+                        .get()
+                        .then((doc) {
+                          return doc.data()!["comments"] ?? [];
+                        });
+                    final json = CommentModel(
+                      uid: DateTime.now().microsecondsSinceEpoch.toString(),
+                      timeAdded: DateTime.now().toString(),
+                      postUid: widget.postUid,
+                      profUid: widget.profUid,
+                      profName: widget.name,
+                      profType: "النوع",
+                      profImagePath: widget.profImagePath,
+                      text: commentController.text,
+                    ).toJson();
+                    comments.add(json);
+                    FirebaseFirestore.instance
+                        .collection("Posts")
+                        .doc(widget.postUid)
+                        .update({
+                          "comments": comments,
+                          "commentsCount": comments.length,
+                        })
+                        .then((value) {
+                          Navigator.pop(context);
+                          commentController.clear();
+                        });
+                  },
+                  child: Icon(Icons.send, color: Colors.white),
+                ),
               ),
             ),
           ],

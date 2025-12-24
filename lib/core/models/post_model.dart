@@ -9,7 +9,7 @@ class PostModel {
   final String profImagePath;
   final String text;
   final List<dynamic> imagePaths;
-  final List<CommentModel> comments;
+  final List<dynamic> comments;
   final int likesCount;
   final int commentsCount;
   PostModel({

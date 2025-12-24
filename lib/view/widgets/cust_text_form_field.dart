@@ -8,12 +8,14 @@ class CustTextFormField extends StatelessWidget {
     this.keyboardType = TextInputType.name,
     this.validator,
     this.obscureText,
+    this.suffix,
   });
   final String label;
   final TextEditingController controller;
   final TextInputType? keyboardType;
   final String? Function(String?)? validator;
   final bool? obscureText;
+  final Widget? suffix;
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +27,7 @@ class CustTextFormField extends StatelessWidget {
         obscureText: obscureText ?? false,
         textCapitalization: TextCapitalization.words,
         validator: validator,
+
         style: const TextStyle(
           color: Colors.white,
           fontWeight: FontWeight.bold,
@@ -38,6 +41,7 @@ class CustTextFormField extends StatelessWidget {
             fontSize: 22,
             fontWeight: FontWeight.bold,
           ),
+          suffix: suffix ?? SizedBox(),
           focusColor: Colors.brown[700],
           hoverColor: Colors.brown[700],
           fillColor: Colors.brown[700],

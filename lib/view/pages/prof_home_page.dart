@@ -132,6 +132,7 @@ class _ProfHomePageState extends State<ProfHomePage> {
                     itemBuilder: (context, index) {
                       return PostCard(
                         uid: snapshot.data![index].uid,
+                        profUid: snapshot.data![index].profUid,
                         name: snapshot.data![index].profName,
                         type: snapshot.data![index].profType,
                         profImagePath: snapshot.data![index].profImagePath,

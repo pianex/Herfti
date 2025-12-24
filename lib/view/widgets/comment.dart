@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:project_a/core/constants/app_theme.dart';
 
 class Comment extends StatelessWidget {
-  const Comment({super.key});
+  const Comment({super.key, required this.name, required this.text});
+  final String name;
+  final String text;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +39,7 @@ class Comment extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "مصطفى",
+                        name,
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 23,
@@ -45,7 +47,7 @@ class Comment extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        "موفق خويا أشرف استمر",
+                        text,
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 19,

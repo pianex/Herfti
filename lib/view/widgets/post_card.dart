@@ -13,6 +13,7 @@ class PostCard extends StatefulWidget {
   const PostCard({
     super.key,
     required this.uid,
+    required this.profUid,
     required this.name,
     required this.type,
     required this.profImagePath,
@@ -25,6 +26,7 @@ class PostCard extends StatefulWidget {
     required this.secondTag,
   });
   final String uid;
+  final String profUid;
   final String name;
   final String type;
   final String profImagePath;
@@ -253,7 +255,7 @@ class _PostCardState extends State<PostCard> {
               ),
               SizedBox(width: 40),
               Text(
-                shrinkLikesFormula(0),
+                shrinkLikesFormula(widget.comments),
                 style: TextStyle(color: Colors.blue[300], fontSize: 21),
               ),
               IconButton(
@@ -263,6 +265,7 @@ class _PostCardState extends State<PostCard> {
                     CupertinoPageRoute(
                       builder: (context) => CommentsPage(
                         postUid: widget.uid,
+                        profUid: widget.profUid,
                         profImagePath: widget.profImagePath,
                         imagePath: widget.imagePath ?? "tag2",
                         name: widget.name,

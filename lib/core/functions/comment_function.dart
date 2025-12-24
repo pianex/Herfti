@@ -4,7 +4,7 @@ import 'package:project_a/core/models/comment_model.dart';
 Stream<List<CommentModel>> readComments(String postUid) {
   return FirebaseFirestore.instance
       .collection("Posts")
-      .where("postUid", isEqualTo: postUid)
+      .where("uid", isEqualTo: postUid)
       .snapshots()
       .map(
         (snapshot) => snapshot.docs
