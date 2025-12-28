@@ -10,6 +10,7 @@ class PostModel {
   final List<dynamic> comments;
   final int likesCount;
   final int commentsCount;
+  final List<String> tokens;
   PostModel({
     required this.uid,
     required this.timeAdded,
@@ -22,6 +23,7 @@ class PostModel {
     required this.comments,
     required this.likesCount,
     required this.commentsCount,
+    required this.tokens,
   });
 
   Map<String, dynamic> toJson() => {
@@ -36,6 +38,7 @@ class PostModel {
     "comments": comments,
     "likesCount": likesCount,
     "commentsCount": commentsCount,
+    "tokens": tokens,
   };
 
   static PostModel fromJson(Map<String, dynamic> json) => PostModel(
@@ -50,5 +53,6 @@ class PostModel {
     comments: json["comments"] ?? [],
     likesCount: json["likesCount"],
     commentsCount: json["commentsCount"],
+    tokens: List<String>.from(json["tokens"] ?? []),
   );
 }

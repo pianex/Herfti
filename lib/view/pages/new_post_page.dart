@@ -183,7 +183,7 @@ class _NewPostPageState extends State<NewPostPage> {
                         });
                   }
                 }
-
+                List<String> tokens = sharedPref.getStringList("tokens") ?? [];
                 Map<String, dynamic> json = PostModel(
                   uid: uid,
                   timeAdded: DateTime.now().toString(),
@@ -198,6 +198,7 @@ class _NewPostPageState extends State<NewPostPage> {
                   comments: [],
                   likesCount: 0,
                   commentsCount: 0,
+                  tokens: tokens,
                 ).toJson();
                 FirebaseFirestore.instance
                     .collection("Posts")

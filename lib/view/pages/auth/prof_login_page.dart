@@ -89,11 +89,15 @@ class _ProfLoginPageState extends State<ProfLoginPage> {
                                     .get();
                                 doc.then((doc) async {
                                   if (doc.exists) {
-                                    List<String> tokens =
-                                        doc.data()!["tokens"] ?? [];
+                                    List<String> tokens = List<String>.from(
+                                      doc.data()!["tokens"] ?? [],
+                                    );
                                     String token = await getToken();
 
-                                    tokens.add(token);
+                                    if (!token.contains(token)) {
+                                      tokens.add(token);
+                                    }
+
                                     FirebaseFirestore.instance
                                         .collection("Profs")
                                         .doc(email)
@@ -139,10 +143,7 @@ class _ProfLoginPageState extends State<ProfLoginPage> {
                                       "categoryStr",
                                       doc.data()!["category"],
                                     );
-                                    sharedPref.setStringList(
-                                      "tokens",
-                                      doc.data()!["tokens"] ?? [],
-                                    );
+                                    sharedPref.setStringList("tokens", tokens);
 
                                     Navigator.pushAndRemoveUntil(
                                       // ignore: use_build_context_synchronously
