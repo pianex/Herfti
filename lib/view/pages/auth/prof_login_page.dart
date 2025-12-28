@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:project_a/core/constants/app_theme.dart';
 import 'package:project_a/core/functions/google_functions.dart';
+import 'package:project_a/core/functions/token.dart';
 import 'package:project_a/main.dart';
 import 'package:project_a/view/pages/auth/prof_info_page.dart';
 import 'package:project_a/view/pages/prof_home_page.dart';
@@ -70,7 +71,7 @@ class _ProfLoginPageState extends State<ProfLoginPage> {
                         ),
                         TitleText(title: "سجل باستخدام Google"),
                         GestureDetector(
-                          onTap: () {
+                          onTap: () async {
                             setState(() {
                               isLoading = true;
                             });
@@ -86,8 +87,17 @@ class _ProfLoginPageState extends State<ProfLoginPage> {
                                     .collection("Profs")
                                     .doc(email)
                                     .get();
-                                doc.then((doc) {
+                                doc.then((doc) async {
                                   if (doc.exists) {
+                                    List<String> tokens =
+                                        doc.data()!["tokens"] ?? [];
+                                    String token = await getToken();
+
+                                    tokens.add(token);
+                                    FirebaseFirestore.instance
+                                        .collection("Profs")
+                                        .doc(email)
+                                        .update({"tokens": tokens});
                                     sharedPref.setString("userType", "prof");
                                     sharedPref.setString(
                                       "uid",
@@ -129,8 +139,13 @@ class _ProfLoginPageState extends State<ProfLoginPage> {
                                       "categoryStr",
                                       doc.data()!["category"],
                                     );
+                                    sharedPref.setStringList(
+                                      "tokens",
+                                      doc.data()!["tokens"] ?? [],
+                                    );
 
                                     Navigator.pushAndRemoveUntil(
+                                      // ignore: use_build_context_synchronously
                                       context,
                                       CupertinoPageRoute(
                                         builder: (context) => ProfHomePage(),
@@ -139,6 +154,7 @@ class _ProfLoginPageState extends State<ProfLoginPage> {
                                     );
                                   } else {
                                     Navigator.push(
+                                      // ignore: use_build_context_synchronously
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => ProfInfoPage(),

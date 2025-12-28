@@ -12,6 +12,7 @@ class ProfModel {
   final String city;
   final int saves;
   final String timeAdded;
+  final List<String> tokens;
   ProfModel({
     required this.uid,
     required this.name,
@@ -26,6 +27,7 @@ class ProfModel {
     required this.category,
     required this.saves,
     required this.timeAdded,
+    required this.tokens,
   });
 
   Map<String, dynamic> toJson() => {
@@ -41,5 +43,6 @@ class ProfModel {
     "country": country,
     "state": state,
     "city": city,
+    "tokens": tokens,
   };
 }

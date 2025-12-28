@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,6 +12,7 @@ import 'package:project_a/core/constants/app_theme.dart';
 import 'package:project_a/core/functions/image_functions.dart';
 import 'package:project_a/core/functions/show_alert.dart';
 import 'package:project_a/core/functions/show_progress_dialog.dart';
+import 'package:project_a/core/functions/token.dart';
 import 'package:project_a/core/functions/validators.dart';
 import 'package:project_a/core/models/prof_model.dart';
 import 'package:project_a/main.dart';
@@ -367,6 +370,9 @@ class _AccountPageState extends State<AccountPage> {
                                   }
                                 });
                           }
+                          String token = await getToken();
+                          List<String> tokens = [];
+                          tokens.add(token);
 
                           Map<String, dynamic> json = ProfModel(
                             uid: email,
@@ -385,6 +391,7 @@ class _AccountPageState extends State<AccountPage> {
                             country: countryValue,
                             state: stateValue,
                             city: cityValue,
+                            tokens: tokens,
                           ).toJson();
                           FirebaseFirestore.instance
                               .collection("Profs")

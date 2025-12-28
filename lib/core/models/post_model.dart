@@ -1,5 +1,3 @@
-import 'package:project_a/core/models/comment_model.dart';
-
 class PostModel {
   final String uid;
   final String timeAdded;

@@ -51,7 +51,10 @@ class _CommentsPageState extends State<CommentsPage> {
   Widget build(BuildContext context) {
     List<String> likedPosts = sharedPref.getStringList("likedPosts") ?? [];
     String userName = sharedPref.getString("name")!;
-    String imagePath = sharedPref.getString("imagePath")!;
+    String imagePath =
+        sharedPref.getString("imagePath") ??
+        sharedPref.getString("googleImagePath") ??
+        "";
     if (likedPosts.contains(widget.postUid)) {
       isLiked = true;
     } else {
@@ -261,7 +264,7 @@ class _CommentsPageState extends State<CommentsPage> {
                       return Text('حدث خطأ ما! ${snapshot.error}');
                     } else if (snapshot.hasData) {
                       final comments = snapshot.data!.comments;
-                      print(comments);
+                      // print(comments);
                       if (comments.isEmpty) {
                         return Padding(
                           padding: const EdgeInsets.symmetric(vertical: 20),
@@ -365,7 +368,7 @@ class _CommentsPageState extends State<CommentsPage> {
                           "commentsCount": comments.length,
                         })
                         .then((value) {
-                          Navigator.pop(context);
+                          // Navigator.pop(context);
                           commentController.clear();
                         });
                   },

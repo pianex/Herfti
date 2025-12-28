@@ -13,6 +13,7 @@ import 'package:project_a/core/functions/google_functions.dart';
 import 'package:project_a/core/functions/image_functions.dart';
 import 'package:project_a/core/functions/show_alert.dart';
 import 'package:project_a/core/functions/show_progress_dialog.dart';
+import 'package:project_a/core/functions/token.dart';
 import 'package:project_a/core/functions/validators.dart';
 import 'package:project_a/core/models/prof_model.dart';
 import 'package:project_a/main.dart';
@@ -319,6 +320,10 @@ class _ProfInfoPageState extends State<ProfInfoPage> {
                                 });
                           }
 
+                          String token = await getToken();
+                          List<String> tokens = [];
+                          tokens.add(token);
+
                           Map<String, dynamic> json = ProfModel(
                             uid: email,
                             name: name,
@@ -336,6 +341,7 @@ class _ProfInfoPageState extends State<ProfInfoPage> {
                             country: countryValue,
                             state: stateValue,
                             city: cityValue,
+                            tokens: tokens,
                           ).toJson();
                           FirebaseFirestore.instance
                               .collection("Profs")
@@ -366,6 +372,7 @@ class _ProfInfoPageState extends State<ProfInfoPage> {
                                   selectedCategoryString,
                                 );
                                 Navigator.pushAndRemoveUntil(
+                                  // ignore: use_build_context_synchronously
                                   context,
                                   CupertinoPageRoute(
                                     builder: (context) => ProfHomePage(),

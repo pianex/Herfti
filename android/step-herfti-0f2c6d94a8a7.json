@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "step-herfti",
+  "private_key_id": "0f2c6d94a8a723d2f62e7567de757cf231437643",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDwYs1Hqrm8vb2g\nsBz4c+qbvQcGDKYtYF/Ek9qDTKrOFQR0NBp9tc039O8sWBHC+h+dsoIpnAE7mOUB\n0AorLfjoSTxpVcPebI5J70dH+zToBrZL/u8/A9GeOCFdmBcFafqBcWUDDnvveb/f\n/OIH9o43958hvx7K9wHvtV8s5pdl1d6t4eRP8901m8BIt1/bEZZsaPHDTcT4Kenb\nXGDyICR59rudQbtZ56sUP9UOtf/mgfhc0Xa30ffhoOhyCdHSVgbZFdeKwMrAIt02\nz6QRux0k+KThIiSFsXuZjZv2JRaMycmoh1jSscCo40GQLRprvg+1UbVFcrgqY7kY\n2wEE/KjJAgMBAAECggEAAb/mWJgwg+QppirB+zj0wy9sBqo+52OlLswYsg3zzE4w\n2xup+bJCDR82Qm9dqbqiUkaDVgQxqhphyFKYUFokTqSB0Q5zv4Gww27/aNG2P94U\no5b2bNH9S5aC/6hkuoBb92c44f3P/x02vU2c44vy2wttWBSJB9cmZ3U9fRksjuws\n90kymT5QtKp5wOCeqExFcK2ec7Od8nfer6rnubLHljaIEGc3MRpipPLopH+2obmi\nKowVtaqp0u6ywqE/RLkf5c+Xmid7WsVGV7YY2cTkhDlk8sv3OGFHEHXINmScPNhA\nTmFxTYeMh4rgEPGd+5MWM7fRFHQ09656RTTiv1jK9QKBgQD4wVwtE7V5/NPIVIWI\nSGZ9t442s7Xn5fCWW9qr3EpR/x6jHudH5z1biIOxKPj1pxVl9nGs78vfaXCatLJi\n9AIt/1qTXyyUtkjjyhQOY3+7PT1P/kyDpy+VXF5NicNzkvvfZeZGyUA16CzTbbZq\nROnq5tcdhwvrZPWL4COduiKmcwKBgQD3YwrgUtSv+m2UeiqT/pSyOevVuSZGN1qE\nlbrsCks0KTRB2oN04w9X9BeYrTH3w9f3vKVrdSx5Sko6x4jc58bm1sj/nDz+n8lG\ntxiqrugK5itoGrIyqaUVElUM2n9aR1yXztbouhfiLw2VaPCOPMutOuE1YnlblwlO\nIQSyD4ao0wKBgQDvF3LQRMRGFtM8FrkuD2CrbxT60OqDlQgUjP719stcWpkI8jgc\nbU8VPnZNfnMkMc8obKJANU/AUakQmaNn5t59dZWKVo0T9szCXMXAOrRXtHnM/EBw\nve3HYrulTUeWO21qAJg/60mTRrBnG2mcZNZsmCmk0NuNCkHUir/Q50pMrwKBgExG\n1oCqKXgFICpqrJwrH9AAOe4RA3Mc+CTvQc4rslpn5fv0ExpENGPrGCd0J3b8hKeX\nG+4RF+Bh/pc3FMUAFfzw9tKRauEbhWTvaYSfH17U70dPC+jBE+x2VZD8Ac5lOHB6\nTxs83cZYubh6vckth6NnBy99qGuMG0titN7uGJgPAoGBAO50zOcvPOtNg4RXFZdS\nWPZxaZOtqcS/nfk45FEOWdu4mHd+r44fKVa6OtqGjjlXnrIdd+4/7gehqHs+EilJ\nmkGHF3oaPxQ/4iyjmHxJXqrBfSnIC8hug473x02qGlBy0wnemuWrL39SeWRa1h86\nzMN0RlohPxR7tVMO0HTBDV21\n-----END PRIVATE KEY-----\n",
+  "client_email": "herfti-messaging@step-herfti.iam.gserviceaccount.com",
+  "client_id": "103487349978549587925",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/herfti-messaging%40step-herfti.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

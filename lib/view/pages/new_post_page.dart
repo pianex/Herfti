@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_final_fields, use_build_context_synchronously
+
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';

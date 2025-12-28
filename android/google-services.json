@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "543505337205",
+    "project_id": "step-herfti",
+    "storage_bucket": "step-herfti.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:543505337205:android:78f40c9cdc1f1686dba13c",
+        "android_client_info": {
+          "package_name": "com.example.project_a"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "543505337205-4974ahfnuhgqp1srjuh3d1kqumihv3o6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.project_a",
+            "certificate_hash": "8a0092a9b369b216aa4bdff6326ed25b6a903af1"
+          }
+        },
+        {
+          "client_id": "543505337205-a8hg59k35ef82o3kj4ugb7c4ksmt6p2g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVn_ROSuOIcAKvQzwA6RSyAcScWa0nES4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "543505337205-a8hg59k35ef82o3kj4ugb7c4ksmt6p2g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

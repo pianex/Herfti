@@ -23,7 +23,7 @@ class _ProfHomePageState extends State<ProfHomePage> {
   Widget build(BuildContext context) {
     String? imagePath = sharedPref.getString("imagePath");
     String googleImagePath = sharedPref.getString("googleImagePath")!;
-    print(googleImagePath);
+    // print(googleImagePath);
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
