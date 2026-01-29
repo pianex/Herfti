@@ -136,13 +136,17 @@ class _ClientLoginPageState extends State<ClientLoginPage> {
                                       "country",
                                       doc.data()!["country"],
                                     );
-                                    sharedPref.setInt(
-                                      "category",
-                                      doc.data()!["type"],
+                                    sharedPref.setStringList(
+                                      "savedProfs",
+                                      List<String>.from(
+                                        doc.data()!["savedProfs"] ?? [],
+                                      ),
                                     );
-                                    sharedPref.setString(
-                                      "categoryStr",
-                                      doc.data()!["category"],
+                                    sharedPref.setStringList(
+                                      "likedPosts",
+                                      List<String>.from(
+                                        doc.data()!["likedPosts"] ?? [],
+                                      ),
                                     );
                                     sharedPref.setStringList("tokens", tokens);
 
