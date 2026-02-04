@@ -1,13 +1,21 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:csc_picker/csc_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:project_a/core/constants/app_theme.dart';
 import 'package:project_a/core/functions/google_functions.dart';
 import 'package:project_a/core/functions/image_functions.dart';
+import 'package:project_a/core/functions/show_alert.dart';
+import 'package:project_a/core/functions/show_progress_dialog.dart';
+import 'package:project_a/core/functions/token.dart';
 import 'package:project_a/core/functions/validators.dart';
+import 'package:project_a/core/models/client_model.dart';
 import 'package:project_a/main.dart';
+import 'package:project_a/view/pages/client_home_page.dart';
 import 'package:project_a/view/widgets/cust_button.dart';
 import 'package:project_a/view/widgets/cust_text_form_field.dart';
 
@@ -37,6 +45,7 @@ class _ClientInfoPageState extends State<ClientInfoPage> {
   Widget build(BuildContext context) {
     String name = sharedPref.getString("name")!;
     String email = sharedPref.getString("email")!;
+    nameController.text = name;
     String googleImagePath = sharedPref.getString("googleImagePath")!;
     return Directionality(
       textDirection: TextDirection.rtl,
@@ -169,7 +178,94 @@ class _ClientInfoPageState extends State<ClientInfoPage> {
                 ),
               ),
 
-              CustButton(title: "حفظ", icon: Icons.save, onTap: () {}),
+              CustButton(
+                title: "حفظ",
+                icon: Icons.save,
+                onTap: () async {
+                  if (_formKey.currentState!.validate()) {
+                    if (stateValue.isNotEmpty && cityValue.isNotEmpty) {
+                      showProgressDialog(
+                        context,
+                        Size(
+                          MediaQuery.of(context).size.width / 2,
+                          MediaQuery.of(context).size.width / 2,
+                        ),
+                      );
+
+                      String imagePath = '';
+                      if (image != null) {
+                        UploadTask uploadTask = FirebaseStorage.instance
+                            .ref()
+                            .child(
+                              "Clients/ProPics/${email.toLowerCase().replaceAll("@gmail.com", "")}.jpg",
+                            )
+                            .putFile(image!);
+                        TaskSnapshot snapshot = await uploadTask;
+                        // ignore: unused_local_variable
+                        String downloadlUrl = await snapshot.ref
+                            .getDownloadURL()
+                            .then((link) => imagePath = link)
+                            .whenComplete(() {
+                              sharedPref.setString("imagePath", imagePath);
+                            });
+                      }
+                      String token = await getToken();
+                      List<String> tokens = [];
+                      tokens.add(token);
+
+                      Map<String, dynamic> json = ClientModel(
+                        uid: email,
+                        name: name,
+                        imagePath: imagePath.isNotEmpty
+                            ? imagePath
+                            : googleImagePath,
+                        phone: phoneController.text,
+                        email: email,
+                        description: descController.text,
+                        country: countryValue,
+                        state: stateValue,
+                        city: cityValue,
+                        timeAdded: DateTime.now().toString(),
+                        tokens: tokens,
+                        savedProfs: [],
+                        likedPosts: [],
+                      ).toJson();
+
+                      FirebaseFirestore.instance
+                          .collection("Clients")
+                          .doc(email)
+                          .set(json)
+                          .then((value) {
+                            sharedPref.setString("userType", "client");
+                            sharedPref.setString("uid", email);
+                            sharedPref.setString("name", name);
+                            sharedPref.setString("desc", descController.text);
+                            sharedPref.setString("phone", phoneController.text);
+                            sharedPref.setString(
+                              "googleImagePath",
+                              googleImagePath,
+                            );
+
+                            sharedPref.setString("state", stateValue);
+                            sharedPref.setString("city", cityValue);
+                            Navigator.pushAndRemoveUntil(
+                              // ignore: use_build_context_synchronously
+                              context,
+                              CupertinoPageRoute(
+                                builder: (context) => ClientHomePage(),
+                              ),
+                              (route) => false,
+                            );
+                          });
+                    } else {
+                      showAlert(
+                        context,
+                        "أدخل معلومات الولاية و المدينة من فضلك.",
+                      );
+                    }
+                  }
+                },
+              ),
             ],
           ),
         ),
