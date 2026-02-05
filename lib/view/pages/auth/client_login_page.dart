@@ -6,7 +6,7 @@ import 'package:project_a/core/functions/google_functions.dart';
 import 'package:project_a/core/functions/token.dart';
 import 'package:project_a/main.dart';
 import 'package:project_a/view/pages/auth/client_info_page.dart';
-import 'package:project_a/view/pages/prof_home_page.dart';
+import 'package:project_a/view/pages/client_home_page.dart';
 import 'package:project_a/view/widgets/cust_progress_indicator.dart';
 import 'package:project_a/view/widgets/title_text.dart';
 
@@ -154,7 +154,7 @@ class _ClientLoginPageState extends State<ClientLoginPage> {
                                       // ignore: use_build_context_synchronously
                                       context,
                                       CupertinoPageRoute(
-                                        builder: (context) => ProfHomePage(),
+                                        builder: (context) => ClientHomePage(),
                                       ),
                                       (route) => false,
                                     );
