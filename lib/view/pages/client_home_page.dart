@@ -1,6 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:project_a/core/constants/app_theme.dart';
+import 'package:project_a/core/functions/date_functions.dart';
+import 'package:project_a/core/functions/post_functions.dart';
 import 'package:project_a/view/widgets/cust_drawer.dart';
+import 'package:project_a/view/widgets/post_card.dart';
+import 'package:project_a/view/widgets/title_text.dart';
 
 class ClientHomePage extends StatelessWidget {
   const ClientHomePage({super.key});
@@ -32,6 +37,82 @@ class ClientHomePage extends StatelessWidget {
             ),
           ),
           centerTitle: true,
+        ),
+        body: ListView(
+          physics: BouncingScrollPhysics(),
+          children: [
+            // Align(
+            //   alignment: AlignmentGeometry.center,
+            //   child: TitleText(title: "استكشف التصنيفات"),
+            // ),
+            // CategoriesSlider(),
+            TitleText(title: "آخر المنشورات"),
+            StreamBuilder(
+              stream: readPosts(),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return Text('حدث خطأ ما! ${snapshot.error}');
+                } else if (snapshot.hasData) {
+                  final posts = snapshot.data!;
+                  // List<String> profsNames = [];
+                  // List<String> profsTypes = [];
+                  // List<String> profsImagePaths = [];
+
+                  for (var post in posts) {
+                    // if (profsNames.length == posts.length) break;
+                    FirebaseFirestore.instance
+                        .collection("Profs")
+                        .doc(post.profUid)
+                        .get()
+                        .then((doc) {
+                          // profsNames.add(doc.data()!["name"]);
+                          // profsTypes.add(doc.data()!["category"]);
+                          // profsImagePaths.add(doc.data()!["imagePath"]);
+                          // print(profsNames);
+                          FirebaseFirestore.instance
+                              .collection("Posts")
+                              .doc(post.uid)
+                              .update({
+                                "profName": doc.data()!["name"],
+                                "profType": doc.data()!["category"],
+                                "profImagePath": doc.data()!["imagePath"],
+                              });
+                        });
+                  }
+
+                  return ListView.builder(
+                    physics: BouncingScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: posts.length,
+                    itemBuilder: (context, index) {
+                      return PostCard(
+                        uid: snapshot.data![index].uid,
+                        profUid: snapshot.data![index].profUid,
+                        name: snapshot.data![index].profName,
+                        type: snapshot.data![index].profType,
+                        profImagePath: snapshot.data![index].profImagePath,
+                        time: timeAddedFormatted(
+                          snapshot.data![index].timeAdded,
+                        ),
+                        imagePath: snapshot.data![index].imagePaths.isNotEmpty
+                            ? snapshot.data![index].imagePaths[0].toString()
+                            : "",
+                        text: snapshot.data![index].text,
+                        likes: snapshot.data![index].likesCount,
+                        comments: snapshot.data![index].commentsCount,
+                        firstTag: snapshot.data![index].profImagePath,
+                        secondTag: snapshot.data![index].imagePaths.isNotEmpty
+                            ? snapshot.data![index].imagePaths[0].toString()
+                            : "",
+                      );
+                    },
+                  );
+                } else {
+                  return Center(child: CircularProgressIndicator());
+                }
+              },
+            ),
+          ],
         ),
       ),
     );
