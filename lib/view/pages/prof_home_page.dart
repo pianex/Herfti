@@ -5,7 +5,7 @@ import 'package:project_a/core/constants/app_theme.dart';
 import 'package:project_a/core/functions/date_functions.dart';
 import 'package:project_a/core/functions/post_functions.dart';
 import 'package:project_a/main.dart';
-import 'package:project_a/view/pages/account_page.dart';
+import 'package:project_a/view/pages/prof_account_page.dart';
 import 'package:project_a/view/pages/new_post_page.dart';
 import 'package:project_a/view/widgets/cust_drawer.dart';
 import 'package:project_a/view/widgets/post_card.dart';
@@ -58,7 +58,7 @@ class _ProfHomePageState extends State<ProfHomePage> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => AccountPage()),
+                  MaterialPageRoute(builder: (context) => ProfAccountPage()),
                 );
               },
               child: Container(

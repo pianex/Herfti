@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:project_a/core/constants/app_theme.dart';
 import 'package:project_a/core/functions/date_functions.dart';
 import 'package:project_a/core/functions/post_functions.dart';
+import 'package:project_a/main.dart';
+import 'package:project_a/view/pages/client_account_page.dart';
 import 'package:project_a/view/widgets/cust_drawer.dart';
 import 'package:project_a/view/widgets/post_card.dart';
 import 'package:project_a/view/widgets/title_text.dart';
@@ -12,6 +14,8 @@ class ClientHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String? imagePath = sharedPref.getString("imagePath");
+    String googleImagePath = sharedPref.getString("googleImagePath")!;
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
@@ -37,6 +41,35 @@ class ClientHomePage extends StatelessWidget {
             ),
           ),
           centerTitle: true,
+          actions: [
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ClientAccountPage()),
+                );
+              },
+              child: Container(
+                margin: EdgeInsets.all(8),
+                height: 40,
+                width: 40,
+                clipBehavior: Clip.hardEdge,
+                decoration: BoxDecoration(
+                  color: Colors.blue[700],
+                  shape: BoxShape.circle,
+                ),
+
+                child: Image.network(
+                  imagePath ?? googleImagePath,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Icon(Icons.person, color: Colors.white, size: 25);
+                  },
+                ),
+                // Icon(Icons.person, color: Colors.white),
+              ),
+            ),
+          ],
         ),
         body: ListView(
           physics: BouncingScrollPhysics(),

@@ -24,14 +24,14 @@ import 'package:project_a/view/widgets/id_category_card.dart';
 int accSelectedCategory = 0;
 String accSselectedCategoryString = "";
 
-class AccountPage extends StatefulWidget {
-  const AccountPage({super.key});
+class ProfAccountPage extends StatefulWidget {
+  const ProfAccountPage({super.key});
 
   @override
-  State<AccountPage> createState() => _AccountPageState();
+  State<ProfAccountPage> createState() => _AccountPageState();
 }
 
-class _AccountPageState extends State<AccountPage> {
+class _AccountPageState extends State<ProfAccountPage> {
   TextEditingController nameController = TextEditingController();
   TextEditingController descController = TextEditingController();
   TextEditingController phoneController = TextEditingController();

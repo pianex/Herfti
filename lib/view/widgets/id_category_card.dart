@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:project_a/view/pages/account_page.dart';
+import 'package:project_a/view/pages/prof_account_page.dart';
 import 'package:project_a/view/pages/auth/prof_info_page.dart';
 
 class IdCategoryCard extends StatefulWidget {
