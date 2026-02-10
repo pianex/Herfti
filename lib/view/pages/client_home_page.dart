@@ -5,6 +5,7 @@ import 'package:project_a/core/functions/date_functions.dart';
 import 'package:project_a/core/functions/post_functions.dart';
 import 'package:project_a/main.dart';
 import 'package:project_a/view/pages/client_account_page.dart';
+import 'package:project_a/view/widgets/categories_slider.dart';
 import 'package:project_a/view/widgets/cust_drawer.dart';
 import 'package:project_a/view/widgets/post_card.dart';
 import 'package:project_a/view/widgets/title_text.dart';
@@ -74,12 +75,13 @@ class ClientHomePage extends StatelessWidget {
         body: ListView(
           physics: BouncingScrollPhysics(),
           children: [
-            // Align(
-            //   alignment: AlignmentGeometry.center,
-            //   child: TitleText(title: "استكشف التصنيفات"),
-            // ),
-            // CategoriesSlider(),
+            Align(
+              alignment: AlignmentGeometry.center,
+              child: TitleText(title: "استكشف التصنيفات"),
+            ),
+            CategoriesSlider(),
             TitleText(title: "آخر المنشورات"),
+
             StreamBuilder(
               stream: readPosts(),
               builder: (context, snapshot) {

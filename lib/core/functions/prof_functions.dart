@@ -8,5 +8,6 @@ Stream<QuerySnapshot<Map<String, dynamic>>> readProfs() {
   return FirebaseFirestore.instance
       .collection("Profs")
       .orderBy("saves", descending: true)
+      .orderBy("timeAdded")
       .snapshots();
 }
