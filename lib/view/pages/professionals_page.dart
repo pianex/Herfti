@@ -31,7 +31,7 @@ class ProfessionalsPage extends StatelessWidget {
           centerTitle: true,
         ),
         body: StreamBuilder(
-          stream: readProfs(),
+          stream: readProfs(null),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               return Text("حدث خطأ ما");
@@ -63,7 +63,9 @@ class ProfessionalsPage extends StatelessWidget {
                 },
               );
             } else {
-              return Center(child: CircularProgressIndicator());
+              return Center(
+                child: CircularProgressIndicator(color: Colors.white),
+              );
             }
           },
         ),

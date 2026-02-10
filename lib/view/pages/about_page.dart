@@ -43,7 +43,7 @@ class AboutPage extends StatelessWidget {
                   padding: const EdgeInsets.all(15),
                   child: Center(
                     child: Text(
-                      "تم تطوير هذا التطبيق من طرف فريق\nنت مهن للأشغال المتعددة",
+                      "تم تطوير هذا التطبيق من طرف فريق\nكيفر Kivr",
                       textAlign: TextAlign.center,
                       style: TextStyle(color: Colors.white, fontSize: 21),
                     ),
@@ -57,7 +57,8 @@ class AboutPage extends StatelessWidget {
                   decoration: BoxDecoration(color: appBarColor),
                   child: Center(
                     child: Text(
-                      "© شركة نت مهن للأشغال المختلفة\n جميع الحقوق محفوظة 2025.",
+                      "© شركة Kivr\n جميع الحقوق محفوظة 2026.",
+                      textAlign: TextAlign.center,
                       style: TextStyle(color: Colors.white, fontSize: 21),
                     ),
                   ),
