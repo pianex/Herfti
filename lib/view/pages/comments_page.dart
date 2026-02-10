@@ -105,6 +105,7 @@ class _CommentsPageState extends State<CommentsPage> {
                             MaterialPageRoute(
                               builder: (context) => ProfessionalProfile(
                                 tag: widget.profImagePath,
+                                profUid: widget.profUid,
                               ),
                             ),
                           );

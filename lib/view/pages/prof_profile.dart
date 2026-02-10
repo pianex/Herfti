@@ -1,20 +1,31 @@
 import 'dart:ui';
 
 import 'package:awesome_icons/awesome_icons.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:project_a/core/constants/app_theme.dart';
+import 'package:project_a/core/functions/date_functions.dart';
 import 'package:project_a/core/functions/formatters.dart';
+import 'package:project_a/core/functions/post_functions.dart';
+import 'package:project_a/core/functions/prof_functions.dart';
 import 'package:project_a/view/widgets/contact_button.dart';
+import 'package:project_a/view/widgets/post_card.dart';
 import 'package:project_a/view/widgets/title_text.dart';
 
 class ProfessionalProfile extends StatelessWidget {
-  const ProfessionalProfile({super.key, required this.tag});
+  const ProfessionalProfile({
+    super.key,
+    required this.tag,
+    required this.profUid,
+  });
   final String tag;
+  final String profUid;
 
   @override
   Widget build(BuildContext context) {
     Image asset = Image.network(tag, fit: BoxFit.cover);
+
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
@@ -52,112 +63,183 @@ class ProfessionalProfile extends StatelessWidget {
             ),
           ],
         ),
-        body: ListView(
-          children: [
-            Hero(
-              tag: tag,
-              child: GestureDetector(
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) => BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                      child: Dialog(
-                        shadowColor: Colors.black,
-                        child: Container(
-                          width: double.infinity,
-                          height: asset.height,
-                          clipBehavior: Clip.hardEdge,
-                          decoration: BoxDecoration(
-                            color: Colors.transparent,
-                            borderRadius: BorderRadius.circular(15),
-                            border: Border.all(
-                              color: Colors.white,
-                              strokeAlign: BorderSide.strokeAlignOutside,
-                              width: 5,
-                            ),
+        body: FutureBuilder(
+          future: readProf(profUid),
+          builder: (context, asyncSnapshot) {
+            if (asyncSnapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            } else if (asyncSnapshot.hasError) {
+              return Center(child: Text("حدث خطأ ما"));
+            } else if (!asyncSnapshot.hasData) {
+              return Center(child: Text("لا يوجد حرفي بهذا المعرف"));
+            } else {
+              final data = asyncSnapshot.data!;
+              return ListView(
+                children: [
+                  Hero(
+                    tag: tag,
+                    child: GestureDetector(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => BackdropFilter(
+                            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                            child: Dialog(
+                              shadowColor: Colors.black,
+                              child: Container(
+                                width: double.infinity,
+                                height: asset.height,
+                                clipBehavior: Clip.hardEdge,
+                                decoration: BoxDecoration(
+                                  color: Colors.transparent,
+                                  borderRadius: BorderRadius.circular(15),
+                                  border: Border.all(
+                                    color: Colors.white,
+                                    strokeAlign: BorderSide.strokeAlignOutside,
+                                    width: 5,
+                                  ),
+                                ),
+                                child: Image.network(tag, fit: BoxFit.cover),
+                              ),
+                            ).animate().untint(),
                           ),
-                          child: Image.network(tag, fit: BoxFit.cover),
+                        );
+                      },
+                      child: Container(
+                        margin: EdgeInsets.symmetric(vertical: 10),
+                        clipBehavior: Clip.hardEdge,
+                        height: MediaQuery.of(context).size.width / 2,
+                        width: MediaQuery.of(context).size.width / 2,
+                        decoration: BoxDecoration(
+                          color: appBarColor,
+                          // borderRadius: BorderRadius.circular(15),
+                          shape: BoxShape.circle,
                         ),
-                      ).animate().untint(),
-                    ),
-                  );
-                },
-                child: Container(
-                  margin: EdgeInsets.symmetric(vertical: 10),
-                  clipBehavior: Clip.hardEdge,
-                  height: MediaQuery.of(context).size.width / 2,
-                  width: MediaQuery.of(context).size.width / 2,
-                  decoration: BoxDecoration(
-                    color: appBarColor,
-                    // borderRadius: BorderRadius.circular(15),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Image.network(tag, fit: BoxFit.contain),
-                ),
-              ),
-            ),
-            Column(
-              children: [
-                TitleText(title: "مصطفى"),
-                Text(
-                  "سباك",
-                  style: TextStyle(color: Colors.white, fontSize: 23),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      shrinkLikesFormula(3882),
-                      style: TextStyle(
-                        color: const Color.fromARGB(255, 182, 67, 202),
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
+                        child: Image.network(tag, fit: BoxFit.contain),
                       ),
                     ),
-                    Icon(
-                      Icons.bookmark,
-                      color: const Color.fromARGB(255, 182, 67, 202),
-                      size: 40,
+                  ),
+                  Column(
+                    children: [
+                      TitleText(title: data["name"]),
+                      Text(
+                        data["category"],
+                        style: TextStyle(color: Colors.white, fontSize: 23),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            shrinkLikesFormula(data["saves"]),
+                            style: TextStyle(
+                              color: const Color.fromARGB(255, 182, 67, 202),
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Icon(
+                            Icons.bookmark,
+                            color: const Color.fromARGB(255, 182, 67, 202),
+                            size: 40,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ContactButton(
+                        label: "واتساب",
+                        icon: FontAwesomeIcons.whatsapp,
+                      ),
+                      ContactButton(
+                        label: "فيسبوك",
+                        icon: FontAwesomeIcons.facebook,
+                      ),
+                    ],
+                  ),
+                  TitleText(title: "الخدمات"),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+                    child: Text(
+                      data["description"],
+                      style: TextStyle(fontSize: 23, color: Colors.white),
                     ),
-                  ],
-                ),
-              ],
-            ),
-            SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ContactButton(label: "واتساب", icon: FontAwesomeIcons.whatsapp),
-                ContactButton(label: "فيسبوك", icon: FontAwesomeIcons.facebook),
-              ],
-            ),
-            TitleText(title: "الخدمات"),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
-              child: Text('''- تركيب أنابيب المياه و كل الأجهزة المتعلقة بها.
-- تصليح كل الأعطال.''', style: TextStyle(fontSize: 23, color: Colors.white)),
-            ),
-            SizedBox(height: 10),
-            TitleText(title: "المنشورات"),
-            GridView(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-              ),
-              padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-              shrinkWrap: true,
-              scrollDirection: Axis.vertical,
-              physics: const BouncingScrollPhysics(),
-              children: [
-                Image.asset("assets/images/gallery.png", fit: BoxFit.cover),
-                Image.asset("assets/images/gallery.png", fit: BoxFit.cover),
-                Image.asset("assets/images/gallery.png", fit: BoxFit.cover),
-                Image.asset("assets/images/gallery.png", fit: BoxFit.cover),
-                Image.asset("assets/images/gallery.png", fit: BoxFit.cover),
-                Image.asset("assets/images/gallery.png", fit: BoxFit.cover),
-              ],
-            ),
-          ],
+                  ),
+                  SizedBox(height: 10),
+                  TitleText(title: "المنشورات"),
+                  StreamBuilder(
+                    stream: readPosts(profUid),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Text('حدث خطأ ما! ${snapshot.error}');
+                      } else if (snapshot.hasData) {
+                        final posts = snapshot.data!;
+                        for (var post in posts) {
+                          FirebaseFirestore.instance
+                              .collection("Profs")
+                              .doc(post.profUid)
+                              .get()
+                              .then((doc) {
+                                FirebaseFirestore.instance
+                                    .collection("Posts")
+                                    .doc(post.uid)
+                                    .update({
+                                      "profName": doc.data()!["name"],
+                                      "profType": doc.data()!["category"],
+                                      "profImagePath": doc.data()!["imagePath"],
+                                    });
+                              });
+                        }
+                        return ListView.builder(
+                          physics: BouncingScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: posts.length,
+                          itemBuilder: (context, index) {
+                            return PostCard(
+                              uid: snapshot.data![index].uid,
+                              profUid: snapshot.data![index].profUid,
+                              name: snapshot.data![index].profName,
+                              type: snapshot.data![index].profType,
+                              profImagePath:
+                                  snapshot.data![index].profImagePath,
+                              time: timeAddedFormatted(
+                                snapshot.data![index].timeAdded,
+                              ),
+                              imagePath:
+                                  snapshot.data![index].imagePaths.isNotEmpty
+                                  ? snapshot.data![index].imagePaths[0]
+                                        .toString()
+                                  : "",
+                              text: snapshot.data![index].text,
+                              likes: snapshot.data![index].likesCount,
+                              comments: snapshot.data![index].commentsCount,
+                              firstTag: snapshot.data![index].profImagePath,
+                              secondTag:
+                                  snapshot.data![index].imagePaths.isNotEmpty
+                                  ? snapshot.data![index].imagePaths[0]
+                                        .toString()
+                                  : "",
+                            );
+                          },
+                        );
+                      } else {
+                        return Center(
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                            ),
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                ],
+              );
+            }
+          },
         ),
       ),
     );

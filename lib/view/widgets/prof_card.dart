@@ -48,7 +48,7 @@ class ProfessionalCard extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ProfessionalProfile(tag: tag),
+            builder: (context) => ProfessionalProfile(tag: tag, profUid: uid),
           ),
         );
       },

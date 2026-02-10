@@ -77,8 +77,10 @@ class _PostCardState extends State<PostCard> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) =>
-                      ProfessionalProfile(tag: widget.profImagePath),
+                  builder: (context) => ProfessionalProfile(
+                    tag: widget.profImagePath,
+                    profUid: widget.profUid,
+                  ),
                 ),
               );
             },
