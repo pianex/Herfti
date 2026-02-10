@@ -251,7 +251,7 @@ class ProfessionalProfile extends StatelessWidget {
             } else {
               return Center(
                 child: Text(
-                  "لا يوجد حرفي بهذا المعرف",
+                  "هذا الحساب غير موجود.",
                   style: TextStyle(color: Colors.white, fontSize: 25),
                 ),
               );
