@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:project_a/core/constants/app_theme.dart';
-import 'package:project_a/view/widgets/prof_card.dart';
 
 class CategoryPage extends StatelessWidget {
   const CategoryPage({super.key});

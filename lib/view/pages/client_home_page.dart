@@ -143,7 +143,11 @@ class ClientHomePage extends StatelessWidget {
                     },
                   );
                 } else {
-                  return Center(child: CircularProgressIndicator());
+                  return Center(
+                    child: Center(
+                      child: CircularProgressIndicator(color: Colors.white),
+                    ),
+                  );
                 }
               },
             ),
