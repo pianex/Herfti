@@ -18,12 +18,12 @@ class CustDrawer extends StatelessWidget {
           // physics: const BouncingScrollPhysics(),
           children: [
             TitleText(title: "حرفتي"),
-            SettingsListTile(
-              label: "الوظائف",
-              iconData: Icons.work,
-              routeName: "",
-              route: ProfessionalsPage(),
-            ),
+            // SettingsListTile(
+            //   label: "الوظائف",
+            //   iconData: Icons.work,
+            //   routeName: "",
+            //   route: ProfessionalsPage(),
+            // ),
             SettingsListTile(
               label: "أفضل الحرفيين",
               iconData: Icons.attractions_sharp,

@@ -31,16 +31,8 @@ class CategoryPage extends StatelessWidget {
           ),
           centerTitle: true,
         ),
-        body: ListView(
-          children: [
-            ProfessionalCard(
-              tag: "zzz",
-              name: "مصطفى",
-              category: "سباك",
-              image: "assets/images/plumber.jpg",
-              saves: 3592,
-              sellerType: 3,
-            ),
+        body: ListView(children: [
+          
           ],
         ),
       ),

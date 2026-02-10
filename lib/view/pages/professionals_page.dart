@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_a/core/constants/app_theme.dart';
+import 'package:project_a/core/functions/prof_functions.dart';
 import 'package:project_a/view/widgets/prof_card.dart';
 
 class ProfessionalsPage extends StatelessWidget {
@@ -29,41 +30,42 @@ class ProfessionalsPage extends StatelessWidget {
           ),
           centerTitle: true,
         ),
-        body: ListView(
-          children: [
-            ProfessionalCard(
-              tag: "zzz",
-              name: "مصطفى",
-              category: "سباك",
-              image: "assets/images/plumber.jpg",
-              saves: 3592,
-              sellerType: 3,
-            ),
-            ProfessionalCard(
-              tag: "zzz",
-              name: "أحمد",
-              category: "نجار",
-              image: "assets/images/najjar.jpg",
-              saves: 1429,
-              sellerType: 3,
-            ),
-            ProfessionalCard(
-              tag: "zzz",
-              name: "سمير",
-              category: "خياط",
-              image: "assets/images/knitting.jpeg",
-              saves: 482,
-              sellerType: 3,
-            ),
-            ProfessionalCard(
-              tag: "zzz",
-              name: "كمال",
-              category: "ميكانيكي",
-              image: "assets/images/mechanic.jpg",
-              saves: 7420,
-              sellerType: 3,
-            ),
-          ],
+        body: StreamBuilder(
+          stream: readProfs(),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Text("حدث خطأ ما");
+            } else if (snapshot.hasData) {
+              final profs = snapshot.data!;
+              return ListView.builder(
+                itemCount: profs.docs.length,
+                itemBuilder: (context, index) {
+                  final prof = profs.docs[index];
+                  return ProfessionalCard(
+                    uid: prof["uid"],
+                    name: prof["name"],
+                    imagePath: prof["imagePath"],
+                    phone: prof["phone"],
+                    email: prof["uid"],
+                    description: prof["description"],
+                    type: prof["type"],
+                    category: prof["category"],
+                    country: prof["country"],
+                    state: prof["state"],
+                    city: prof["city"],
+                    saves: prof["saves"],
+                    timeAdded: prof["timeAdded"],
+                    tokens: List<String>.from(prof["tokens"] ?? []),
+                    image: prof["imagePath"],
+                    sellerType: prof["type"],
+                    tag: "",
+                  );
+                },
+              );
+            } else {
+              return Center(child: CircularProgressIndicator());
+            }
+          },
         ),
       ),
     );
