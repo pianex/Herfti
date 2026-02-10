@@ -82,9 +82,7 @@ class ProfessionalProfile extends StatelessWidget {
               return Center(child: CircularProgressIndicator());
             } else if (asyncSnapshot.hasError) {
               return Center(child: Text("حدث خطأ ما"));
-            } else if (!asyncSnapshot.hasData) {
-              return Center(child: Text("لا يوجد حرفي بهذا المعرف"));
-            } else {
+            } else if (asyncSnapshot.data!.exists) {
               final data = asyncSnapshot.data!;
               return ListView(
                 children: [
@@ -249,6 +247,13 @@ class ProfessionalProfile extends StatelessWidget {
                     },
                   ),
                 ],
+              );
+            } else {
+              return Center(
+                child: Text(
+                  "لا يوجد حرفي بهذا المعرف",
+                  style: TextStyle(color: Colors.white, fontSize: 25),
+                ),
               );
             }
           },
