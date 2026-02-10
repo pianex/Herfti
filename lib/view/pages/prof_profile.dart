@@ -12,6 +12,7 @@ import 'package:project_a/core/functions/prof_functions.dart';
 import 'package:project_a/view/widgets/contact_button.dart';
 import 'package:project_a/view/widgets/post_card.dart';
 import 'package:project_a/view/widgets/title_text.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfessionalProfile extends StatelessWidget {
   const ProfessionalProfile({
@@ -54,7 +55,18 @@ class ProfessionalProfile extends StatelessWidget {
               icon: Icon(Icons.message, color: Colors.white),
             ),
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                final prof = FirebaseFirestore.instance
+                    .collection("Profs")
+                    .doc(profUid);
+                prof.get().then((doc) async {
+                  final Uri launchUri = Uri(
+                    scheme: 'tel',
+                    path: doc.data()!["phone"],
+                  );
+                  await launchUrl(launchUri);
+                });
+              },
               icon: Icon(Icons.phone, color: Colors.white),
             ),
             IconButton(
@@ -121,7 +133,7 @@ class ProfessionalProfile extends StatelessWidget {
                   ),
                   Column(
                     children: [
-                      TitleText(title: data["name"]),
+                      TitleText(title: data["name"] ?? ""),
                       Text(
                         data["category"],
                         style: TextStyle(color: Colors.white, fontSize: 23),
