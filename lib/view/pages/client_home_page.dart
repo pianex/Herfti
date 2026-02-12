@@ -104,7 +104,7 @@ class ClientHomePage extends StatelessWidget {
                   } else {
                     for (var post in posts) {
                       // if (profsNames.length == posts.length) break;
-                      if (post.profType != "prof") {
+                      if (post.profType != "زبون") {
                         FirebaseFirestore.instance
                             .collection("Profs")
                             .doc(post.userUid)
@@ -138,7 +138,7 @@ class ClientHomePage extends StatelessWidget {
                                   .doc(post.uid)
                                   .update({
                                     "userName": doc.data()!["name"],
-                                    "profType": "عميل",
+                                    "profType": "زبون",
                                     "userImagePath": doc.data()!["imagePath"],
                                   });
                             });

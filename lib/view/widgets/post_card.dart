@@ -56,7 +56,7 @@ class _PostCardState extends State<PostCard> {
   int image = 0;
   @override
   Widget build(BuildContext context) {
-    Image? asset = Image.asset(widget.imagePath ?? "", fit: BoxFit.cover);
+    // Image? asset = Image.asset(widget.imagePath ?? "", fit: BoxFit.cover);
     List<String> likedPosts = sharedPref.getStringList("likedPosts") ?? [];
     if (likedPosts.contains(widget.uid)) {
       isLiked = true;
@@ -142,133 +142,100 @@ class _PostCardState extends State<PostCard> {
               style: TextStyle(color: Colors.white, fontSize: 23),
             ),
           ),
-          Container(
-            constraints: BoxConstraints(maxHeight: 300),
-            child: PageView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: widget.imagePaths.length,
-              physics: BouncingScrollPhysics(),
-              onPageChanged: (value) {
-                setState(() {
-                  image = value;
-                });
-              },
-              itemBuilder: (context, index) {
-                return Stack(
-                  children: [
-                    Container(
-                      margin: EdgeInsets.symmetric(horizontal: 15),
-                      width: double.infinity,
-                      height: asset.height,
-                      clipBehavior: Clip.hardEdge,
-                      decoration: BoxDecoration(
-                        color: Color(0xFF11152E),
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Center(
-                        child: CircularProgressIndicator(color: Colors.white),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) => BackdropFilter(
-                            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                            child:
-                                Dialog(
-                                  shadowColor: Colors.black,
-                                  child: Container(
-                                    width: double.infinity,
-                                    height: asset.height,
-                                    clipBehavior: Clip.hardEdge,
-                                    decoration: BoxDecoration(
-                                      color: Colors.transparent,
-                                      borderRadius: BorderRadius.circular(15),
-                                      border: Border.all(
-                                        color: Colors.white,
-                                        strokeAlign:
-                                            BorderSide.strokeAlignOutside,
-                                        width: 5,
+          widget.imagePaths.isNotEmpty
+              ? Container(
+                  constraints: BoxConstraints(maxHeight: 300),
+                  child: PageView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: widget.imagePaths.length,
+
+                    physics: BouncingScrollPhysics(),
+                    onPageChanged: (value) {
+                      setState(() {
+                        image = value;
+                      });
+                    },
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => BackdropFilter(
+                              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                              child:
+                                  Dialog(
+                                    shadowColor: Colors.black,
+                                    child: Container(
+                                      width: double.infinity,
+                                      // height: asset.height,
+                                      clipBehavior: Clip.hardEdge,
+                                      decoration: BoxDecoration(
+                                        color: Colors.transparent,
+                                        borderRadius: BorderRadius.circular(15),
+                                        border: Border.all(
+                                          color: Colors.white,
+                                          strokeAlign:
+                                              BorderSide.strokeAlignOutside,
+                                          width: 5,
+                                        ),
                                       ),
+                                      child: widget.imagePaths.isNotEmpty
+                                          ? Image.network(
+                                              widget.imagePaths[index] ?? "",
+                                              fit: BoxFit.cover,
+                                            )
+                                          : Container(),
                                     ),
-                                    child: widget.imagePaths.isNotEmpty
-                                        ? Image.network(
-                                            widget.imagePaths[index] ?? "",
-                                            fit: BoxFit.cover,
-                                          )
-                                        : Container(),
+                                  ).animate().untint(
+                                    duration: Duration(milliseconds: 350),
                                   ),
-                                ).animate().untint(
-                                  duration: Duration(milliseconds: 350),
-                                ),
-                          ),
-                        );
-                      },
-                      child: Hero(
-                        tag: widget.imagePath ?? "tag2",
-                        child: Container(
-                          margin: EdgeInsets.symmetric(horizontal: 15),
-                          width: double.infinity,
-                          height: asset.height,
-                          clipBehavior: Clip.hardEdge,
-                          decoration: BoxDecoration(
-                            color: Color(0xFF11152E),
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: widget.imagePaths.isNotEmpty
-                              ? Image.network(
-                                  widget.imagePaths[index] ?? "",
-                                  fit: BoxFit.cover,
-                                  loadingBuilder: (context, child, loadingProgress) {
-                                    if (loadingProgress == null) return child;
-                                    return Center(
-                                      child: CircularProgressIndicator(
-                                        value:
-                                            loadingProgress
-                                                        .expectedTotalBytes !=
-                                                    null &&
-                                                loadingProgress
-                                                        .expectedTotalBytes !=
-                                                    null
-                                            ? loadingProgress
-                                                      .cumulativeBytesLoaded /
+                            ),
+                          );
+                        },
+                        child: Hero(
+                          tag: widget.imagePath ?? "tag2",
+                          child: Container(
+                            margin: EdgeInsets.symmetric(horizontal: 15),
+                            width: double.infinity,
+                            // height: asset.height,
+                            clipBehavior: Clip.hardEdge,
+                            decoration: BoxDecoration(
+                              color: Color(0xFF11152E),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: widget.imagePaths.isNotEmpty
+                                ? Image.network(
+                                    widget.imagePaths[index] ?? "",
+                                    fit: BoxFit.cover,
+                                    loadingBuilder: (context, child, loadingProgress) {
+                                      if (loadingProgress == null) return child;
+                                      return Center(
+                                        child: CircularProgressIndicator(
+                                          value:
+                                              loadingProgress
+                                                          .expectedTotalBytes !=
+                                                      null &&
                                                   loadingProgress
-                                                      .expectedTotalBytes!
-                                            : null,
-                                        color: Colors.white,
-                                      ),
-                                    );
-                                  },
-                                )
-                              : Container(),
+                                                          .expectedTotalBytes !=
+                                                      null
+                                              ? loadingProgress
+                                                        .cumulativeBytesLoaded /
+                                                    loadingProgress
+                                                        .expectedTotalBytes!
+                                              : null,
+                                          color: Colors.white,
+                                        ),
+                                      );
+                                    },
+                                  )
+                                : Container(),
+                          ),
                         ),
-                      ),
-                    ),
-                    // Container(
-                    //   margin: EdgeInsets.all(15),
-                    //   width: double.infinity,
-                    //   height: asset.height,
-                    //   clipBehavior: Clip.hardEdge,
-                    //   decoration: BoxDecoration(
-                    //     gradient: LinearGradient(
-                    //       begin: AlignmentGeometry.topCenter,
-                    //       end: AlignmentGeometry.bottomCenter,
-                    //       colors: [
-                    //         Colors.black.withAlpha(0),
-                    //         Colors.black.withAlpha(50),
-                    //         Colors.black.withAlpha(100),
-                    //       ],
-                    //     ),
-                    //     // color: Colors.black.withAlpha(80),
-                    //     borderRadius: BorderRadius.circular(15),
-                    //   ),
-                    // ),
-                  ],
-                );
-              },
-            ),
-          ),
+                      );
+                    },
+                  ),
+                )
+              : Container(),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: List.generate(

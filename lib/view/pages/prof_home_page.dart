@@ -105,24 +105,45 @@ class _ProfHomePageState extends State<ProfHomePage> {
 
                   for (var post in posts) {
                     // if (profsNames.length == posts.length) break;
-                    FirebaseFirestore.instance
-                        .collection("Profs")
-                        .doc(post.userUid)
-                        .get()
-                        .then((doc) {
-                          // profsNames.add(doc.data()!["name"]);
-                          // profsTypes.add(doc.data()!["category"]);
-                          // profsImagePaths.add(doc.data()!["imagePath"]);
-                          // print(profsNames);
-                          FirebaseFirestore.instance
-                              .collection("Posts")
-                              .doc(post.uid)
-                              .update({
-                                "profName": doc.data()!["name"],
-                                "profType": doc.data()!["category"],
-                                "profImagePath": doc.data()!["imagePath"],
-                              });
-                        });
+                    if (post.profType != "prof") {
+                      FirebaseFirestore.instance
+                          .collection("Profs")
+                          .doc(post.userUid)
+                          .get()
+                          .then((doc) {
+                            // profsNames.add(doc.data()!["name"]);
+                            // profsTypes.add(doc.data()!["category"]);
+                            // profsImagePaths.add(doc.data()!["imagePath"]);
+                            // print(profsNames);
+                            FirebaseFirestore.instance
+                                .collection("Posts")
+                                .doc(post.uid)
+                                .update({
+                                  "userName": doc.data()!["name"],
+                                  "profType": doc.data()!["category"],
+                                  "userImagePath": doc.data()!["imagePath"],
+                                });
+                          });
+                    } else {
+                      FirebaseFirestore.instance
+                          .collection("Clients")
+                          .doc(post.userUid)
+                          .get()
+                          .then((doc) {
+                            // profsNames.add(doc.data()!["name"]);
+                            // profsTypes.add(doc.data()!["category"]);
+                            // profsImagePaths.add(doc.data()!["imagePath"]);
+                            // print(profsNames);
+                            FirebaseFirestore.instance
+                                .collection("Posts")
+                                .doc(post.uid)
+                                .update({
+                                  "userName": doc.data()!["name"],
+                                  "profType": "عميل",
+                                  "userImagePath": doc.data()!["imagePath"],
+                                });
+                          });
+                    }
                   }
 
                   return ListView.builder(
