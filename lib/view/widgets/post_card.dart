@@ -13,12 +13,13 @@ class PostCard extends StatefulWidget {
   const PostCard({
     super.key,
     required this.uid,
-    required this.profUid,
+    required this.userUid,
     required this.name,
     required this.type,
-    required this.profImagePath,
+    required this.userImagePath,
     required this.time,
     required this.imagePath,
+    required this.imagePaths,
     required this.text,
     required this.likes,
     required this.comments,
@@ -26,12 +27,13 @@ class PostCard extends StatefulWidget {
     required this.secondTag,
   });
   final String uid;
-  final String profUid;
+  final String userUid;
   final String name;
   final String type;
-  final String profImagePath;
+  final String userImagePath;
   final String time;
   final String? imagePath;
+  final List<dynamic> imagePaths;
   final String text;
   final int likes;
   final int comments;
@@ -78,8 +80,8 @@ class _PostCardState extends State<PostCard> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => ProfessionalProfile(
-                    tag: widget.profImagePath,
-                    profUid: widget.profUid,
+                    tag: widget.userImagePath,
+                    profUid: widget.userUid,
                   ),
                 ),
               );
@@ -93,10 +95,10 @@ class _PostCardState extends State<PostCard> {
                     child: Row(
                       children: [
                         Hero(
-                          tag: widget.profImagePath,
+                          tag: widget.userImagePath,
                           child: CircleAvatar(
                             backgroundColor: Colors.blue[900],
-                            backgroundImage: NetworkImage(widget.profImagePath),
+                            backgroundImage: NetworkImage(widget.userImagePath),
                           ),
                         ),
                         SizedBox(width: 10),
@@ -267,8 +269,8 @@ class _PostCardState extends State<PostCard> {
                     CupertinoPageRoute(
                       builder: (context) => CommentsPage(
                         postUid: widget.uid,
-                        profUid: widget.profUid,
-                        profImagePath: widget.profImagePath,
+                        profUid: widget.userUid,
+                        profImagePath: widget.userImagePath,
                         imagePath: widget.imagePath ?? "tag2",
                         name: widget.name,
                         text: widget.text,
@@ -276,7 +278,7 @@ class _PostCardState extends State<PostCard> {
                         time: widget.time,
                         likes: widget.likes,
                         comments: widget.comments,
-                        firstTag: widget.profImagePath,
+                        firstTag: widget.userImagePath,
                         secondTag: widget.imagePath ?? "tag2",
                       ),
                     ),

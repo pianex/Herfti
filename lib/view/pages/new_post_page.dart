@@ -43,6 +43,7 @@ class _NewPostPageState extends State<NewPostPage> {
 
   @override
   Widget build(BuildContext context) {
+    final String userType = sharedPref.getString("userType")!;
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
@@ -187,10 +188,12 @@ class _NewPostPageState extends State<NewPostPage> {
                 Map<String, dynamic> json = PostModel(
                   uid: uid,
                   timeAdded: DateTime.now().toString(),
-                  profUid: email,
-                  profName: sharedPref.getString("name")!,
-                  profType: sharedPref.getString("categoryStr")!,
-                  profImagePath:
+                  userUid: email,
+                  userName: sharedPref.getString("name")!,
+                  profType: userType == "client"
+                      ? "زبون"
+                      : sharedPref.getString("categoryStr")!,
+                  userImagePath:
                       sharedPref.getString("imagePath") ??
                       sharedPref.getString("googleImagePath")!,
                   text: _postController.text.trim(),

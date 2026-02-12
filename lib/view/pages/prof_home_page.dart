@@ -107,7 +107,7 @@ class _ProfHomePageState extends State<ProfHomePage> {
                     // if (profsNames.length == posts.length) break;
                     FirebaseFirestore.instance
                         .collection("Profs")
-                        .doc(post.profUid)
+                        .doc(post.userUid)
                         .get()
                         .then((doc) {
                           // profsNames.add(doc.data()!["name"]);
@@ -132,20 +132,23 @@ class _ProfHomePageState extends State<ProfHomePage> {
                     itemBuilder: (context, index) {
                       return PostCard(
                         uid: snapshot.data![index].uid,
-                        profUid: snapshot.data![index].profUid,
-                        name: snapshot.data![index].profName,
+                        userUid: snapshot.data![index].userUid,
+                        name: snapshot.data![index].userName,
                         type: snapshot.data![index].profType,
-                        profImagePath: snapshot.data![index].profImagePath,
+                        userImagePath: snapshot.data![index].userImagePath,
                         time: timeAddedFormatted(
                           snapshot.data![index].timeAdded,
                         ),
                         imagePath: snapshot.data![index].imagePaths.isNotEmpty
                             ? snapshot.data![index].imagePaths[0].toString()
                             : "",
+                        imagePaths: snapshot.data![index].imagePaths.isNotEmpty
+                            ? snapshot.data![index].imagePaths
+                            : [],
                         text: snapshot.data![index].text,
                         likes: snapshot.data![index].likesCount,
                         comments: snapshot.data![index].commentsCount,
-                        firstTag: snapshot.data![index].profImagePath,
+                        firstTag: snapshot.data![index].userImagePath,
                         secondTag: snapshot.data![index].imagePaths.isNotEmpty
                             ? snapshot.data![index].imagePaths[0].toString()
                             : "",

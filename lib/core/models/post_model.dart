@@ -1,10 +1,10 @@
 class PostModel {
   final String uid;
   final String timeAdded;
-  final String profUid;
-  final String profName;
+  final String userUid;
+  final String userName;
   final String profType;
-  final String profImagePath;
+  final String userImagePath;
   final String text;
   final List<dynamic> imagePaths;
   final List<dynamic> comments;
@@ -13,11 +13,11 @@ class PostModel {
   final List<String> tokens;
   PostModel({
     required this.uid,
+    required this.userUid,
+    required this.userName,
+    required this.userImagePath,
     required this.timeAdded,
-    required this.profUid,
-    required this.profName,
     required this.profType,
-    required this.profImagePath,
     required this.text,
     required this.imagePaths,
     required this.comments,
@@ -28,11 +28,11 @@ class PostModel {
 
   Map<String, dynamic> toJson() => {
     "uid": uid,
+    "userUid": userUid,
+    "userName": userName,
+    "userImagePath": userImagePath,
     "timeAdded": timeAdded,
-    "profUid": profUid,
-    "profName": profName,
     "profType": profType,
-    "profImagePath": profImagePath,
     "text": text,
     "imagePaths": imagePaths,
     "comments": comments,
@@ -43,11 +43,11 @@ class PostModel {
 
   static PostModel fromJson(Map<String, dynamic> json) => PostModel(
     uid: json["uid"],
+    userUid: json["userUid"],
+    userName: json["userName"],
+    userImagePath: json["userImagePath"],
     timeAdded: json["timeAdded"],
-    profUid: json["profUid"],
-    profName: json["profName"],
     profType: json["profType"],
-    profImagePath: json["profImagePath"],
     text: json["text"],
     imagePaths: json["imagePaths"],
     comments: json["comments"] ?? [],

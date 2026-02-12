@@ -186,55 +186,67 @@ class ProfessionalProfile extends StatelessWidget {
                       if (snapshot.hasError) {
                         return Text('حدث خطأ ما! ${snapshot.error}');
                       } else if (snapshot.hasData) {
-                        final posts = snapshot.data!;
-                        for (var post in posts) {
-                          FirebaseFirestore.instance
-                              .collection("Profs")
-                              .doc(post.profUid)
-                              .get()
-                              .then((doc) {
-                                FirebaseFirestore.instance
-                                    .collection("Posts")
-                                    .doc(post.uid)
-                                    .update({
-                                      "profName": doc.data()!["name"],
-                                      "profType": doc.data()!["category"],
-                                      "profImagePath": doc.data()!["imagePath"],
-                                    });
-                              });
+                        if (snapshot.data!.isEmpty) {
+                          return Text(
+                            "لا يوجد منشورات حتى الآن.",
+                            style: TextStyle(color: Colors.white, fontSize: 25),
+                          );
+                        } else {
+                          final posts = snapshot.data!;
+                          for (var post in posts) {
+                            FirebaseFirestore.instance
+                                .collection("Profs")
+                                .doc(post.userUid)
+                                .get()
+                                .then((doc) {
+                                  FirebaseFirestore.instance
+                                      .collection("Posts")
+                                      .doc(post.uid)
+                                      .update({
+                                        "profName": doc.data()!["name"],
+                                        "profType": doc.data()!["category"],
+                                        "profImagePath": doc
+                                            .data()!["imagePath"],
+                                      });
+                                });
+                          }
+                          return ListView.builder(
+                            physics: BouncingScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: posts.length,
+                            itemBuilder: (context, index) {
+                              return PostCard(
+                                uid: snapshot.data![index].uid,
+                                userUid: snapshot.data![index].userUid,
+                                name: snapshot.data![index].userName,
+                                type: snapshot.data![index].profType,
+                                userImagePath:
+                                    snapshot.data![index].userImagePath,
+                                time: timeAddedFormatted(
+                                  snapshot.data![index].timeAdded,
+                                ),
+                                imagePath:
+                                    snapshot.data![index].imagePaths.isNotEmpty
+                                    ? snapshot.data![index].imagePaths[0]
+                                          .toString()
+                                    : "",
+                                imagePaths:
+                                    snapshot.data![index].imagePaths.isNotEmpty
+                                    ? snapshot.data![index].imagePaths
+                                    : [],
+                                text: snapshot.data![index].text,
+                                likes: snapshot.data![index].likesCount,
+                                comments: snapshot.data![index].commentsCount,
+                                firstTag: snapshot.data![index].userImagePath,
+                                secondTag:
+                                    snapshot.data![index].imagePaths.isNotEmpty
+                                    ? snapshot.data![index].imagePaths[0]
+                                          .toString()
+                                    : "",
+                              );
+                            },
+                          );
                         }
-                        return ListView.builder(
-                          physics: BouncingScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: posts.length,
-                          itemBuilder: (context, index) {
-                            return PostCard(
-                              uid: snapshot.data![index].uid,
-                              profUid: snapshot.data![index].profUid,
-                              name: snapshot.data![index].profName,
-                              type: snapshot.data![index].profType,
-                              profImagePath:
-                                  snapshot.data![index].profImagePath,
-                              time: timeAddedFormatted(
-                                snapshot.data![index].timeAdded,
-                              ),
-                              imagePath:
-                                  snapshot.data![index].imagePaths.isNotEmpty
-                                  ? snapshot.data![index].imagePaths[0]
-                                        .toString()
-                                  : "",
-                              text: snapshot.data![index].text,
-                              likes: snapshot.data![index].likesCount,
-                              comments: snapshot.data![index].commentsCount,
-                              firstTag: snapshot.data![index].profImagePath,
-                              secondTag:
-                                  snapshot.data![index].imagePaths.isNotEmpty
-                                  ? snapshot.data![index].imagePaths[0]
-                                        .toString()
-                                  : "",
-                            );
-                          },
-                        );
                       } else {
                         return Center(
                           child: Center(
