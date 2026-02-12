@@ -156,6 +156,19 @@ class _PostCardState extends State<PostCard> {
               itemBuilder: (context, index) {
                 return Stack(
                   children: [
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 15),
+                      width: double.infinity,
+                      height: asset.height,
+                      clipBehavior: Clip.hardEdge,
+                      decoration: BoxDecoration(
+                        color: Color(0xFF11152E),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Center(
+                        child: CircularProgressIndicator(color: Colors.white),
+                      ),
+                    ),
                     GestureDetector(
                       onTap: () {
                         showDialog(
@@ -200,7 +213,7 @@ class _PostCardState extends State<PostCard> {
                           height: asset.height,
                           clipBehavior: Clip.hardEdge,
                           decoration: BoxDecoration(
-                            color: Colors.transparent,
+                            color: Color(0xFF11152E),
                             borderRadius: BorderRadius.circular(15),
                           ),
                           child: widget.imagePaths.isNotEmpty
