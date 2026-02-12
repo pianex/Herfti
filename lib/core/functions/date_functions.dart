@@ -3,19 +3,40 @@ import 'package:flutter/material.dart';
 
 String timeAddedFormatted(String timeAdded) {
   String result = '';
-  result = formatDate(DateTime.parse(timeAdded), [
-    HH,
-    ':',
-    nn,
-    "\n",
-    dd,
-    "/",
-    ' ',
-    mm,
-    "/",
-    " ",
-    yyyy,
-  ], locale: const ArabicDateLocale());
+  if (DateUtils.isSameDay(DateTime.now(), DateTime.parse(timeAdded))) {
+    result = formatDate(DateTime.parse(timeAdded), [
+      "اليوم\n",
+
+      HH,
+      ':',
+      nn,
+    ], locale: const ArabicDateLocale());
+  } else if (DateUtils.isSameDay(
+    DateTime.now().subtract(const Duration(days: 1)),
+    DateTime.parse(timeAdded),
+  )) {
+    result = formatDate(DateTime.parse(timeAdded), [
+      "الأمس\n",
+      HH,
+      ':',
+      nn,
+    ], locale: const ArabicDateLocale());
+  } else {
+    result = formatDate(DateTime.parse(timeAdded), [
+      HH,
+      ':',
+      nn,
+      "\n",
+      dd,
+      "/",
+      ' ',
+      mm,
+      "/",
+      " ",
+      yyyy,
+    ], locale: const ArabicDateLocale());
+  }
+
   return result;
 }
 

@@ -91,35 +91,29 @@ class _PostCardState extends State<PostCard> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
-                    child: Row(
+                  Hero(
+                    tag: widget.userImagePath,
+                    child: CircleAvatar(
+                      backgroundColor: Colors.blue[900],
+                      backgroundImage: NetworkImage(widget.userImagePath),
+                    ),
+                  ),
+                  SizedBox(width: 10),
+                  Container(
+                    constraints: BoxConstraints(maxWidth: 200),
+
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Hero(
-                          tag: widget.userImagePath,
-                          child: CircleAvatar(
-                            backgroundColor: Colors.blue[900],
-                            backgroundImage: NetworkImage(widget.userImagePath),
-                          ),
+                        Text(
+                          widget.name,
+                          overflow: TextOverflow.ellipsis,
+
+                          style: TextStyle(color: Colors.white, fontSize: 20),
                         ),
-                        SizedBox(width: 10),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              widget.name,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 25,
-                              ),
-                            ),
-                            Text(
-                              widget.type,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 21,
-                              ),
-                            ),
-                          ],
+                        Text(
+                          widget.type,
+                          style: TextStyle(color: Colors.white, fontSize: 20),
                         ),
                       ],
                     ),
@@ -129,7 +123,7 @@ class _PostCardState extends State<PostCard> {
                   Text(
                     widget.time,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white, fontSize: 19),
+                    style: TextStyle(color: Colors.white, fontSize: 18),
                   ),
                 ],
               ),
