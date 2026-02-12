@@ -53,7 +53,7 @@ class _PostCardState extends State<PostCard> {
   // }
 
   // int likes = 162;
-
+  int image = 0;
   @override
   Widget build(BuildContext context) {
     Image? asset = Image.asset(widget.imagePath ?? "", fit: BoxFit.cover);
@@ -142,80 +142,133 @@ class _PostCardState extends State<PostCard> {
               style: TextStyle(color: Colors.white, fontSize: 23),
             ),
           ),
-          Stack(
-            children: [
-              GestureDetector(
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) => BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                      child: Dialog(
-                        shadowColor: Colors.black,
+          Container(
+            constraints: BoxConstraints(maxHeight: 300),
+            child: PageView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: widget.imagePaths.length,
+              onPageChanged: (value) {
+                setState(() {
+                  image = value;
+                });
+              },
+              itemBuilder: (context, index) {
+                return Stack(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => BackdropFilter(
+                            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                            child:
+                                Dialog(
+                                  shadowColor: Colors.black,
+                                  child: Container(
+                                    width: double.infinity,
+                                    height: asset.height,
+                                    clipBehavior: Clip.hardEdge,
+                                    decoration: BoxDecoration(
+                                      color: Colors.transparent,
+                                      borderRadius: BorderRadius.circular(15),
+                                      border: Border.all(
+                                        color: Colors.white,
+                                        strokeAlign:
+                                            BorderSide.strokeAlignOutside,
+                                        width: 5,
+                                      ),
+                                    ),
+                                    child: widget.imagePaths.isNotEmpty
+                                        ? Image.network(
+                                            widget.imagePaths[index] ?? "",
+                                            fit: BoxFit.cover,
+                                          )
+                                        : Container(),
+                                  ),
+                                ).animate().untint(
+                                  duration: Duration(milliseconds: 350),
+                                ),
+                          ),
+                        );
+                      },
+                      child: Hero(
+                        tag: widget.imagePath ?? "tag2",
                         child: Container(
+                          margin: EdgeInsets.symmetric(horizontal: 15),
                           width: double.infinity,
                           height: asset.height,
                           clipBehavior: Clip.hardEdge,
                           decoration: BoxDecoration(
                             color: Colors.transparent,
                             borderRadius: BorderRadius.circular(15),
-                            border: Border.all(
-                              color: Colors.white,
-                              strokeAlign: BorderSide.strokeAlignOutside,
-                              width: 5,
-                            ),
                           ),
-                          child: widget.imagePath!.isNotEmpty
+                          child: widget.imagePaths.isNotEmpty
                               ? Image.network(
-                                  widget.imagePath ?? "",
+                                  widget.imagePaths[index] ?? "",
                                   fit: BoxFit.cover,
+                                  loadingBuilder: (context, child, loadingProgress) {
+                                    if (loadingProgress == null) return child;
+                                    return Center(
+                                      child: CircularProgressIndicator(
+                                        value:
+                                            loadingProgress
+                                                        .expectedTotalBytes !=
+                                                    null &&
+                                                loadingProgress
+                                                        .expectedTotalBytes !=
+                                                    null
+                                            ? loadingProgress
+                                                      .cumulativeBytesLoaded /
+                                                  loadingProgress
+                                                      .expectedTotalBytes!
+                                            : null,
+                                        color: Colors.white,
+                                      ),
+                                    );
+                                  },
                                 )
                               : Container(),
                         ),
-                      ).animate().untint(duration: Duration(milliseconds: 350)),
+                      ),
                     ),
-                  );
-                },
-                child: Hero(
-                  tag: widget.imagePath ?? "tag2",
-                  child: Container(
-                    margin: EdgeInsets.symmetric(horizontal: 15),
-                    width: double.infinity,
-                    height: asset.height,
-                    clipBehavior: Clip.hardEdge,
-                    decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: widget.imagePath!.isNotEmpty
-                        ? Image.network(
-                            widget.imagePath ?? "",
-                            fit: BoxFit.cover,
-                          )
-                        : Container(),
-                  ),
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.all(15),
-                width: double.infinity,
-                height: asset.height,
-                clipBehavior: Clip.hardEdge,
+                    // Container(
+                    //   margin: EdgeInsets.all(15),
+                    //   width: double.infinity,
+                    //   height: asset.height,
+                    //   clipBehavior: Clip.hardEdge,
+                    //   decoration: BoxDecoration(
+                    //     gradient: LinearGradient(
+                    //       begin: AlignmentGeometry.topCenter,
+                    //       end: AlignmentGeometry.bottomCenter,
+                    //       colors: [
+                    //         Colors.black.withAlpha(0),
+                    //         Colors.black.withAlpha(50),
+                    //         Colors.black.withAlpha(100),
+                    //       ],
+                    //     ),
+                    //     // color: Colors.black.withAlpha(80),
+                    //     borderRadius: BorderRadius.circular(15),
+                    //   ),
+                    // ),
+                  ],
+                );
+              },
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: List.generate(
+              widget.imagePaths.length < 5 ? widget.imagePaths.length : 5,
+              (index) => Container(
+                margin: const EdgeInsets.all(8),
+                height: image == index ? 8 : 7,
+                width: image == index ? 8 : 7,
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: AlignmentGeometry.topCenter,
-                    end: AlignmentGeometry.bottomCenter,
-                    colors: [
-                      Colors.black.withAlpha(0),
-                      Colors.black.withAlpha(50),
-                      Colors.black.withAlpha(100),
-                    ],
-                  ),
-                  // color: Colors.black.withAlpha(80),
-                  borderRadius: BorderRadius.circular(15),
+                  color: image == index ? Colors.white : Colors.grey[800],
+                  shape: BoxShape.circle,
                 ),
               ),
-            ],
+            ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
