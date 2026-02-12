@@ -147,6 +147,7 @@ class _PostCardState extends State<PostCard> {
             child: PageView.builder(
               scrollDirection: Axis.horizontal,
               itemCount: widget.imagePaths.length,
+              physics: BouncingScrollPhysics(),
               onPageChanged: (value) {
                 setState(() {
                   image = value;
