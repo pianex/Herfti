@@ -67,7 +67,7 @@ class ProfessionalCard extends StatelessWidget {
           children: [
             Container(
               // margin: const EdgeInsets.all(10),
-              width: 80,
+              width: 60,
 
               // height: 80,
               clipBehavior: Clip.hardEdge,
@@ -80,19 +80,27 @@ class ProfessionalCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(right: 10),
               child: Container(
-                constraints: BoxConstraints(maxWidth: 200),
+                constraints: BoxConstraints(maxWidth: 150),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       name,
 
-                      style: TextStyle(color: Colors.white, fontSize: 25),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
                       overflow: TextOverflow.clip,
                     ),
                     Text(
                       category,
-                      style: TextStyle(color: Colors.white, fontSize: 21),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 19,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ],
                 ),
