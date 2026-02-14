@@ -128,6 +128,10 @@ class _PostCardState extends State<PostCard> {
                   ),
 
                   Spacer(),
+                  IconButton(
+                    onPressed: () {},
+                    icon: Icon(Icons.more_horiz, color: Colors.white, size: 25),
+                  ),
                 ],
               ),
             ),
