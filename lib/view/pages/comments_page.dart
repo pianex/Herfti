@@ -143,13 +143,6 @@ class _CommentsPageState extends State<CommentsPage> {
                             ],
                           ),
                         ),
-
-                        Spacer(),
-                        Text(
-                          widget.time,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.white, fontSize: 18),
-                        ),
                       ],
                     ),
                   ),
@@ -199,6 +192,7 @@ class _CommentsPageState extends State<CommentsPage> {
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        Spacer(),
                         Text(
                           shrinkLikesFormula(currentLikes),
                           style: TextStyle(color: Colors.amber, fontSize: 21),
@@ -251,6 +245,13 @@ class _CommentsPageState extends State<CommentsPage> {
                           ),
                         ),
                         Icon(Icons.message, color: Colors.blue[300], size: 30),
+                        Spacer(),
+                        Text(
+                          widget.time,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.white, fontSize: 18),
+                        ),
+                        Spacer(),
                       ],
                     );
                   },

@@ -109,22 +109,25 @@ class _PostCardState extends State<PostCard> {
                           widget.name,
                           overflow: TextOverflow.ellipsis,
 
-                          style: TextStyle(color: Colors.white, fontSize: 20),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                         Text(
                           widget.type,
-                          style: TextStyle(color: Colors.white, fontSize: 20),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ],
                     ),
                   ),
 
                   Spacer(),
-                  Text(
-                    widget.time,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white, fontSize: 18),
-                  ),
                 ],
               ),
             ),
@@ -248,6 +251,7 @@ class _PostCardState extends State<PostCard> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Spacer(),
               Text(
                 shrinkLikesFormula(widget.likes),
                 style: TextStyle(color: Colors.amber, fontSize: 21),
@@ -314,8 +318,20 @@ class _PostCardState extends State<PostCard> {
                 },
                 icon: Icon(Icons.message, color: Colors.blue[300], size: 30),
               ),
+              Spacer(),
+              Text(
+                widget.time,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+              Spacer(),
             ],
           ),
+          SizedBox(height: 10),
         ],
       ),
     );
