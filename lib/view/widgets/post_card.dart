@@ -4,10 +4,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:popover/popover.dart';
 import 'package:project_a/core/functions/formatters.dart';
 import 'package:project_a/main.dart';
 import 'package:project_a/view/pages/comments_page.dart';
 import 'package:project_a/view/pages/prof_profile.dart';
+import 'package:project_a/view/widgets/post_menu.dart';
 
 class PostCard extends StatefulWidget {
   const PostCard({
@@ -129,7 +131,18 @@ class _PostCardState extends State<PostCard> {
 
                   Spacer(),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      showPopover(
+                        context: context,
+                        bodyBuilder: (context) => PostMenu(),
+                        width: 200,
+                        height: 150,
+                        backgroundColor: Colors.blue[700]!,
+                        radius: 20,
+                        arrowHeight: 20,
+                        arrowWidth: 30,
+                      );
+                    },
                     icon: Icon(Icons.more_horiz, color: Colors.white, size: 25),
                   ),
                 ],
