@@ -90,70 +90,68 @@ class _CommentsPageState extends State<CommentsPage> {
             ListView(
               children: [
                 SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 13,
-                    vertical: 8,
-                  ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ProfessionalProfile(
-                                tag: widget.profImagePath,
-                                profUid: widget.profUid,
-                              ),
-                            ),
-                          );
-                        },
-                        child: SizedBox(
-                          child: Row(
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ProfessionalProfile(
+                          tag: widget.profImagePath,
+                          profUid: widget.profUid,
+                        ),
+                      ),
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 13,
+                      vertical: 8,
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Hero(
+                          tag: widget.profImagePath,
+                          child: CircleAvatar(
+                            backgroundColor: Colors.blue[900],
+                            backgroundImage: NetworkImage(widget.profImagePath),
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        Container(
+                          constraints: BoxConstraints(maxWidth: 200),
+
+                          child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Hero(
-                                tag: widget.firstTag,
-                                child: CircleAvatar(
-                                  backgroundColor: Colors.blue[900],
-                                  backgroundImage: NetworkImage(
-                                    widget.profImagePath,
-                                  ),
+                              Text(
+                                widget.name,
+                                overflow: TextOverflow.ellipsis,
+
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
                                 ),
                               ),
-                              SizedBox(width: 10),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    widget.name,
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 25,
-                                    ),
-                                  ),
-                                  Text(
-                                    widget.type,
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 21,
-                                    ),
-                                  ),
-                                ],
+                              Text(
+                                widget.type,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                ),
                               ),
                             ],
                           ),
                         ),
-                      ),
 
-                      Spacer(),
-                      Text(
-                        widget.time,
-                        style: TextStyle(color: Colors.white, fontSize: 21),
-                      ),
-                    ],
+                        Spacer(),
+                        Text(
+                          widget.time,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.white, fontSize: 18),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 Padding(
