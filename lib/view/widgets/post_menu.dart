@@ -7,25 +7,64 @@ class PostMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
-          height: 50,
-          decoration: BoxDecoration(
-            color: Colors.blue,
-            // borderRadius: BorderRadius.circular(10),
+        GestureDetector(
+          onDoubleTap: () {},
+          child: Container(
+            height: 50,
+            decoration: BoxDecoration(
+              color: Colors.yellow[800]!,
+              // borderRadius: BorderRadius.circular(10),
+            ),
+            child: Center(
+              child: Text(
+                "تعديل",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 23,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
           ),
         ),
-        Container(
-          height: 50,
-          decoration: BoxDecoration(
-            color: Colors.blue[700],
-            // borderRadius: BorderRadius.circular(10),
+        GestureDetector(
+          onDoubleTap: () {},
+          child: Container(
+            height: 50,
+            decoration: BoxDecoration(
+              color: Colors.orange[700]!,
+              // borderRadius: BorderRadius.circular(10),
+            ),
+            child: Center(
+              child: Text(
+                "إبلاغ",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 23,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
           ),
         ),
-        Container(
-          height: 50,
-          decoration: BoxDecoration(
-            color: Colors.blue[900],
-            // borderRadius: BorderRadius.circular(10),
+        GestureDetector(
+          onDoubleTap: () {},
+          child: Container(
+            height: 50,
+            decoration: BoxDecoration(
+              color: Colors.red[700]!,
+              // borderRadius: BorderRadius.circular(10),
+            ),
+            child: Center(
+              child: Text(
+                "حذف",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 23,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
           ),
         ),
       ],

@@ -137,7 +137,7 @@ class _PostCardState extends State<PostCard> {
                         bodyBuilder: (context) => PostMenu(),
                         width: 200,
                         height: 150,
-                        backgroundColor: Colors.blue[700]!,
+                        backgroundColor: Colors.red[700]!,
                         radius: 20,
                         arrowHeight: 20,
                         arrowWidth: 30,
