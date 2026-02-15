@@ -309,6 +309,8 @@ class _CommentsPageState extends State<CommentsPage> {
                                 name: comments[index]["profName"],
                                 text: comments[index]["text"],
                                 imagePath: comments[index]["profImagePath"],
+                                postUid: widget.postUid,
+                                index: index,
                               ),
                             );
                           },
@@ -370,6 +372,7 @@ class _CommentsPageState extends State<CommentsPage> {
                         .then((value) {
                           // Navigator.pop(context);
                           commentController.clear();
+                          Navigator.pop(context);
                         });
                   },
                   child: Icon(Icons.send, color: Colors.white),
