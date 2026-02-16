@@ -46,11 +46,11 @@ class _ClientLoginPageState extends State<ClientLoginPage> {
         ),
         body: Stack(
           children: [
-            SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              child: Image.asset("assets/images/step.jpg", fit: BoxFit.cover),
-            ),
+            // SizedBox(
+            //   width: MediaQuery.of(context).size.width,
+            //   height: MediaQuery.of(context).size.height,
+            //   child: Image.asset("assets/images/step.jpg", fit: BoxFit.cover),
+            // ),
             Container(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
