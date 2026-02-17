@@ -1,22 +1,30 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:popover/popover.dart';
 import 'package:project_a/core/constants/app_theme.dart';
-import 'package:project_a/view/widgets/post_menu.dart';
+import 'package:project_a/main.dart';
+import 'package:project_a/view/widgets/comment_menu.dart';
 
 class Comment extends StatefulWidget {
   const Comment({
     super.key,
-    required this.name,
     required this.text,
-    required this.imagePath,
     required this.postUid,
     required this.index,
+    required this.userName,
+    required this.userImagePath,
+    required this.profType,
+    required this.userUid,
+    required this.uid,
+    required this.timeAdded,
   });
-  final String name;
-  final String text;
-  final String imagePath;
+  final String uid;
+  final String timeAdded;
   final String postUid;
+  final String userUid;
+  final String userName;
+  final String profType;
+  final String userImagePath;
+  final String text;
   final int index;
 
   @override
@@ -24,35 +32,24 @@ class Comment extends StatefulWidget {
 }
 
 class _CommentState extends State<Comment> {
+  final email = sharedPref.getString("email") ?? "";
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onLongPress: () async {
-        showPopover(
-          context: context,
-          bodyBuilder: (context) => PostMenu(),
-          width: 200,
-          height: 150,
-          backgroundColor: Colors.red[700]!,
-          radius: 20,
-          arrowHeight: 20,
-          arrowWidth: 30,
-        );
-        List comments = await FirebaseFirestore.instance
-            .collection("Posts")
-            .doc(widget.postUid)
-            .get()
-            .then((doc) {
-              return doc.data()!["comments"] ?? [];
-            });
-        comments.removeAt(widget.index);
-        FirebaseFirestore.instance
-            .collection("Posts")
-            .doc(widget.postUid)
-            .update({"comments": comments, "commentsCount": comments.length})
-            .whenComplete(() {
-              setState(() {});
-            });
+        if (widget.userUid == email) {
+          showPopover(
+            context: context,
+            bodyBuilder: (context) =>
+                CommentMenu(postUid: widget.postUid, index: widget.index),
+            width: 200,
+            height: 150,
+            backgroundColor: Colors.red[700]!,
+            radius: 20,
+            arrowHeight: 20,
+            arrowWidth: 30,
+          );
+        }
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
@@ -64,7 +61,7 @@ class _CommentState extends State<Comment> {
               CircleAvatar(
                 radius: 20,
                 backgroundColor: appBarColor,
-                backgroundImage: NetworkImage(widget.imagePath),
+                backgroundImage: NetworkImage(widget.userImagePath),
               ),
               SizedBox(width: 10),
               Expanded(
@@ -85,7 +82,7 @@ class _CommentState extends State<Comment> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          widget.name,
+                          widget.userName,
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 23,

@@ -318,8 +318,8 @@ class _PostCardState extends State<PostCard> {
                     CupertinoPageRoute(
                       builder: (context) => CommentsPage(
                         postUid: widget.uid,
-                        profUid: widget.userUid,
-                        profImagePath: widget.userImagePath,
+                        userUid: widget.userUid,
+                        userImagePath: widget.userImagePath,
                         imagePath: widget.imagePath ?? "tag2",
                         name: widget.name,
                         text: widget.text,

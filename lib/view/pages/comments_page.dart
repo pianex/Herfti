@@ -14,9 +14,9 @@ class CommentsPage extends StatefulWidget {
   const CommentsPage({
     super.key,
     required this.postUid,
-    required this.profUid,
+    required this.userUid,
     required this.imagePath,
-    required this.profImagePath,
+    required this.userImagePath,
     required this.name,
     required this.text,
     required this.type,
@@ -27,8 +27,8 @@ class CommentsPage extends StatefulWidget {
     required this.secondTag,
   });
   final String postUid;
-  final String profUid;
-  final String profImagePath;
+  final String userUid;
+  final String userImagePath;
   final String imagePath;
   final String name;
   final String type;
@@ -96,8 +96,8 @@ class _CommentsPageState extends State<CommentsPage> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => ProfessionalProfile(
-                          tag: widget.profImagePath,
-                          profUid: widget.profUid,
+                          tag: widget.userImagePath,
+                          profUid: widget.userUid,
                         ),
                       ),
                     );
@@ -111,10 +111,10 @@ class _CommentsPageState extends State<CommentsPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Hero(
-                          tag: widget.profImagePath,
+                          tag: widget.userImagePath,
                           child: CircleAvatar(
                             backgroundColor: Colors.blue[900],
-                            backgroundImage: NetworkImage(widget.profImagePath),
+                            backgroundImage: NetworkImage(widget.userImagePath),
                           ),
                         ),
                         SizedBox(width: 10),
@@ -306,11 +306,15 @@ class _CommentsPageState extends State<CommentsPage> {
                                     });
                               },
                               child: Comment(
-                                name: comments[index]["profName"],
                                 text: comments[index]["text"],
-                                imagePath: comments[index]["profImagePath"],
                                 postUid: widget.postUid,
                                 index: index,
+                                uid: comments[index]["uid"],
+                                timeAdded: comments[index]["timeAdded"],
+                                userUid: comments[index]["userUid"],
+                                userName: comments[index]["userName"],
+                                profType: comments[index]["profType"],
+                                userImagePath: comments[index]["userImagePath"],
                               ),
                             );
                           },
@@ -355,10 +359,10 @@ class _CommentsPageState extends State<CommentsPage> {
                       uid: DateTime.now().microsecondsSinceEpoch.toString(),
                       timeAdded: DateTime.now().toString(),
                       postUid: widget.postUid,
-                      profUid: widget.profUid,
-                      profName: userName,
+                      userUid: widget.userUid,
+                      userName: userName,
                       profType: "النوع",
-                      profImagePath: imagePath,
+                      userImagePath: imagePath,
                       text: commentController.text,
                     ).toJson();
                     comments.add(json);

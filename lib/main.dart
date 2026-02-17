@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
     String? userType = sharedPref.getString("userType");
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'حرفتي',
+      title: 'Kivr',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
       ),

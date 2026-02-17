@@ -2,42 +2,42 @@ class CommentModel {
   final String uid;
   final String timeAdded;
   final String postUid;
-  final String profUid;
-  final String profName;
+  final String userUid;
+  final String userName;
   final String profType;
-  final String profImagePath;
+  final String userImagePath;
   final String text;
 
   CommentModel({
     required this.uid,
     required this.timeAdded,
     required this.postUid,
-    required this.profUid,
-    required this.profName,
     required this.profType,
-    required this.profImagePath,
     required this.text,
+    required this.userUid,
+    required this.userName,
+    required this.userImagePath,
   });
 
   Map<String, dynamic> toJson() => {
     "uid": uid,
     "timeAdded": timeAdded,
-    "commentUid": postUid,
-    "profUid": profUid,
-    "profName": profName,
-    "profType": profType,
-    "profImagePath": profImagePath,
+    "postUid": postUid,
+    "userUid": userUid,
+    "userName": userName,
+    "userImagePath": userImagePath,
     "text": text,
+    "profType": profType,
   };
 
   static CommentModel fromJson(Map<String, dynamic> json) => CommentModel(
     uid: json["uid"],
     timeAdded: json["timeAdded"],
     postUid: json["postUid"],
-    profUid: json["profUid"],
-    profName: json["profName"],
-    profType: json["profType"],
-    profImagePath: json["profImagePath"],
+    userUid: json["userUid"],
+    userName: json["userName"],
+    userImagePath: json["userImagePath"],
     text: json["text"],
+    profType: json["profType"],
   );
 }
