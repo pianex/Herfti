@@ -171,6 +171,8 @@ class _PostCardState extends State<PostCard> {
                           type: widget.type,
                           time: widget.time,
                           likes: widget.likes,
+                          isLiked: widget.likersUids.contains(email),
+                          likersUids: widget.likersUids,
                           comments: widget.comments,
                           firstTag: widget.userImagePath,
                           secondTag: widget.imagePath ?? "tag2",
@@ -201,6 +203,8 @@ class _PostCardState extends State<PostCard> {
                           type: widget.type,
                           time: widget.time,
                           likes: widget.likes,
+                          isLiked: widget.likersUids.contains(email),
+                          likersUids: widget.likersUids,
                           comments: widget.comments,
                           firstTag: widget.userImagePath,
                           secondTag: widget.imagePath ?? "tag2",
@@ -404,6 +408,7 @@ class _PostCardState extends State<PostCard> {
                     size: 30,
                   );
                 },
+                // ignore: body_might_complete_normally_nullable
                 onTap: (isLiked) async {
                   List<dynamic> likersUids = widget.likersUids;
                   if (isLiked) {
@@ -417,6 +422,7 @@ class _PostCardState extends State<PostCard> {
                           "likersUids": likersUids,
                           "likesCount": likersUids.length,
                         });
+                    setState(() {});
                   } else {
                     likedPosts.add(widget.uid);
                     sharedPref.setStringList("likedPosts", likedPosts);
@@ -428,6 +434,7 @@ class _PostCardState extends State<PostCard> {
                           "likersUids": likersUids,
                           "likesCount": likersUids.length,
                         });
+                    setState(() {});
                   }
                   // if (likedPosts.contains(widget.uid)) {
                   //   likedPosts.remove(widget.uid);
@@ -475,6 +482,8 @@ class _PostCardState extends State<PostCard> {
                         type: widget.type,
                         time: widget.time,
                         likes: widget.likes,
+                        isLiked: widget.likersUids.contains(email),
+                        likersUids: widget.likersUids,
                         comments: widget.comments,
                         firstTag: widget.userImagePath,
                         secondTag: widget.imagePath ?? "tag2",
