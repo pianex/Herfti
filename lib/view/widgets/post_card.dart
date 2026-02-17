@@ -135,7 +135,7 @@ class _PostCardState extends State<PostCard> {
                       showPopover(
                         context: context,
                         bodyBuilder: (context) => PostMenu(),
-                        width: 200,
+                        width: 250,
                         height: 150,
                         backgroundColor: Colors.red[700]!,
                         radius: 20,
