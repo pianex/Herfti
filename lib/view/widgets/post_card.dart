@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:like_button/like_button.dart';
 import 'package:popover/popover.dart';
 import 'package:project_a/core/functions/formatters.dart';
 import 'package:project_a/main.dart';
@@ -24,7 +25,9 @@ class PostCard extends StatefulWidget {
     required this.imagePaths,
     required this.text,
     required this.likes,
+    required this.isLiked,
     required this.comments,
+    required this.likersUids,
     required this.firstTag,
     required this.secondTag,
   });
@@ -38,7 +41,9 @@ class PostCard extends StatefulWidget {
   final List<dynamic> imagePaths;
   final String text;
   final int likes;
+  final bool isLiked;
   final int comments;
+  final List<dynamic> likersUids;
   final String firstTag;
   final String secondTag;
   @override
@@ -60,6 +65,7 @@ class _PostCardState extends State<PostCard> {
   Widget build(BuildContext context) {
     // Image? asset = Image.asset(widget.imagePath ?? "", fit: BoxFit.cover);
     List<String> likedPosts = sharedPref.getStringList("likedPosts") ?? [];
+    String email = sharedPref.getString("email")!;
     if (likedPosts.contains(widget.uid)) {
       isLiked = true;
     } else {
@@ -344,42 +350,110 @@ class _PostCardState extends State<PostCard> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Spacer(),
-              Text(
-                shrinkLikesFormula(widget.likes),
-                style: TextStyle(color: Colors.amber, fontSize: 21),
-              ),
-              GestureDetector(
-                onDoubleTap: () {},
-                onTap: () {
-                  if (likedPosts.contains(widget.uid)) {
+              // Text(
+              //   shrinkLikesFormula(widget.likes),
+              //   style: TextStyle(color: Colors.amber, fontSize: 21),
+              // ),
+              // GestureDetector(
+              //   onDoubleTap: () {},
+              //   onTap: () {
+              //     if (likedPosts.contains(widget.uid)) {
+              //       likedPosts.remove(widget.uid);
+              //       sharedPref.setStringList("likedPosts", likedPosts);
+              //       int likes = widget.likes - 1;
+              //       FirebaseFirestore.instance
+              //           .collection("Posts")
+              //           .doc(widget.uid)
+              //           .update({"likesCount": likes});
+              //       setState(() {
+              //         isLiked = false;
+              //       });
+              //     } else {
+              //       likedPosts.add(widget.uid);
+              //       sharedPref.setStringList("likedPosts", likedPosts);
+              //       int likes = widget.likes + 1;
+              //       FirebaseFirestore.instance
+              //           .collection("Posts")
+              //           .doc(widget.uid)
+              //           .update({"likesCount": likes});
+              //       setState(() {
+              //         isLiked = true;
+              //       });
+              //     }
+              //   },
+              //   child: Icon(
+              //     isLiked ? Icons.star : Icons.star_border,
+              //     color: Colors.amber,
+              //     size: 30,
+              //   ),
+              // ),
+              LikeButton(
+                countPostion: CountPostion.left,
+                countDecoration: (counter, likeCount) {
+                  return Text(
+                    shrinkLikesFormula(widget.likes),
+                    style: TextStyle(color: Colors.amber, fontSize: 21),
+                  );
+                },
+                isLiked: widget.isLiked,
+                likeCount: widget.likes,
+                likeBuilder: (isLiked) {
+                  return Icon(
+                    isLiked ? Icons.star : Icons.star_border,
+                    color: Colors.amber,
+                    size: 30,
+                  );
+                },
+                onTap: (isLiked) async {
+                  List<dynamic> likersUids = widget.likersUids;
+                  if (isLiked) {
+                    likersUids.remove(email);
                     likedPosts.remove(widget.uid);
                     sharedPref.setStringList("likedPosts", likedPosts);
-                    int likes = widget.likes - 1;
                     FirebaseFirestore.instance
                         .collection("Posts")
                         .doc(widget.uid)
-                        .update({"likesCount": likes});
-                    setState(() {
-                      isLiked = false;
-                    });
+                        .update({
+                          "likersUids": likersUids,
+                          "likesCount": likersUids.length,
+                        });
                   } else {
                     likedPosts.add(widget.uid);
                     sharedPref.setStringList("likedPosts", likedPosts);
-                    int likes = widget.likes + 1;
+                    likersUids.add(email);
                     FirebaseFirestore.instance
                         .collection("Posts")
                         .doc(widget.uid)
-                        .update({"likesCount": likes});
-                    setState(() {
-                      isLiked = true;
-                    });
+                        .update({
+                          "likersUids": likersUids,
+                          "likesCount": likersUids.length,
+                        });
                   }
+                  // if (likedPosts.contains(widget.uid)) {
+                  //   likedPosts.remove(widget.uid);
+                  //   sharedPref.setStringList("likedPosts", likedPosts);
+                  //   int likes = widget.likes - 1;
+                  //   FirebaseFirestore.instance
+                  //       .collection("Posts")
+                  //       .doc(widget.uid)
+                  //       .update({"likesCount": likes});
+                  //   // setState(() {
+                  //   //   this.isLiked = false;
+                  //   // });
+                  // } else {
+                  //   likedPosts.add(widget.uid);
+                  //   sharedPref.setStringList("likedPosts", likedPosts);
+                  //   int likes = widget.likes + 1;
+                  //   FirebaseFirestore.instance
+                  //       .collection("Posts")
+                  //       .doc(widget.uid)
+                  //       .update({"likesCount": likes});
+                  //   // setState(() {
+                  //   //   this.isLiked = true;
+                  //   // });
+                  // }
+                  // return !isLiked;
                 },
-                child: Icon(
-                  isLiked ? Icons.star : Icons.star_border,
-                  color: Colors.amber,
-                  size: 30,
-                ),
               ),
               SizedBox(width: 40),
               Text(
@@ -416,7 +490,7 @@ class _PostCardState extends State<PostCard> {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 15,
+                  fontSize: 13,
                   fontWeight: FontWeight.w400,
                 ),
               ),

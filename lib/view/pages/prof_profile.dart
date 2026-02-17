@@ -9,6 +9,7 @@ import 'package:project_a/core/functions/date_functions.dart';
 import 'package:project_a/core/functions/formatters.dart';
 import 'package:project_a/core/functions/post_functions.dart';
 import 'package:project_a/core/functions/prof_functions.dart';
+import 'package:project_a/main.dart';
 import 'package:project_a/view/widgets/contact_button.dart';
 import 'package:project_a/view/widgets/post_card.dart';
 import 'package:project_a/view/widgets/title_text.dart';
@@ -26,6 +27,7 @@ class ProfessionalProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Image asset = Image.network(tag, fit: BoxFit.cover);
+    String email = sharedPref.getString("email")!;
 
     return Directionality(
       textDirection: TextDirection.rtl,
@@ -215,6 +217,8 @@ class ProfessionalProfile extends StatelessWidget {
                             shrinkWrap: true,
                             itemCount: posts.length,
                             itemBuilder: (context, index) {
+                              bool isLiked = snapshot.data![index].likersUids
+                                  .contains(email);
                               return PostCard(
                                 uid: snapshot.data![index].uid,
                                 userUid: snapshot.data![index].userUid,
@@ -236,7 +240,9 @@ class ProfessionalProfile extends StatelessWidget {
                                     : [],
                                 text: snapshot.data![index].text,
                                 likes: snapshot.data![index].likesCount,
+                                isLiked: isLiked,
                                 comments: snapshot.data![index].commentsCount,
+                                likersUids: snapshot.data![index].likersUids,
                                 firstTag: snapshot.data![index].userImagePath,
                                 secondTag:
                                     snapshot.data![index].imagePaths.isNotEmpty

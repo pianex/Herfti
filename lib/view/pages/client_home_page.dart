@@ -17,6 +17,7 @@ class ClientHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String email = sharedPref.getString("email")!;
     String? imagePath = sharedPref.getString("imagePath");
     String googleImagePath = sharedPref.getString("googleImagePath")!;
     return Directionality(
@@ -150,6 +151,8 @@ class ClientHomePage extends StatelessWidget {
                       shrinkWrap: true,
                       itemCount: posts.length,
                       itemBuilder: (context, index) {
+                        bool isLiked = snapshot.data![index].likersUids
+                            .contains(email);
                         return PostCard(
                           uid: snapshot.data![index].uid,
                           userUid: snapshot.data![index].userUid,
@@ -168,7 +171,9 @@ class ClientHomePage extends StatelessWidget {
                               : [],
                           text: snapshot.data![index].text,
                           likes: snapshot.data![index].likesCount,
+                          isLiked: isLiked,
                           comments: snapshot.data![index].commentsCount,
+                          likersUids: snapshot.data![index].likersUids,
                           firstTag: snapshot.data![index].userImagePath,
                           secondTag: snapshot.data![index].imagePaths.isNotEmpty
                               ? snapshot.data![index].imagePaths[0].toString()

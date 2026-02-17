@@ -199,6 +199,7 @@ class _NewPostPageState extends State<NewPostPage> {
                   text: _postController.text.trim(),
                   imagePaths: imagePaths,
                   comments: [],
+                  likersUids: [],
                   likesCount: 0,
                   commentsCount: 0,
                   tokens: tokens,

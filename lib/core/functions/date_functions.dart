@@ -5,7 +5,7 @@ String timeAddedFormatted(String timeAdded) {
   String result = '';
   if (DateUtils.isSameDay(DateTime.now(), DateTime.parse(timeAdded))) {
     result = formatDate(DateTime.parse(timeAdded), [
-      "اليوم\n",
+      "اليوم ",
 
       HH,
       ':',
@@ -16,7 +16,7 @@ String timeAddedFormatted(String timeAdded) {
     DateTime.parse(timeAdded),
   )) {
     result = formatDate(DateTime.parse(timeAdded), [
-      "الأمس\n",
+      "الأمس ",
       HH,
       ':',
       nn,
