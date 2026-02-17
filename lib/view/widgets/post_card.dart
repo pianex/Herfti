@@ -149,13 +149,88 @@ class _PostCardState extends State<PostCard> {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              widget.text,
-              style: TextStyle(color: Colors.white, fontSize: 23),
-            ),
-          ),
+          widget.text.length < 70
+              ? GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (context) => CommentsPage(
+                          postUid: widget.uid,
+                          userUid: widget.userUid,
+                          userImagePath: widget.userImagePath,
+                          imagePath: widget.imagePath ?? "tag2",
+                          name: widget.name,
+                          text: widget.text,
+                          type: widget.type,
+                          time: widget.time,
+                          likes: widget.likes,
+                          comments: widget.comments,
+                          firstTag: widget.userImagePath,
+                          secondTag: widget.imagePath ?? "tag2",
+                        ),
+                      ),
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      widget.text,
+                      style: TextStyle(color: Colors.white, fontSize: 23),
+                    ),
+                  ),
+                )
+              : GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (context) => CommentsPage(
+                          postUid: widget.uid,
+                          userUid: widget.userUid,
+                          userImagePath: widget.userImagePath,
+                          imagePath: widget.imagePath ?? "tag2",
+                          name: widget.name,
+                          text: widget.text,
+                          type: widget.type,
+                          time: widget.time,
+                          likes: widget.likes,
+                          comments: widget.comments,
+                          firstTag: widget.userImagePath,
+                          secondTag: widget.imagePath ?? "tag2",
+                        ),
+                      ),
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Stack(
+                      alignment: Alignment.bottomCenter,
+                      children: [
+                        Text(
+                          widget.text,
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(color: Colors.white, fontSize: 23),
+                        ),
+
+                        Container(
+                          padding: const EdgeInsets.all(8.0),
+                          height: 50,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            gradient: LinearGradient(
+                              colors: [Colors.transparent, Color(0xFF11152E)],
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                            ),
+                          ),
+                        ),
+                        Icon(Icons.expand_more, color: Colors.white, size: 30),
+                      ],
+                    ),
+                  ),
+                ),
           widget.imagePaths.isNotEmpty
               ? Container(
                   constraints: BoxConstraints(maxHeight: 300),
