@@ -157,7 +157,7 @@ class _ProfInfoPageState extends State<ProfInfoPage> {
               ),
               CustTextFormField(
                 label: "الخدمات التي تقدمها",
-                controller: descController,
+                controller: servicesController,
                 validator: (text) {
                   return nameValidator(text);
                 },
@@ -467,6 +467,18 @@ class _ProfInfoPageState extends State<ProfInfoPage> {
                                   "desc",
                                   descController.text,
                                 );
+                                sharedPref.setString(
+                                  "services",
+                                  servicesController.text,
+                                );
+                                sharedPref.setString(
+                                  "xp",
+                                  xpController.text.isNotEmpty
+                                      ? xpController.text
+                                      : "0",
+                                );
+                                sharedPref.setBool("travel", travelValue);
+                                sharedPref.setBool("available", availableValue);
                                 sharedPref.setString(
                                   "phone",
                                   phoneController.text,

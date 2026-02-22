@@ -32,10 +32,14 @@ class ProfAccountPage extends StatefulWidget {
 }
 
 class _AccountPageState extends State<ProfAccountPage> {
+  File? image;
   TextEditingController nameController = TextEditingController();
   TextEditingController descController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
-  File? image;
+  TextEditingController servicesController = TextEditingController();
+  TextEditingController xpController = TextEditingController();
+  bool travelValue = true;
+  bool availableValue = true;
   String countryValue = '🇩🇿    Algeria';
   String stateValue = '';
   String cityValue = '';
@@ -74,6 +78,10 @@ class _AccountPageState extends State<ProfAccountPage> {
     String phone = sharedPref.getString("phone")!;
     String state = sharedPref.getString("state")!;
     String city = sharedPref.getString("city")!;
+    String services = sharedPref.getString("services")!;
+    String xp = sharedPref.getString("xp")!;
+    bool travel = sharedPref.getBool("travel") ?? true;
+    bool available = sharedPref.getBool("available") ?? true;
     if (!infosLoaded) {
       nameController.text = name;
       descController.text = desc;
@@ -81,6 +89,10 @@ class _AccountPageState extends State<ProfAccountPage> {
       stateValue = state;
       cityValue = city;
       infosLoaded = true;
+      servicesController.text = services;
+      xpController.text = xp;
+      travelValue = travel;
+      availableValue = available;
     }
     if (accSelectedCategory == 0) {
       accSelectedCategory = sharedPref.getInt("category")!;
@@ -165,6 +177,14 @@ class _AccountPageState extends State<ProfAccountPage> {
                 },
               ),
               CustTextFormField(
+                label: "رقم الهاتف",
+                controller: phoneController,
+                keyboardType: TextInputType.phone,
+                validator: (text) {
+                  return phoneValidator(text);
+                },
+              ),
+              CustTextFormField(
                 label: "الوصف",
                 controller: descController,
                 validator: (text) {
@@ -172,11 +192,107 @@ class _AccountPageState extends State<ProfAccountPage> {
                 },
               ),
               CustTextFormField(
-                label: "رقم الهاتف",
-                controller: phoneController,
+                label: "الخدمات التي تقدمها",
+                controller: servicesController,
                 validator: (text) {
-                  return phoneValidator(text);
+                  return nameValidator(text);
                 },
+              ),
+              CustTextFormField(
+                label: "الخبرة بالسنوات",
+                keyboardType: TextInputType.numberWithOptions(decimal: false),
+                controller: xpController,
+                validator: (text) {
+                  return priceValidator(text);
+                },
+              ),
+              RadioGroup(
+                onChanged: (value) {
+                  setState(() {
+                    travelValue = value!;
+                  });
+                },
+                groupValue: travelValue,
+                child: Column(
+                  children: [
+                    Text(
+                      "هل يمكنك التنقل لأداء الخدمات؟",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    RadioListTile(
+                      value: true,
+                      fillColor: WidgetStatePropertyAll(Colors.white),
+                      title: Text(
+                        "يمكنني التنقل",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    RadioListTile(
+                      value: false,
+                      fillColor: WidgetStatePropertyAll(Colors.orange),
+                      title: Text(
+                        "لا، لا يمكنني التنقل",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              RadioGroup(
+                onChanged: (value) {
+                  setState(() {
+                    availableValue = value!;
+                  });
+                },
+                groupValue: availableValue,
+                child: Column(
+                  children: [
+                    Text(
+                      "هل أنت متوفر حاليا لأداء الخدمات؟",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    RadioListTile(
+                      value: true,
+                      fillColor: WidgetStatePropertyAll(Colors.white),
+                      title: Text(
+                        "أنا متوفر حاليا",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    RadioListTile(
+                      value: false,
+                      fillColor: WidgetStatePropertyAll(Colors.orange),
+                      title: Text(
+                        "لا، لا أستطيع التنقل حاليا",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.all(15),
@@ -383,10 +499,12 @@ class _AccountPageState extends State<ProfAccountPage> {
                             phone: phoneController.text,
                             email: email,
                             description: descController.text,
-                            xp: 0,
-                            services: "",
-                            travel: true,
-                            available: false,
+                            xp: xpController.text.isNotEmpty
+                                ? int.parse(xpController.text)
+                                : 0,
+                            services: servicesController.text,
+                            travel: travelValue,
+                            available: availableValue,
                             type: accSelectedCategory,
                             category: accSselectedCategoryString,
                             saves: 0,
@@ -412,7 +530,18 @@ class _AccountPageState extends State<ProfAccountPage> {
                                   "phone",
                                   phoneController.text,
                                 );
-
+                                sharedPref.setString(
+                                  "services",
+                                  servicesController.text,
+                                );
+                                sharedPref.setString(
+                                  "xp",
+                                  xpController.text.isNotEmpty
+                                      ? xpController.text
+                                      : "0",
+                                );
+                                sharedPref.setBool("travel", travelValue);
+                                sharedPref.setBool("available", availableValue);
                                 sharedPref.setString("state", stateValue);
                                 sharedPref.setString("city", cityValue);
                                 sharedPref.setInt(

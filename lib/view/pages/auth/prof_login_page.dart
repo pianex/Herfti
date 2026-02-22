@@ -112,13 +112,30 @@ class _ProfLoginPageState extends State<ProfLoginPage> {
                                       doc.data()!["name"],
                                     );
                                     sharedPref.setString(
+                                      "phone",
+                                      doc.data()!["phone"],
+                                    );
+                                    sharedPref.setString(
                                       "desc",
                                       doc.data()!["description"],
                                     );
                                     sharedPref.setString(
-                                      "phone",
-                                      doc.data()!["phone"],
+                                      "services",
+                                      doc.data()!["services"],
                                     );
+                                    sharedPref.setString(
+                                      "xp",
+                                      doc.data()!["xp"].toString(),
+                                    );
+                                    sharedPref.setBool(
+                                      "travel",
+                                      doc.data()!["travel"],
+                                    );
+                                    sharedPref.setBool(
+                                      "available",
+                                      doc.data()!["available"],
+                                    );
+
                                     sharedPref.setString(
                                       "imagePath",
                                       doc.data()!["imagePath"],
