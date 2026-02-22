@@ -383,7 +383,10 @@ class _AccountPageState extends State<ProfAccountPage> {
                             phone: phoneController.text,
                             email: email,
                             description: descController.text,
-
+                            xp: 0,
+                            services: "",
+                            travel: true,
+                            available: false,
                             type: accSelectedCategory,
                             category: accSselectedCategoryString,
                             saves: 0,

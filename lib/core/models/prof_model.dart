@@ -5,6 +5,10 @@ class ProfModel {
   final String phone;
   final String email;
   final String description;
+  final int xp;
+  final String services;
+  final bool travel;
+  final bool available;
   final int type;
   final String category;
   final String country;
@@ -20,6 +24,10 @@ class ProfModel {
     required this.phone,
     required this.email,
     required this.description,
+    required this.xp,
+    required this.services,
+    required this.travel,
+    required this.available,
     required this.country,
     required this.state,
     required this.city,
@@ -36,6 +44,10 @@ class ProfModel {
     "imagePath": imagePath,
     "phone": phone,
     "description": description,
+    "xp": xp,
+    "services": services,
+    "travel": travel,
+    "available": available,
     "type": type,
     "category": category,
     "saves": saves,

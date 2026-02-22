@@ -41,7 +41,7 @@ priceValidator(String? text) {
   if (text!.isEmpty) {
     return "لا يمكن أن يبقى الحقل فارغا.";
   } else if (text.contains(RegExp(r'[^0-9]'))) {
-    return "السعر خاطئ.";
+    return "الرقم خاطئ.";
   } else {
     return null;
   }

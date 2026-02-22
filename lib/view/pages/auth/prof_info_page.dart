@@ -37,6 +37,10 @@ class _ProfInfoPageState extends State<ProfInfoPage> {
   TextEditingController nameController = TextEditingController();
   TextEditingController descController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
+  TextEditingController servicesController = TextEditingController();
+  TextEditingController xpController = TextEditingController();
+  bool travelValue = true;
+  bool availableValue = true;
   String countryValue = '🇩🇿    Algeria';
   String stateValue = '';
   String cityValue = '';
@@ -136,7 +140,13 @@ class _ProfInfoPageState extends State<ProfInfoPage> {
                   return nameValidator(text);
                 },
               ),
-
+              CustTextFormField(
+                label: "رقم الهاتف",
+                controller: phoneController,
+                validator: (text) {
+                  return phoneValidator(text);
+                },
+              ),
               CustTextFormField(
                 label: "الوصف",
                 controller: descController,
@@ -145,11 +155,106 @@ class _ProfInfoPageState extends State<ProfInfoPage> {
                 },
               ),
               CustTextFormField(
-                label: "رقم الهاتف",
-                controller: phoneController,
+                label: "الخدمات التي تقدمها",
+                controller: descController,
                 validator: (text) {
-                  return phoneValidator(text);
+                  return nameValidator(text);
                 },
+              ),
+              CustTextFormField(
+                label: "الخبرة بالسنوات",
+                controller: xpController,
+                validator: (text) {
+                  return priceValidator(text);
+                },
+              ),
+              RadioGroup(
+                onChanged: (value) {
+                  setState(() {
+                    travelValue = value!;
+                  });
+                },
+                groupValue: travelValue,
+                child: Column(
+                  children: [
+                    Text(
+                      "هل يمكنك التنقل لأداء الخدمات؟",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    RadioListTile(
+                      value: true,
+                      fillColor: WidgetStatePropertyAll(Colors.white),
+                      title: Text(
+                        "يمكنني التنقل",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    RadioListTile(
+                      value: false,
+                      fillColor: WidgetStatePropertyAll(Colors.orange),
+                      title: Text(
+                        "لا، لا يمكنني التنقل",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              RadioGroup(
+                onChanged: (value) {
+                  setState(() {
+                    availableValue = value!;
+                  });
+                },
+                groupValue: availableValue,
+                child: Column(
+                  children: [
+                    Text(
+                      "هل أنت متوفر حاليا لأداء الخدمات؟",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    RadioListTile(
+                      value: true,
+                      fillColor: WidgetStatePropertyAll(Colors.white),
+                      title: Text(
+                        "أنا متوفر حاليا",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    RadioListTile(
+                      value: false,
+                      fillColor: WidgetStatePropertyAll(Colors.orange),
+                      title: Text(
+                        "لا، لا أستطيع التنقل حاليا",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.all(15),
@@ -333,7 +438,10 @@ class _ProfInfoPageState extends State<ProfInfoPage> {
                             phone: phoneController.text,
                             email: email,
                             description: descController.text,
-
+                            xp: 0,
+                            services: "",
+                            travel: true,
+                            available: false,
                             type: selectedCategory,
                             category: selectedCategoryString,
                             saves: 0,

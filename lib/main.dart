@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:project_a/firebase_options.dart';
+import 'package:project_a/view/pages/auth/prof_info_page.dart';
 import 'package:project_a/view/pages/auth/user_type_page.dart';
 import 'package:project_a/view/pages/client_home_page.dart';
 import 'package:project_a/view/pages/prof_home_page.dart';
@@ -26,11 +27,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
       ),
-      home: userType == "prof"
-          ? ProfHomePage()
-          : userType == "client"
-          ? ClientHomePage()
-          : const UserTypePage(),
+      home: ProfInfoPage(),
+      // userType == "prof"
+      //     ? ProfHomePage()
+      //     : userType == "client"
+      //     ? ClientHomePage()
+      //     : const UserTypePage(),
     );
   }
 }
