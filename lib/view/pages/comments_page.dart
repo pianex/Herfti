@@ -184,11 +184,11 @@ class _CommentsPageState extends State<CommentsPage> {
                       )
                     : Container(),
                 SizedBox(height: 10),
-                FutureBuilder(
-                  future: FirebaseFirestore.instance
+                StreamBuilder(
+                  stream: FirebaseFirestore.instance
                       .collection("Posts")
                       .doc(widget.postUid)
-                      .get(),
+                      .snapshots(),
                   builder: (context, asyncSnapshot) {
                     // int currentLikes =
                     //     asyncSnapshot.data?.data()?["likesCount"] ??
@@ -218,7 +218,7 @@ class _CommentsPageState extends State<CommentsPage> {
                           isLiked:
                               asyncSnapshot.data
                                   ?.data()?["likersUids"]
-                                  ?.contains(email) ??
+                                  .contains(email) ??
                               widget.likersUids.contains(email),
                           likeCount: widget.likes,
                           likeBuilder: (isLiked) {
