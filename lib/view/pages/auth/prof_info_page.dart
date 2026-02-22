@@ -143,6 +143,7 @@ class _ProfInfoPageState extends State<ProfInfoPage> {
               CustTextFormField(
                 label: "رقم الهاتف",
                 controller: phoneController,
+                keyboardType: TextInputType.phone,
                 validator: (text) {
                   return phoneValidator(text);
                 },
@@ -163,6 +164,7 @@ class _ProfInfoPageState extends State<ProfInfoPage> {
               ),
               CustTextFormField(
                 label: "الخبرة بالسنوات",
+                keyboardType: TextInputType.numberWithOptions(decimal: false),
                 controller: xpController,
                 validator: (text) {
                   return priceValidator(text);
@@ -438,10 +440,12 @@ class _ProfInfoPageState extends State<ProfInfoPage> {
                             phone: phoneController.text,
                             email: email,
                             description: descController.text,
-                            xp: 0,
-                            services: "",
+                            xp: xpController.text.isNotEmpty
+                                ? int.parse(xpController.text)
+                                : 0,
+                            services: servicesController.text,
                             travel: true,
-                            available: false,
+                            available: availableValue,
                             type: selectedCategory,
                             category: selectedCategoryString,
                             saves: 0,

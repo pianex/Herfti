@@ -27,12 +27,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
       ),
-      home: ProfInfoPage(),
-      // userType == "prof"
-      //     ? ProfHomePage()
-      //     : userType == "client"
-      //     ? ClientHomePage()
-      //     : const UserTypePage(),
+      home:
+          // ProfInfoPage(),
+          userType == "prof"
+          ? ProfHomePage()
+          : userType == "client"
+          ? ClientHomePage()
+          : const UserTypePage(),
     );
   }
 }
