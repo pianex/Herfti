@@ -120,6 +120,7 @@ class _ClientLoginPageState extends State<ClientLoginPage> {
                                       "phone",
                                       doc.data()!["phone"],
                                     );
+
                                     sharedPref.setString(
                                       "imagePath",
                                       doc.data()!["imagePath"],

@@ -439,6 +439,9 @@ class _ProfInfoPageState extends State<ProfInfoPage> {
                                 : googleImagePath,
                             phone: phoneController.text,
                             email: email,
+                            facebook: "",
+                            instagram: "",
+                            whatsapp: phoneController.text,
                             description: descController.text,
                             xp: xpController.text.isNotEmpty
                                 ? int.parse(xpController.text)

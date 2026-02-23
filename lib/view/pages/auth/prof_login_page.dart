@@ -116,6 +116,18 @@ class _ProfLoginPageState extends State<ProfLoginPage> {
                                       doc.data()!["phone"],
                                     );
                                     sharedPref.setString(
+                                      "facebook",
+                                      doc.data()!["facebook"],
+                                    );
+                                    sharedPref.setString(
+                                      "instagram",
+                                      doc.data()!["instagram"],
+                                    );
+                                    sharedPref.setString(
+                                      "whatsapp",
+                                      doc.data()!["whatsapp"],
+                                    );
+                                    sharedPref.setString(
                                       "desc",
                                       doc.data()!["description"],
                                     );

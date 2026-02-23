@@ -36,6 +36,9 @@ class _AccountPageState extends State<ProfAccountPage> {
   TextEditingController nameController = TextEditingController();
   TextEditingController descController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
+  TextEditingController facebookController = TextEditingController();
+  TextEditingController instagramController = TextEditingController();
+  TextEditingController whatsappController = TextEditingController();
   TextEditingController servicesController = TextEditingController();
   TextEditingController xpController = TextEditingController();
   bool travelValue = true;
@@ -76,6 +79,9 @@ class _AccountPageState extends State<ProfAccountPage> {
     String name = sharedPref.getString("name")!;
     String desc = sharedPref.getString("desc")!;
     String phone = sharedPref.getString("phone")!;
+    String facebook = sharedPref.getString("facebook") ?? "";
+    String instagram = sharedPref.getString("instagram") ?? "";
+    String whatsapp = sharedPref.getString("whatsapp") ?? "";
     String state = sharedPref.getString("state")!;
     String city = sharedPref.getString("city")!;
     String services = sharedPref.getString("services")!;
@@ -86,6 +92,9 @@ class _AccountPageState extends State<ProfAccountPage> {
       nameController.text = name;
       descController.text = desc;
       phoneController.text = phone;
+      facebookController.text = facebook;
+      instagramController.text = instagram;
+      whatsappController.text = whatsapp;
       stateValue = state;
       cityValue = city;
       infosLoaded = true;
@@ -187,6 +196,27 @@ class _AccountPageState extends State<ProfAccountPage> {
               CustTextFormField(
                 label: "الوصف",
                 controller: descController,
+                validator: (text) {
+                  return nameValidator(text);
+                },
+              ),
+              CustTextFormField(
+                label: "رابط الفيسبوك",
+                controller: facebookController,
+                validator: (text) {
+                  return nameValidator(text);
+                },
+              ),
+              CustTextFormField(
+                label: "رابط الانستغرام",
+                controller: instagramController,
+                validator: (text) {
+                  return nameValidator(text);
+                },
+              ),
+              CustTextFormField(
+                label: "رابط الواتساب",
+                controller: whatsappController,
                 validator: (text) {
                   return nameValidator(text);
                 },
@@ -497,6 +527,9 @@ class _AccountPageState extends State<ProfAccountPage> {
                                 ? imagePath
                                 : currentImagePath ?? googleImagePath,
                             phone: phoneController.text,
+                            facebook: facebookController.text,
+                            instagram: instagramController.text,
+                            whatsapp: whatsappController.text,
                             email: email,
                             description: descController.text,
                             xp: xpController.text.isNotEmpty

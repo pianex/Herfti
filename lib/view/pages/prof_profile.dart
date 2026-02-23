@@ -52,10 +52,10 @@ class ProfessionalProfile extends StatelessWidget {
           ),
           centerTitle: true,
           actions: [
-            IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.message, color: Colors.white),
-            ),
+            // IconButton(
+            //   onPressed: () {},
+            //   icon: Icon(Icons.message, color: Colors.white),
+            // ),
             IconButton(
               onPressed: () {
                 final prof = FirebaseFirestore.instance
@@ -71,10 +71,10 @@ class ProfessionalProfile extends StatelessWidget {
               },
               icon: Icon(Icons.phone, color: Colors.white),
             ),
-            IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.location_on, color: Colors.white),
-            ),
+            // IconButton(
+            //   onPressed: () {},
+            //   icon: Icon(Icons.location_on, color: Colors.white),
+            // ),
           ],
         ),
         body: FutureBuilder(

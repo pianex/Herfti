@@ -4,6 +4,9 @@ class ProfModel {
   final String imagePath;
   final String phone;
   final String email;
+  final String facebook;
+  final String instagram;
+  final String whatsapp;
   final String description;
   final int xp;
   final String services;
@@ -23,6 +26,9 @@ class ProfModel {
     required this.imagePath,
     required this.phone,
     required this.email,
+    required this.facebook,
+    required this.instagram,
+    required this.whatsapp,
     required this.description,
     required this.xp,
     required this.services,
@@ -43,6 +49,10 @@ class ProfModel {
     "name": name,
     "imagePath": imagePath,
     "phone": phone,
+    "email": email,
+    "facebook": facebook,
+    "instagram": instagram,
+    "whatsapp": whatsapp,
     "description": description,
     "xp": xp,
     "services": services,
