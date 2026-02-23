@@ -4,6 +4,7 @@ import 'package:awesome_icons/awesome_icons.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:like_button/like_button.dart';
 import 'package:project_a/core/constants/app_theme.dart';
 import 'package:project_a/core/functions/date_functions.dart';
 import 'package:project_a/core/functions/formatters.dart';
@@ -138,23 +139,30 @@ class ProfessionalProfile extends StatelessWidget {
                         data["category"],
                         style: TextStyle(color: Colors.white, fontSize: 23),
                       ),
-                      Row(
+                      LikeButton(
+                        countPostion: CountPostion.left,
+                        likeCountPadding: EdgeInsets.symmetric(horizontal: 10),
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
+                        countDecoration: (counter, likeCount) {
+                          return Text(
                             shrinkLikesFormula(data["saves"]),
                             style: TextStyle(
                               color: const Color.fromARGB(255, 182, 67, 202),
                               fontSize: 30,
                               fontWeight: FontWeight.bold,
                             ),
-                          ),
-                          Icon(
-                            Icons.bookmark,
+                          );
+                        },
+                        // isLiked: widget.isLiked,
+                        likeCount: data["saves"] ?? 0,
+                        likeBuilder: (isLiked) {
+                          return Icon(
+                            isLiked ? Icons.bookmark : Icons.bookmark_border,
                             color: const Color.fromARGB(255, 182, 67, 202),
                             size: 40,
-                          ),
-                        ],
+                          );
+                        },
                       ),
                     ],
                   ),
