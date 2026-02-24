@@ -173,10 +173,28 @@ class ProfessionalProfile extends StatelessWidget {
                       ContactButton(
                         label: "واتساب",
                         icon: FontAwesomeIcons.whatsapp,
+                        onTap: () {
+                          final Uri launchUri = Uri(
+                            scheme: 'https',
+                            host: 'wa.me',
+                            path: data["whatsapp"],
+                          );
+                          launchUrl(
+                            launchUri,
+                            mode: LaunchMode.externalApplication,
+                          );
+                        },
                       ),
+
                       ContactButton(
                         label: "فيسبوك",
                         icon: FontAwesomeIcons.facebook,
+                        onTap: () {
+                          launchUrl(
+                            Uri.parse(data["facebook"] ?? ""),
+                            mode: LaunchMode.externalApplication,
+                          );
+                        },
                       ),
                     ],
                   ),
