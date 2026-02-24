@@ -170,32 +170,36 @@ class ProfessionalProfile extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      ContactButton(
-                        label: "واتساب",
-                        icon: FontAwesomeIcons.whatsapp,
-                        onTap: () {
-                          final Uri launchUri = Uri(
-                            scheme: 'https',
-                            host: 'wa.me',
-                            path: data["whatsapp"],
-                          );
-                          launchUrl(
-                            launchUri,
-                            mode: LaunchMode.externalApplication,
-                          );
-                        },
-                      ),
+                      data["whatsapp"] != null && data["whatsapp"] != ""
+                          ? ContactButton(
+                              label: "واتساب",
+                              icon: FontAwesomeIcons.whatsapp,
+                              onTap: () {
+                                final Uri launchUri = Uri(
+                                  scheme: 'https',
+                                  host: 'wa.me',
+                                  path: data["whatsapp"],
+                                );
+                                launchUrl(
+                                  launchUri,
+                                  mode: LaunchMode.externalApplication,
+                                );
+                              },
+                            )
+                          : SizedBox(),
 
-                      ContactButton(
-                        label: "فيسبوك",
-                        icon: FontAwesomeIcons.facebook,
-                        onTap: () {
-                          launchUrl(
-                            Uri.parse(data["facebook"] ?? ""),
-                            mode: LaunchMode.externalApplication,
-                          );
-                        },
-                      ),
+                      data["facebook"] != null && data["facebook"] != ""
+                          ? ContactButton(
+                              label: "فيسبوك",
+                              icon: FontAwesomeIcons.facebook,
+                              onTap: () {
+                                launchUrl(
+                                  Uri.parse(data["facebook"] ?? ""),
+                                  mode: LaunchMode.externalApplication,
+                                );
+                              },
+                            )
+                          : SizedBox(),
                     ],
                   ),
                   TitleText(title: "الخدمات"),

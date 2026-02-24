@@ -17,7 +17,6 @@ import 'package:project_a/core/functions/validators.dart';
 import 'package:project_a/core/models/prof_model.dart';
 import 'package:project_a/main.dart';
 import 'package:project_a/view/pages/prof_home_page.dart';
-import 'package:project_a/view/widgets/cust_button.dart';
 import 'package:project_a/view/widgets/cust_text_form_field.dart';
 import 'package:project_a/view/widgets/id_category_card.dart';
 
