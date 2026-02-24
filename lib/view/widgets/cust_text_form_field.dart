@@ -9,6 +9,8 @@ class CustTextFormField extends StatelessWidget {
     this.validator,
     this.obscureText,
     this.suffix,
+    this.maxLength,
+    this.maxLines,
   });
   final String label;
   final TextEditingController controller;
@@ -16,6 +18,8 @@ class CustTextFormField extends StatelessWidget {
   final String? Function(String?)? validator;
   final bool? obscureText;
   final Widget? suffix;
+  final int? maxLength;
+  final int? maxLines;
 
   @override
   Widget build(BuildContext context) {
@@ -33,12 +37,20 @@ class CustTextFormField extends StatelessWidget {
           fontWeight: FontWeight.bold,
           fontSize: 22,
         ),
+        maxLength: maxLength,
+        maxLines: maxLines,
         decoration: InputDecoration(
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
           label: Text(label),
           labelStyle: const TextStyle(
             color: Colors.white,
             fontSize: 22,
+            fontWeight: FontWeight.bold,
+          ),
+
+          counterStyle: TextStyle(
+            color: Colors.white,
+            fontSize: 15,
             fontWeight: FontWeight.bold,
           ),
           suffix: suffix ?? SizedBox(),

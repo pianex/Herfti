@@ -117,15 +117,21 @@ class _ProfLoginPageState extends State<ProfLoginPage> {
                                     );
                                     sharedPref.setString(
                                       "facebook",
-                                      doc.data()!["facebook"],
+                                      doc.data()!["facebook"] ?? "",
                                     );
                                     sharedPref.setString(
                                       "instagram",
-                                      doc.data()!["instagram"],
+                                      doc.data()!["instagram"] ?? "",
                                     );
                                     sharedPref.setString(
                                       "whatsapp",
-                                      doc.data()!["whatsapp"],
+                                      doc
+                                                  .data()!["whatsapp"]
+                                                  .toString()
+                                                  .isEmpty ||
+                                              doc.data()!["whatsapp"] == null
+                                          ? doc.data()!["phone"]
+                                          : doc.data()!["whatsapp"],
                                     );
                                     sharedPref.setString(
                                       "desc",
@@ -133,19 +139,19 @@ class _ProfLoginPageState extends State<ProfLoginPage> {
                                     );
                                     sharedPref.setString(
                                       "services",
-                                      doc.data()!["services"],
+                                      doc.data()!["services"] ?? "",
                                     );
-                                    sharedPref.setString(
+                                    sharedPref.setInt(
                                       "xp",
-                                      doc.data()!["xp"].toString(),
+                                      doc.data()!["xp"] ?? 0,
                                     );
                                     sharedPref.setBool(
                                       "travel",
-                                      doc.data()!["travel"],
+                                      doc.data()!["travel"] ?? false,
                                     );
                                     sharedPref.setBool(
                                       "available",
-                                      doc.data()!["available"],
+                                      doc.data()!["available"] ?? true,
                                     );
 
                                     sharedPref.setString(

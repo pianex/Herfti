@@ -81,11 +81,11 @@ class _AccountPageState extends State<ProfAccountPage> {
     String phone = sharedPref.getString("phone")!;
     String facebook = sharedPref.getString("facebook") ?? "";
     String instagram = sharedPref.getString("instagram") ?? "";
-    String whatsapp = sharedPref.getString("whatsapp") ?? "";
+    String whatsapp = sharedPref.getString("whatsapp") ?? phone;
     String state = sharedPref.getString("state")!;
     String city = sharedPref.getString("city")!;
     String services = sharedPref.getString("services")!;
-    String xp = sharedPref.getString("xp")!;
+    int xp = sharedPref.getInt("xp") ?? 0;
     bool travel = sharedPref.getBool("travel") ?? true;
     bool available = sharedPref.getBool("available") ?? true;
     if (!infosLoaded) {
@@ -99,7 +99,7 @@ class _AccountPageState extends State<ProfAccountPage> {
       cityValue = city;
       infosLoaded = true;
       servicesController.text = services;
-      xpController.text = xp;
+      xpController.text = xp.toString();
       travelValue = travel;
       availableValue = available;
     }
@@ -215,17 +215,20 @@ class _AccountPageState extends State<ProfAccountPage> {
                 },
               ),
               CustTextFormField(
-                label: "رابط الواتساب",
+                label: "رقم الواتساب",
                 controller: whatsappController,
+                keyboardType: TextInputType.phone,
                 validator: (text) {
-                  return nameValidator(text);
+                  return phoneValidator(text);
                 },
               ),
               CustTextFormField(
                 label: "الخدمات التي تقدمها",
                 controller: servicesController,
+                maxLength: 200,
+                maxLines: 4,
                 validator: (text) {
-                  return nameValidator(text);
+                  return servicesValidator(text);
                 },
               ),
               CustTextFormField(
@@ -564,14 +567,26 @@ class _AccountPageState extends State<ProfAccountPage> {
                                   phoneController.text,
                                 );
                                 sharedPref.setString(
+                                  "facebook",
+                                  facebookController.text,
+                                );
+                                sharedPref.setString(
+                                  "instagram",
+                                  instagramController.text,
+                                );
+                                sharedPref.setString(
+                                  "whatsapp",
+                                  whatsappController.text,
+                                );
+                                sharedPref.setString(
                                   "services",
                                   servicesController.text,
                                 );
-                                sharedPref.setString(
+                                sharedPref.setInt(
                                   "xp",
                                   xpController.text.isNotEmpty
-                                      ? xpController.text
-                                      : "0",
+                                      ? int.parse(xpController.text)
+                                      : 0,
                                 );
                                 sharedPref.setBool("travel", travelValue);
                                 sharedPref.setBool("available", availableValue);

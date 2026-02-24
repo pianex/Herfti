@@ -8,6 +8,14 @@ nameValidator(String? text) {
   }
 }
 
+servicesValidator(String? text) {
+  if (text!.length > 200) {
+    return "الخدمات طويلة جدا.";
+  } else {
+    return null;
+  }
+}
+
 postValidator(String? text) {
   if (text!.length > 200) {
     return "المشور طويل جدا.";
