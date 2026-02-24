@@ -87,6 +87,20 @@ class ProfessionalProfile extends StatelessWidget {
               return Center(child: Text("حدث خطأ ما"));
             } else if (asyncSnapshot.data!.exists) {
               final data = asyncSnapshot.data!;
+              String facebook;
+              String whatsapp;
+              try {
+                facebook = data["facebook"] ?? "";
+              } catch (e) {
+                facebook = "";
+              }
+
+              try {
+                whatsapp = data["whatsapp"] ?? "";
+              } catch (e) {
+                whatsapp = "";
+              }
+
               return ListView(
                 children: [
                   Hero(
@@ -170,7 +184,7 @@ class ProfessionalProfile extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      data["whatsapp"] != null && data["whatsapp"] != ""
+                      whatsapp != null && whatsapp != ""
                           ? ContactButton(
                               label: "واتساب",
                               icon: FontAwesomeIcons.whatsapp,
@@ -188,7 +202,7 @@ class ProfessionalProfile extends StatelessWidget {
                             )
                           : SizedBox(),
 
-                      data["facebook"] != null && data["facebook"] != ""
+                      facebook != null && facebook != ""
                           ? ContactButton(
                               label: "فيسبوك",
                               icon: FontAwesomeIcons.facebook,
