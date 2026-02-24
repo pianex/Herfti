@@ -129,6 +129,143 @@ class _AccountPageState extends State<ProfAccountPage> {
             ),
           ),
           centerTitle: true,
+          actions: [
+            IconButton(
+              onPressed: () async {
+                if (_formKey.currentState!.validate()) {
+                  if (stateValue.isNotEmpty && cityValue.isNotEmpty) {
+                    if (accSelectedCategory != 0 &&
+                        accSselectedCategoryString.isNotEmpty) {
+                      showProgressDialog(
+                        context,
+                        Size(
+                          MediaQuery.of(context).size.width / 2,
+                          MediaQuery.of(context).size.width / 2,
+                        ),
+                      );
+                      if (accSelectedCategory != 0) {
+                        String imagePath = '';
+                        if (image != null) {
+                          UploadTask uploadTask = FirebaseStorage.instance
+                              .ref()
+                              .child(
+                                "Profs/ProPics/${email.toLowerCase().replaceAll("@gmail.com", "")}.jpg",
+                              )
+                              .putFile(image!);
+                          TaskSnapshot snapshot = await uploadTask;
+                          // ignore: unused_local_variable
+                          String downloadlUrl = await snapshot.ref
+                              .getDownloadURL()
+                              .then((link) => imagePath = link)
+                              .whenComplete(() {
+                                if (imagePath.isNotEmpty) {
+                                  sharedPref.setString("imagePath", imagePath);
+                                }
+                              });
+                        }
+                        String token = await getToken();
+                        List<String> tokens = [];
+                        tokens.add(token);
+
+                        Map<String, dynamic> json = ProfModel(
+                          uid: email,
+                          name: nameController.text,
+                          imagePath: imagePath.isNotEmpty
+                              ? imagePath
+                              : currentImagePath ?? googleImagePath,
+                          phone: phoneController.text,
+                          facebook: facebookController.text,
+                          instagram: instagramController.text,
+                          whatsapp: whatsappController.text,
+                          email: email,
+                          description: descController.text,
+                          xp: xpController.text.isNotEmpty
+                              ? int.parse(xpController.text)
+                              : 0,
+                          services: servicesController.text,
+                          travel: travelValue,
+                          available: availableValue,
+                          type: accSelectedCategory,
+                          category: accSselectedCategoryString,
+                          saves: 0,
+                          timeAdded: DateTime.now().toString(),
+                          country: countryValue,
+                          state: stateValue,
+                          city: cityValue,
+                          tokens: tokens,
+                        ).toJson();
+                        FirebaseFirestore.instance
+                            .collection("Profs")
+                            .doc(email)
+                            .update(json)
+                            .whenComplete(() {
+                              sharedPref.setString("userType", "prof");
+                              sharedPref.setString("uid", email);
+                              sharedPref.setString("name", nameController.text);
+                              sharedPref.setString("desc", descController.text);
+                              sharedPref.setString(
+                                "phone",
+                                phoneController.text,
+                              );
+                              sharedPref.setString(
+                                "facebook",
+                                facebookController.text,
+                              );
+                              sharedPref.setString(
+                                "instagram",
+                                instagramController.text,
+                              );
+                              sharedPref.setString(
+                                "whatsapp",
+                                whatsappController.text,
+                              );
+                              sharedPref.setString(
+                                "services",
+                                servicesController.text,
+                              );
+                              sharedPref.setInt(
+                                "xp",
+                                xpController.text.isNotEmpty
+                                    ? int.parse(xpController.text)
+                                    : 0,
+                              );
+                              sharedPref.setBool("travel", travelValue);
+                              sharedPref.setBool("available", availableValue);
+                              sharedPref.setString("state", stateValue);
+                              sharedPref.setString("city", cityValue);
+                              sharedPref.setInt(
+                                "category",
+                                accSelectedCategory,
+                              );
+                              sharedPref.setString(
+                                "categoryStr",
+                                accSselectedCategoryString,
+                              );
+                            })
+                            .whenComplete(() {
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                CupertinoPageRoute(
+                                  builder: (context) => ProfHomePage(),
+                                ),
+                                (route) => false,
+                              );
+                            });
+                      }
+                    } else {
+                      showAlert(context, "من فضلك اختر المهنة الخاصة بك.");
+                    }
+                  } else {
+                    showAlert(
+                      context,
+                      "أدخل معلومات الولاية و المدينة من فضلك.",
+                    );
+                  }
+                }
+              },
+              icon: Icon(Icons.save, color: Colors.white, size: 30),
+            ),
+          ],
         ),
         body: Form(
           key: _formKey,
@@ -203,16 +340,10 @@ class _AccountPageState extends State<ProfAccountPage> {
               CustTextFormField(
                 label: "رابط الفيسبوك",
                 controller: facebookController,
-                validator: (text) {
-                  return nameValidator(text);
-                },
               ),
               CustTextFormField(
                 label: "رابط الانستغرام",
                 controller: instagramController,
-                validator: (text) {
-                  return nameValidator(text);
-                },
               ),
               CustTextFormField(
                 label: "رقم الواتساب",
@@ -481,148 +612,148 @@ class _AccountPageState extends State<ProfAccountPage> {
                   ],
                 ),
               ),
-              CustButton(
-                title: "حفظ",
-                icon: Icons.save,
-                onTap: () async {
-                  if (_formKey.currentState!.validate()) {
-                    if (stateValue.isNotEmpty && cityValue.isNotEmpty) {
-                      if (accSelectedCategory != 0 &&
-                          accSselectedCategoryString.isNotEmpty) {
-                        showProgressDialog(
-                          context,
-                          Size(
-                            MediaQuery.of(context).size.width / 2,
-                            MediaQuery.of(context).size.width / 2,
-                          ),
-                        );
-                        if (accSelectedCategory != 0) {
-                          String imagePath = '';
-                          if (image != null) {
-                            UploadTask uploadTask = FirebaseStorage.instance
-                                .ref()
-                                .child(
-                                  "Profs/ProPics/${email.toLowerCase().replaceAll("@gmail.com", "")}.jpg",
-                                )
-                                .putFile(image!);
-                            TaskSnapshot snapshot = await uploadTask;
-                            // ignore: unused_local_variable
-                            String downloadlUrl = await snapshot.ref
-                                .getDownloadURL()
-                                .then((link) => imagePath = link)
-                                .whenComplete(() {
-                                  if (imagePath.isNotEmpty) {
-                                    sharedPref.setString(
-                                      "imagePath",
-                                      imagePath,
-                                    );
-                                  }
-                                });
-                          }
-                          String token = await getToken();
-                          List<String> tokens = [];
-                          tokens.add(token);
+              // CustButton(
+              //   title: "حفظ",
+              //   icon: Icons.save,
+              //   onTap: () async {
+              //     if (_formKey.currentState!.validate()) {
+              //       if (stateValue.isNotEmpty && cityValue.isNotEmpty) {
+              //         if (accSelectedCategory != 0 &&
+              //             accSselectedCategoryString.isNotEmpty) {
+              //           showProgressDialog(
+              //             context,
+              //             Size(
+              //               MediaQuery.of(context).size.width / 2,
+              //               MediaQuery.of(context).size.width / 2,
+              //             ),
+              //           );
+              //           if (accSelectedCategory != 0) {
+              //             String imagePath = '';
+              //             if (image != null) {
+              //               UploadTask uploadTask = FirebaseStorage.instance
+              //                   .ref()
+              //                   .child(
+              //                     "Profs/ProPics/${email.toLowerCase().replaceAll("@gmail.com", "")}.jpg",
+              //                   )
+              //                   .putFile(image!);
+              //               TaskSnapshot snapshot = await uploadTask;
+              //               // ignore: unused_local_variable
+              //               String downloadlUrl = await snapshot.ref
+              //                   .getDownloadURL()
+              //                   .then((link) => imagePath = link)
+              //                   .whenComplete(() {
+              //                     if (imagePath.isNotEmpty) {
+              //                       sharedPref.setString(
+              //                         "imagePath",
+              //                         imagePath,
+              //                       );
+              //                     }
+              //                   });
+              //             }
+              //             String token = await getToken();
+              //             List<String> tokens = [];
+              //             tokens.add(token);
 
-                          Map<String, dynamic> json = ProfModel(
-                            uid: email,
-                            name: nameController.text,
-                            imagePath: imagePath.isNotEmpty
-                                ? imagePath
-                                : currentImagePath ?? googleImagePath,
-                            phone: phoneController.text,
-                            facebook: facebookController.text,
-                            instagram: instagramController.text,
-                            whatsapp: whatsappController.text,
-                            email: email,
-                            description: descController.text,
-                            xp: xpController.text.isNotEmpty
-                                ? int.parse(xpController.text)
-                                : 0,
-                            services: servicesController.text,
-                            travel: travelValue,
-                            available: availableValue,
-                            type: accSelectedCategory,
-                            category: accSselectedCategoryString,
-                            saves: 0,
-                            timeAdded: DateTime.now().toString(),
-                            country: countryValue,
-                            state: stateValue,
-                            city: cityValue,
-                            tokens: tokens,
-                          ).toJson();
-                          FirebaseFirestore.instance
-                              .collection("Profs")
-                              .doc(email)
-                              .update(json)
-                              .whenComplete(() {
-                                sharedPref.setString("userType", "prof");
-                                sharedPref.setString("uid", email);
-                                sharedPref.setString("name", name);
-                                sharedPref.setString(
-                                  "desc",
-                                  descController.text,
-                                );
-                                sharedPref.setString(
-                                  "phone",
-                                  phoneController.text,
-                                );
-                                sharedPref.setString(
-                                  "facebook",
-                                  facebookController.text,
-                                );
-                                sharedPref.setString(
-                                  "instagram",
-                                  instagramController.text,
-                                );
-                                sharedPref.setString(
-                                  "whatsapp",
-                                  whatsappController.text,
-                                );
-                                sharedPref.setString(
-                                  "services",
-                                  servicesController.text,
-                                );
-                                sharedPref.setInt(
-                                  "xp",
-                                  xpController.text.isNotEmpty
-                                      ? int.parse(xpController.text)
-                                      : 0,
-                                );
-                                sharedPref.setBool("travel", travelValue);
-                                sharedPref.setBool("available", availableValue);
-                                sharedPref.setString("state", stateValue);
-                                sharedPref.setString("city", cityValue);
-                                sharedPref.setInt(
-                                  "category",
-                                  accSelectedCategory,
-                                );
-                                sharedPref.setString(
-                                  "categoryStr",
-                                  accSselectedCategoryString,
-                                );
-                              })
-                              .whenComplete(() {
-                                Navigator.pushAndRemoveUntil(
-                                  context,
-                                  CupertinoPageRoute(
-                                    builder: (context) => ProfHomePage(),
-                                  ),
-                                  (route) => false,
-                                );
-                              });
-                        }
-                      } else {
-                        showAlert(context, "من فضلك اختر المهنة الخاصة بك.");
-                      }
-                    } else {
-                      showAlert(
-                        context,
-                        "أدخل معلومات الولاية و المدينة من فضلك.",
-                      );
-                    }
-                  }
-                },
-              ),
+              //             Map<String, dynamic> json = ProfModel(
+              //               uid: email,
+              //               name: nameController.text,
+              //               imagePath: imagePath.isNotEmpty
+              //                   ? imagePath
+              //                   : currentImagePath ?? googleImagePath,
+              //               phone: phoneController.text,
+              //               facebook: facebookController.text,
+              //               instagram: instagramController.text,
+              //               whatsapp: whatsappController.text,
+              //               email: email,
+              //               description: descController.text,
+              //               xp: xpController.text.isNotEmpty
+              //                   ? int.parse(xpController.text)
+              //                   : 0,
+              //               services: servicesController.text,
+              //               travel: travelValue,
+              //               available: availableValue,
+              //               type: accSelectedCategory,
+              //               category: accSselectedCategoryString,
+              //               saves: 0,
+              //               timeAdded: DateTime.now().toString(),
+              //               country: countryValue,
+              //               state: stateValue,
+              //               city: cityValue,
+              //               tokens: tokens,
+              //             ).toJson();
+              //             FirebaseFirestore.instance
+              //                 .collection("Profs")
+              //                 .doc(email)
+              //                 .update(json)
+              //                 .whenComplete(() {
+              //                   sharedPref.setString("userType", "prof");
+              //                   sharedPref.setString("uid", email);
+              //                   sharedPref.setString("name", name);
+              //                   sharedPref.setString(
+              //                     "desc",
+              //                     descController.text,
+              //                   );
+              //                   sharedPref.setString(
+              //                     "phone",
+              //                     phoneController.text,
+              //                   );
+              //                   sharedPref.setString(
+              //                     "facebook",
+              //                     facebookController.text,
+              //                   );
+              //                   sharedPref.setString(
+              //                     "instagram",
+              //                     instagramController.text,
+              //                   );
+              //                   sharedPref.setString(
+              //                     "whatsapp",
+              //                     whatsappController.text,
+              //                   );
+              //                   sharedPref.setString(
+              //                     "services",
+              //                     servicesController.text,
+              //                   );
+              //                   sharedPref.setInt(
+              //                     "xp",
+              //                     xpController.text.isNotEmpty
+              //                         ? int.parse(xpController.text)
+              //                         : 0,
+              //                   );
+              //                   sharedPref.setBool("travel", travelValue);
+              //                   sharedPref.setBool("available", availableValue);
+              //                   sharedPref.setString("state", stateValue);
+              //                   sharedPref.setString("city", cityValue);
+              //                   sharedPref.setInt(
+              //                     "category",
+              //                     accSelectedCategory,
+              //                   );
+              //                   sharedPref.setString(
+              //                     "categoryStr",
+              //                     accSselectedCategoryString,
+              //                   );
+              //                 })
+              //                 .whenComplete(() {
+              //                   Navigator.pushAndRemoveUntil(
+              //                     context,
+              //                     CupertinoPageRoute(
+              //                       builder: (context) => ProfHomePage(),
+              //                     ),
+              //                     (route) => false,
+              //                   );
+              //                 });
+              //           }
+              //         } else {
+              //           showAlert(context, "من فضلك اختر المهنة الخاصة بك.");
+              //         }
+              //       } else {
+              //         showAlert(
+              //           context,
+              //           "أدخل معلومات الولاية و المدينة من فضلك.",
+              //         );
+              //       }
+              //     }
+              //   },
+              // ),
             ],
           ),
         ),
