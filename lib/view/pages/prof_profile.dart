@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:awesome_icons/awesome_icons.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:like_button/like_button.dart';
@@ -89,6 +90,7 @@ class ProfessionalProfile extends StatelessWidget {
               final data = asyncSnapshot.data!;
               String facebook;
               String whatsapp;
+              String instagram;
               try {
                 facebook = data["facebook"] ?? "";
               } catch (e) {
@@ -99,6 +101,12 @@ class ProfessionalProfile extends StatelessWidget {
                 whatsapp = data["whatsapp"] ?? "";
               } catch (e) {
                 whatsapp = "";
+              }
+
+              try {
+                instagram = data["instagram"] ?? "";
+              } catch (e) {
+                instagram = "";
               }
 
               return ListView(
@@ -181,40 +189,54 @@ class ProfessionalProfile extends StatelessWidget {
                     ],
                   ),
                   SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      whatsapp != null && whatsapp != ""
-                          ? ContactButton(
-                              label: "واتساب",
-                              icon: FontAwesomeIcons.whatsapp,
-                              onTap: () {
-                                final Uri launchUri = Uri(
-                                  scheme: 'https',
-                                  host: 'wa.me',
-                                  path: data["whatsapp"],
-                                );
-                                launchUrl(
-                                  launchUri,
-                                  mode: LaunchMode.externalApplication,
-                                );
-                              },
-                            )
-                          : SizedBox(),
-
-                      facebook != null && facebook != ""
-                          ? ContactButton(
-                              label: "فيسبوك",
-                              icon: FontAwesomeIcons.facebook,
-                              onTap: () {
-                                launchUrl(
-                                  Uri.parse(data["facebook"] ?? ""),
-                                  mode: LaunchMode.externalApplication,
-                                );
-                              },
-                            )
-                          : SizedBox(),
-                    ],
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    physics: BouncingScrollPhysics(),
+                    child: Row(
+                      children: [
+                        whatsapp != ""
+                            ? ContactButton(
+                                label: "واتساب",
+                                icon: FontAwesomeIcons.whatsapp,
+                                onTap: () {
+                                  final Uri launchUri = Uri(
+                                    scheme: 'https',
+                                    host: 'wa.me',
+                                    path: data["whatsapp"],
+                                  );
+                                  launchUrl(
+                                    launchUri,
+                                    mode: LaunchMode.externalApplication,
+                                  );
+                                },
+                              )
+                            : SizedBox(),
+                        facebook != ""
+                            ? ContactButton(
+                                label: "فيسبوك",
+                                icon: FontAwesomeIcons.facebook,
+                                onTap: () {
+                                  launchUrl(
+                                    Uri.parse(data["facebook"] ?? ""),
+                                    mode: LaunchMode.externalApplication,
+                                  );
+                                },
+                              )
+                            : SizedBox(),
+                        instagram != ""
+                            ? ContactButton(
+                                label: "إنستغرام",
+                                icon: FontAwesomeIcons.instagram,
+                                onTap: () {
+                                  launchUrl(
+                                    Uri.parse(data["instagram"] ?? ""),
+                                    mode: LaunchMode.externalApplication,
+                                  );
+                                },
+                              )
+                            : SizedBox(),
+                      ],
+                    ),
                   ),
                   TitleText(title: "الخدمات"),
                   Padding(

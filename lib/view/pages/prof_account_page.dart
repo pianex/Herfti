@@ -349,7 +349,7 @@ class _AccountPageState extends State<ProfAccountPage> {
                 controller: whatsappController,
                 keyboardType: TextInputType.phone,
                 validator: (text) {
-                  return phoneValidator(text);
+                  return whatsappValidator(text);
                 },
               ),
               CustTextFormField(

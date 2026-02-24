@@ -37,6 +37,19 @@ phoneValidator(String? text) {
   }
 }
 
+whatsappValidator(String? text) {
+  if (text!.isEmpty) {
+    return null;
+  } else if (text.length < 10 ||
+      text.length > 10 ||
+      text.contains(RegExp(r'[^0-9]')) ||
+      !text.startsWith('0')) {
+    return "الرقم خاطئ.";
+  } else {
+    return null;
+  }
+}
+
 locationValidator(String? text) {
   if (text!.isEmpty) {
     return 'إضغط لتحديد موقعك.';
