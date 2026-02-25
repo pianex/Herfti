@@ -92,9 +92,7 @@ class ClientHomePage extends StatelessWidget {
                   return Text('حدث خطأ ما! ${snapshot.error}');
                 } else if (snapshot.hasData) {
                   final posts = snapshot.data!;
-                  // List<String> profsNames = [];
-                  // List<String> profsTypes = [];
-                  // List<String> profsImagePaths = [];
+
                   if (posts.isEmpty) {
                     return Center(
                       child: Text(
@@ -104,7 +102,6 @@ class ClientHomePage extends StatelessWidget {
                     );
                   } else {
                     for (var post in posts) {
-                      // if (profsNames.length == posts.length) break;
                       if (post.profType != "زبون") {
                         FirebaseFirestore.instance
                             .collection("Profs")
@@ -139,7 +136,6 @@ class ClientHomePage extends StatelessWidget {
                                   .doc(post.uid)
                                   .update({
                                     "userName": doc.data()!["name"],
-                                    "profType": "زبون",
                                     "userImagePath": doc.data()!["imagePath"],
                                   });
                             });

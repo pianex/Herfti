@@ -317,9 +317,9 @@ class ProfessionalProfile extends StatelessWidget {
                                       .collection("Posts")
                                       .doc(post.uid)
                                       .update({
-                                        "profName": doc.data()!["name"],
-                                        "profType": doc.data()!["category"],
-                                        "profImagePath": doc
+                                        "userName": doc.data()!["name"],
+                                        "userType": doc.data()!["category"],
+                                        "userImagePath": doc
                                             .data()!["imagePath"],
                                       });
                                 });

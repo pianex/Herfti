@@ -14,7 +14,7 @@ Stream<List<PostModel>> readPosts(String? uid) {
             )
       : FirebaseFirestore.instance
             .collection("Posts")
-            .where("profUid", isEqualTo: uid)
+            .where("userUid", isEqualTo: uid)
             .orderBy("timeAdded", descending: true)
             .snapshots()
             .map(
