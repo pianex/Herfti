@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:awesome_icons/awesome_icons.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:like_button/like_button.dart';
@@ -91,6 +90,10 @@ class ProfessionalProfile extends StatelessWidget {
               String facebook;
               String whatsapp;
               String instagram;
+              String services;
+              bool travel;
+              bool available;
+
               try {
                 facebook = data["facebook"] ?? "";
               } catch (e) {
@@ -107,6 +110,24 @@ class ProfessionalProfile extends StatelessWidget {
                 instagram = data["instagram"] ?? "";
               } catch (e) {
                 instagram = "";
+              }
+
+              try {
+                services = data["services"] ?? "";
+              } catch (e) {
+                services = "";
+              }
+
+              try {
+                travel = data["travel"] ?? false;
+              } catch (e) {
+                travel = false;
+              }
+
+              try {
+                available = data["available"] ?? false;
+              } catch (e) {
+                available = false;
               }
 
               return ListView(
@@ -238,14 +259,33 @@ class ProfessionalProfile extends StatelessWidget {
                       ],
                     ),
                   ),
-                  TitleText(title: "الخدمات"),
+                  services.isNotEmpty
+                      ? TitleText(title: "الخدمات")
+                      : SizedBox.shrink(),
+                  services.isNotEmpty
+                      ? Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+                          child: Text(
+                            services,
+                            style: TextStyle(fontSize: 23, color: Colors.white),
+                          ),
+                        )
+                      : SizedBox.shrink(),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
                     child: Text(
-                      data["description"],
+                      available == true ? "متاح✅" : "غير متاح❌",
                       style: TextStyle(fontSize: 23, color: Colors.white),
                     ),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+                    child: Text(
+                      travel == true ? "أستطيع التنقل✅" : "لا أستطيع التنقل❌",
+                      style: TextStyle(fontSize: 23, color: Colors.white),
+                    ),
+                  ),
+
                   SizedBox(height: 10),
                   TitleText(title: "المنشورات"),
                   StreamBuilder(
@@ -255,9 +295,15 @@ class ProfessionalProfile extends StatelessWidget {
                         return Text('حدث خطأ ما! ${snapshot.error}');
                       } else if (snapshot.hasData) {
                         if (snapshot.data!.isEmpty) {
-                          return Text(
-                            "لا يوجد منشورات حتى الآن.",
-                            style: TextStyle(color: Colors.white, fontSize: 25),
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              "لا يوجد منشورات حتى الآن.",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 22,
+                              ),
+                            ),
                           );
                         } else {
                           final posts = snapshot.data!;
