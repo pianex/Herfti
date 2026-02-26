@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:awesome_icons/awesome_icons.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:like_button/like_button.dart';
@@ -16,7 +17,7 @@ import 'package:project_a/view/widgets/post_card.dart';
 import 'package:project_a/view/widgets/title_text.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class ProfessionalProfile extends StatelessWidget {
+class ProfessionalProfile extends StatefulWidget {
   const ProfessionalProfile({
     super.key,
     required this.tag,
@@ -26,9 +27,15 @@ class ProfessionalProfile extends StatelessWidget {
   final String profUid;
 
   @override
+  State<ProfessionalProfile> createState() => _ProfessionalProfileState();
+}
+
+class _ProfessionalProfileState extends State<ProfessionalProfile> {
+  @override
   Widget build(BuildContext context) {
-    Image asset = Image.network(tag, fit: BoxFit.cover);
+    Image asset = Image.network(widget.tag, fit: BoxFit.cover);
     String email = sharedPref.getString("email")!;
+    String userType = sharedPref.getString("userType")!;
 
     return Directionality(
       textDirection: TextDirection.rtl,
@@ -61,7 +68,7 @@ class ProfessionalProfile extends StatelessWidget {
               onPressed: () {
                 final prof = FirebaseFirestore.instance
                     .collection("Profs")
-                    .doc(profUid);
+                    .doc(widget.profUid);
                 prof.get().then((doc) async {
                   final Uri launchUri = Uri(
                     scheme: 'tel',
@@ -79,7 +86,7 @@ class ProfessionalProfile extends StatelessWidget {
           ],
         ),
         body: FutureBuilder(
-          future: readProf(profUid),
+          future: readProf(widget.profUid),
           builder: (context, asyncSnapshot) {
             if (asyncSnapshot.connectionState == ConnectionState.waiting) {
               return Center(child: CircularProgressIndicator());
@@ -133,7 +140,7 @@ class ProfessionalProfile extends StatelessWidget {
               return ListView(
                 children: [
                   Hero(
-                    tag: tag,
+                    tag: widget.tag,
                     child: GestureDetector(
                       onTap: () {
                         showDialog(
@@ -155,7 +162,10 @@ class ProfessionalProfile extends StatelessWidget {
                                     width: 5,
                                   ),
                                 ),
-                                child: Image.network(tag, fit: BoxFit.cover),
+                                child: Image.network(
+                                  widget.tag,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ).animate().untint(),
                           ),
@@ -171,7 +181,7 @@ class ProfessionalProfile extends StatelessWidget {
                           // borderRadius: BorderRadius.circular(15),
                           shape: BoxShape.circle,
                         ),
-                        child: Image.network(tag, fit: BoxFit.contain),
+                        child: Image.network(widget.tag, fit: BoxFit.contain),
                       ),
                     ),
                   ),
@@ -197,7 +207,11 @@ class ProfessionalProfile extends StatelessWidget {
                             ),
                           );
                         },
-                        // isLiked: widget.isLiked,
+                        isLiked:
+                            sharedPref
+                                .getStringList("savedProfs")
+                                ?.contains(widget.profUid) ??
+                            false,
                         likeCount: data["saves"] ?? 0,
                         likeBuilder: (isLiked) {
                           return Icon(
@@ -205,6 +219,61 @@ class ProfessionalProfile extends StatelessWidget {
                             color: const Color.fromARGB(255, 182, 67, 202),
                             size: 40,
                           );
+                        },
+                        onTap: (isLiked) async {
+                          List<String> savedProfs =
+                              sharedPref.getStringList("savedProfs") ?? [];
+                          if (isLiked) {
+                            savedProfs.remove(widget.profUid);
+                            FirebaseFirestore.instance
+                                .collection("Profs")
+                                .doc(widget.profUid)
+                                .update({"saves": FieldValue.increment(-1)});
+                            userType == "client"
+                                ? FirebaseFirestore.instance
+                                      .collection("Clients")
+                                      .doc(email)
+                                      .update({
+                                        "savedProfs": FieldValue.arrayRemove([
+                                          widget.profUid,
+                                        ]),
+                                      })
+                                : FirebaseFirestore.instance
+                                      .collection("Profs")
+                                      .doc(email)
+                                      .update({
+                                        "savedProfs": FieldValue.arrayRemove([
+                                          widget.profUid,
+                                        ]),
+                                      });
+                          } else {
+                            savedProfs.add(widget.profUid);
+                            FirebaseFirestore.instance
+                                .collection("Profs")
+                                .doc(widget.profUid)
+                                .update({"saves": FieldValue.increment(1)});
+                            userType == "client"
+                                ? FirebaseFirestore.instance
+                                      .collection("Clients")
+                                      .doc(email)
+                                      .update({
+                                        "savedProfs": FieldValue.arrayUnion([
+                                          widget.profUid,
+                                        ]),
+                                      })
+                                : FirebaseFirestore.instance
+                                      .collection("Profs")
+                                      .doc(email)
+                                      .update({
+                                        "savedProfs": FieldValue.arrayUnion([
+                                          widget.profUid,
+                                        ]),
+                                      });
+                          }
+                          sharedPref
+                              .setStringList("savedProfs", savedProfs)
+                              .whenComplete(() => setState(() {}));
+                          return !isLiked;
                         },
                       ),
                     ],
@@ -289,7 +358,7 @@ class ProfessionalProfile extends StatelessWidget {
                   SizedBox(height: 10),
                   TitleText(title: "المنشورات"),
                   StreamBuilder(
-                    stream: readPosts(profUid),
+                    stream: readPosts(widget.profUid),
                     builder: (context, snapshot) {
                       if (snapshot.hasError) {
                         return Text('حدث خطأ ما! ${snapshot.error}');
