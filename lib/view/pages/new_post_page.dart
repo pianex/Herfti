@@ -190,6 +190,7 @@ class _NewPostPageState extends State<NewPostPage> {
                   timeAdded: DateTime.now().toString(),
                   userUid: email,
                   userName: sharedPref.getString("name")!,
+                  isProf: userType == "client" ? false : true,
                   profType: userType == "client"
                       ? "زبون"
                       : sharedPref.getString("categoryStr")!,

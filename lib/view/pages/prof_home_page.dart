@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:project_a/core/constants/app_theme.dart';
@@ -42,7 +41,7 @@ class _ProfHomePageState extends State<ProfHomePage> {
                 ),
           ),
           title: Text(
-            "حرفتي",
+            "Kivr",
             style: TextStyle(
               color: appBarTextColor,
               fontWeight: FontWeight.bold,
@@ -104,48 +103,48 @@ class _ProfHomePageState extends State<ProfHomePage> {
                   // List<String> profsTypes = [];
                   // List<String> profsImagePaths = [];
 
-                  for (var post in posts) {
-                    // if (profsNames.length == posts.length) break;
-                    if (post.profType != "prof") {
-                      FirebaseFirestore.instance
-                          .collection("Profs")
-                          .doc(post.userUid)
-                          .get()
-                          .then((doc) {
-                            // profsNames.add(doc.data()!["name"]);
-                            // profsTypes.add(doc.data()!["category"]);
-                            // profsImagePaths.add(doc.data()!["imagePath"]);
-                            // print(profsNames);
-                            FirebaseFirestore.instance
-                                .collection("Posts")
-                                .doc(post.uid)
-                                .update({
-                                  "userName": doc.data()!["name"],
-                                  "profType": doc.data()!["category"],
-                                  "userImagePath": doc.data()!["imagePath"],
-                                });
-                          });
-                    } else {
-                      FirebaseFirestore.instance
-                          .collection("Clients")
-                          .doc(post.userUid)
-                          .get()
-                          .then((doc) {
-                            // profsNames.add(doc.data()!["name"]);
-                            // profsTypes.add(doc.data()!["category"]);
-                            // profsImagePaths.add(doc.data()!["imagePath"]);
-                            // print(profsNames);
-                            FirebaseFirestore.instance
-                                .collection("Posts")
-                                .doc(post.uid)
-                                .update({
-                                  "userName": doc.data()!["name"],
-                                  "profType": "عميل",
-                                  "userImagePath": doc.data()!["imagePath"],
-                                });
-                          });
-                    }
-                  }
+                  // for (var post in posts) {
+                  //   // if (profsNames.length == posts.length) break;
+                  //   if (post.profType != "prof") {
+                  //     FirebaseFirestore.instance
+                  //         .collection("Profs")
+                  //         .doc(post.userUid)
+                  //         .get()
+                  //         .then((doc) {
+                  //           // profsNames.add(doc.data()!["name"]);
+                  //           // profsTypes.add(doc.data()!["category"]);
+                  //           // profsImagePaths.add(doc.data()!["imagePath"]);
+                  //           // print(profsNames);
+                  //           FirebaseFirestore.instance
+                  //               .collection("Posts")
+                  //               .doc(post.uid)
+                  //               .update({
+                  //                 "userName": doc.data()!["name"],
+                  //                 "profType": doc.data()!["category"],
+                  //                 "userImagePath": doc.data()!["imagePath"],
+                  //               });
+                  //         });
+                  //   } else {
+                  //     FirebaseFirestore.instance
+                  //         .collection("Clients")
+                  //         .doc(post.userUid)
+                  //         .get()
+                  //         .then((doc) {
+                  //           // profsNames.add(doc.data()!["name"]);
+                  //           // profsTypes.add(doc.data()!["category"]);
+                  //           // profsImagePaths.add(doc.data()!["imagePath"]);
+                  //           // print(profsNames);
+                  //           FirebaseFirestore.instance
+                  //               .collection("Posts")
+                  //               .doc(post.uid)
+                  //               .update({
+                  //                 "userName": doc.data()!["name"],
+                  //                 "profType": "عميل",
+                  //                 "userImagePath": doc.data()!["imagePath"],
+                  //               });
+                  //         });
+                  //   }
+                  // }
 
                   return ListView.builder(
                     physics: BouncingScrollPhysics(),
@@ -159,6 +158,7 @@ class _ProfHomePageState extends State<ProfHomePage> {
                         uid: snapshot.data![index].uid,
                         userUid: snapshot.data![index].userUid,
                         name: snapshot.data![index].userName,
+                        isProf: snapshot.data![index].isProf,
                         type: snapshot.data![index].profType,
                         userImagePath: snapshot.data![index].userImagePath,
                         time: timeAddedFormatted(

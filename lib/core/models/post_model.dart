@@ -3,6 +3,7 @@ class PostModel {
   final String timeAdded;
   final String userUid;
   final String userName;
+  final bool isProf;
   final String profType;
   final String userImagePath;
   final String text;
@@ -16,6 +17,7 @@ class PostModel {
     required this.uid,
     required this.userUid,
     required this.userName,
+    required this.isProf,
     required this.userImagePath,
     required this.timeAdded,
     required this.profType,
@@ -33,6 +35,7 @@ class PostModel {
     "userUid": userUid,
     "userName": userName,
     "userImagePath": userImagePath,
+    "isProf": isProf,
     "timeAdded": timeAdded,
     "profType": profType,
     "text": text,
@@ -48,6 +51,7 @@ class PostModel {
     uid: json["uid"],
     userUid: json["userUid"],
     userName: json["userName"],
+    isProf: json["isProf"] ?? false,
     userImagePath: json["userImagePath"],
     timeAdded: json["timeAdded"],
     profType: json["profType"],

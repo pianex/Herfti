@@ -307,23 +307,23 @@ class ProfessionalProfile extends StatelessWidget {
                           );
                         } else {
                           final posts = snapshot.data!;
-                          for (var post in posts) {
-                            FirebaseFirestore.instance
-                                .collection("Profs")
-                                .doc(post.userUid)
-                                .get()
-                                .then((doc) {
-                                  FirebaseFirestore.instance
-                                      .collection("Posts")
-                                      .doc(post.uid)
-                                      .update({
-                                        "userName": doc.data()!["name"],
-                                        "userType": doc.data()!["category"],
-                                        "userImagePath": doc
-                                            .data()!["imagePath"],
-                                      });
-                                });
-                          }
+                          // for (var post in posts) {
+                          //   FirebaseFirestore.instance
+                          //       .collection("Profs")
+                          //       .doc(post.userUid)
+                          //       .get()
+                          //       .then((doc) {
+                          //         FirebaseFirestore.instance
+                          //             .collection("Posts")
+                          //             .doc(post.uid)
+                          //             .update({
+                          //               "userName": doc.data()!["name"],
+                          //               "userType": doc.data()!["category"],
+                          //               "userImagePath": doc
+                          //                   .data()!["imagePath"],
+                          //             });
+                          //       });
+                          // }
                           return ListView.builder(
                             physics: BouncingScrollPhysics(),
                             shrinkWrap: true,
@@ -335,6 +335,7 @@ class ProfessionalProfile extends StatelessWidget {
                                 uid: snapshot.data![index].uid,
                                 userUid: snapshot.data![index].userUid,
                                 name: snapshot.data![index].userName,
+                                isProf: snapshot.data![index].isProf,
                                 type: snapshot.data![index].profType,
                                 userImagePath:
                                     snapshot.data![index].userImagePath,

@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:project_a/core/constants/app_theme.dart';
@@ -37,7 +36,7 @@ class ClientHomePage extends StatelessWidget {
                 ),
           ),
           title: Text(
-            "حرفتي",
+            "Kivr",
             style: TextStyle(
               color: appBarTextColor,
               fontWeight: FontWeight.bold,
@@ -101,46 +100,46 @@ class ClientHomePage extends StatelessWidget {
                       ),
                     );
                   } else {
-                    for (var post in posts) {
-                      if (post.profType != "زبون") {
-                        FirebaseFirestore.instance
-                            .collection("Profs")
-                            .doc(post.userUid)
-                            .get()
-                            .then((doc) {
-                              // profsNames.add(doc.data()!["name"]);
-                              // profsTypes.add(doc.data()!["category"]);
-                              // profsImagePaths.add(doc.data()!["imagePath"]);
-                              // print(profsNames);
-                              FirebaseFirestore.instance
-                                  .collection("Posts")
-                                  .doc(post.uid)
-                                  .update({
-                                    "userName": doc.data()!["name"],
-                                    "profType": doc.data()!["category"],
-                                    "userImagePath": doc.data()!["imagePath"],
-                                  });
-                            });
-                      } else {
-                        FirebaseFirestore.instance
-                            .collection("Clients")
-                            .doc(post.userUid)
-                            .get()
-                            .then((doc) {
-                              // profsNames.add(doc.data()!["name"]);
-                              // profsTypes.add(doc.data()!["category"]);
-                              // profsImagePaths.add(doc.data()!["imagePath"]);
-                              // print(profsNames);
-                              FirebaseFirestore.instance
-                                  .collection("Posts")
-                                  .doc(post.uid)
-                                  .update({
-                                    "userName": doc.data()!["name"],
-                                    "userImagePath": doc.data()!["imagePath"],
-                                  });
-                            });
-                      }
-                    }
+                    // for (var post in posts) {
+                    //   if (post.profType != "زبون") {
+                    //     FirebaseFirestore.instance
+                    //         .collection("Profs")
+                    //         .doc(post.userUid)
+                    //         .get()
+                    //         .then((doc) {
+                    //           // profsNames.add(doc.data()!["name"]);
+                    //           // profsTypes.add(doc.data()!["category"]);
+                    //           // profsImagePaths.add(doc.data()!["imagePath"]);
+                    //           // print(profsNames);
+                    //           FirebaseFirestore.instance
+                    //               .collection("Posts")
+                    //               .doc(post.uid)
+                    //               .update({
+                    //                 "userName": doc.data()!["name"],
+                    //                 "profType": doc.data()!["category"],
+                    //                 "userImagePath": doc.data()!["imagePath"],
+                    //               });
+                    //         });
+                    //   } else {
+                    //     FirebaseFirestore.instance
+                    //         .collection("Clients")
+                    //         .doc(post.userUid)
+                    //         .get()
+                    //         .then((doc) {
+                    //           // profsNames.add(doc.data()!["name"]);
+                    //           // profsTypes.add(doc.data()!["category"]);
+                    //           // profsImagePaths.add(doc.data()!["imagePath"]);
+                    //           // print(profsNames);
+                    //           FirebaseFirestore.instance
+                    //               .collection("Posts")
+                    //               .doc(post.uid)
+                    //               .update({
+                    //                 "userName": doc.data()!["name"],
+                    //                 "userImagePath": doc.data()!["imagePath"],
+                    //               });
+                    //         });
+                    //   }
+                    // }
 
                     return ListView.builder(
                       physics: BouncingScrollPhysics(),
@@ -153,6 +152,7 @@ class ClientHomePage extends StatelessWidget {
                           uid: snapshot.data![index].uid,
                           userUid: snapshot.data![index].userUid,
                           name: snapshot.data![index].userName,
+                          isProf: snapshot.data![index].isProf,
                           type: snapshot.data![index].profType,
                           userImagePath: snapshot.data![index].userImagePath,
                           time: timeAddedFormatted(

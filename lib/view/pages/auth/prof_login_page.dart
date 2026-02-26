@@ -75,6 +75,7 @@ class _ProfLoginPageState extends State<ProfLoginPage> {
                             setState(() {
                               isLoading = true;
                             });
+
                             signInWithGoogle(
                               context: context,
                               onSuccess: () {

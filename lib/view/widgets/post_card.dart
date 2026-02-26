@@ -18,6 +18,7 @@ class PostCard extends StatefulWidget {
     required this.uid,
     required this.userUid,
     required this.name,
+    required this.isProf,
     required this.type,
     required this.userImagePath,
     required this.time,
@@ -34,6 +35,7 @@ class PostCard extends StatefulWidget {
   final String uid;
   final String userUid;
   final String name;
+  final bool isProf;
   final String type;
   final String userImagePath;
   final String time;
@@ -84,15 +86,17 @@ class _PostCardState extends State<PostCard> {
         children: [
           GestureDetector(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ProfessionalProfile(
-                    tag: widget.userImagePath,
-                    profUid: widget.userUid,
+              if (widget.isProf) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProfessionalProfile(
+                      tag: widget.userImagePath,
+                      profUid: widget.userUid,
+                    ),
                   ),
-                ),
-              );
+                );
+              }
             },
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 8),
@@ -123,14 +127,16 @@ class _PostCardState extends State<PostCard> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Text(
-                          widget.type,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                        widget.isProf
+                            ? Text(
+                                widget.type,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              )
+                            : Container(),
                       ],
                     ),
                   ),
