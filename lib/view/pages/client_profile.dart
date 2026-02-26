@@ -4,38 +4,31 @@ import 'package:awesome_icons/awesome_icons.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:like_button/like_button.dart';
 import 'package:project_a/core/constants/app_theme.dart';
+import 'package:project_a/core/functions/clients_functions.dart';
 import 'package:project_a/core/functions/date_functions.dart';
-import 'package:project_a/core/functions/formatters.dart';
 import 'package:project_a/core/functions/post_functions.dart';
-import 'package:project_a/core/functions/prof_functions.dart';
 import 'package:project_a/main.dart';
 import 'package:project_a/view/widgets/contact_button.dart';
 import 'package:project_a/view/widgets/post_card.dart';
 import 'package:project_a/view/widgets/title_text.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class ProfessionalProfile extends StatefulWidget {
-  const ProfessionalProfile({
-    super.key,
-    required this.tag,
-    required this.profUid,
-  });
+class ClientProfile extends StatefulWidget {
+  const ClientProfile({super.key, required this.tag, required this.profUid});
   final String tag;
   final String profUid;
 
   @override
-  State<ProfessionalProfile> createState() => _ProfessionalProfileState();
+  State<ClientProfile> createState() => _ClientProfileState();
 }
 
-class _ProfessionalProfileState extends State<ProfessionalProfile> {
+class _ClientProfileState extends State<ClientProfile> {
   @override
   Widget build(BuildContext context) {
     Image asset = Image.network(widget.tag, fit: BoxFit.cover);
     String email = sharedPref.getString("email")!;
-    String userType = sharedPref.getString("userType")!;
-
+    // String userType = sharedPref.getString("userType")!;
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
@@ -50,7 +43,7 @@ class _ProfessionalProfileState extends State<ProfessionalProfile> {
             icon: Icon(Icons.arrow_back, color: Colors.white),
           ),
           title: Text(
-            "صفحة الحرفي",
+            "صفحة الزبون",
             style: TextStyle(
               color: appBarTextColor,
               fontWeight: FontWeight.bold,
@@ -66,7 +59,7 @@ class _ProfessionalProfileState extends State<ProfessionalProfile> {
             IconButton(
               onPressed: () {
                 final prof = FirebaseFirestore.instance
-                    .collection("Profs")
+                    .collection("Clients")
                     .doc(widget.profUid);
                 prof.get().then((doc) async {
                   final Uri launchUri = Uri(
@@ -85,7 +78,7 @@ class _ProfessionalProfileState extends State<ProfessionalProfile> {
           ],
         ),
         body: FutureBuilder(
-          future: readProf(widget.profUid),
+          future: readClient(widget.profUid),
           builder: (context, asyncSnapshot) {
             if (asyncSnapshot.connectionState == ConnectionState.waiting) {
               return Center(child: CircularProgressIndicator());
@@ -96,9 +89,6 @@ class _ProfessionalProfileState extends State<ProfessionalProfile> {
               String facebook;
               String whatsapp;
               String instagram;
-              String services;
-              bool travel;
-              bool available;
 
               try {
                 facebook = data["facebook"] ?? "";
@@ -116,24 +106,6 @@ class _ProfessionalProfileState extends State<ProfessionalProfile> {
                 instagram = data["instagram"] ?? "";
               } catch (e) {
                 instagram = "";
-              }
-
-              try {
-                services = data["services"] ?? "";
-              } catch (e) {
-                services = "";
-              }
-
-              try {
-                travel = data["travel"] ?? false;
-              } catch (e) {
-                travel = false;
-              }
-
-              try {
-                available = data["available"] ?? false;
-              } catch (e) {
-                available = false;
               }
 
               return ListView(
@@ -184,207 +156,62 @@ class _ProfessionalProfileState extends State<ProfessionalProfile> {
                       ),
                     ),
                   ),
-                  Column(
-                    children: [
-                      TitleText(title: data["name"] ?? ""),
-                      Text(
-                        data["category"],
-                        style: TextStyle(color: Colors.white, fontSize: 23),
-                      ),
-                      LikeButton(
-                        countPostion: CountPostion.left,
-                        likeCountPadding: EdgeInsets.symmetric(horizontal: 10),
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        countDecoration: (counter, likeCount) {
-                          return StreamBuilder(
-                            stream: FirebaseFirestore.instance
-                                .collection("Profs")
-                                .doc(widget.profUid)
-                                .snapshots(),
-                            builder: (context, asyncSnapshot) {
-                              if (asyncSnapshot.hasData) {
-                                return Text(
-                                  shrinkLikesFormula(
-                                    asyncSnapshot.data!["saves"],
-                                  ),
-                                  style: TextStyle(
-                                    color: const Color.fromARGB(
-                                      255,
-                                      182,
-                                      67,
-                                      202,
-                                    ),
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                );
-                              } else {
-                                return Text(
-                                  shrinkLikesFormula(likeCount!),
-                                  style: TextStyle(
-                                    color: const Color.fromARGB(
-                                      255,
-                                      182,
-                                      67,
-                                      202,
-                                    ),
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                );
-                              }
-                            },
-                          );
-                        },
-                        isLiked:
-                            sharedPref
-                                .getStringList("savedProfs")
-                                ?.contains(widget.profUid) ??
-                            false,
-                        likeCount: data["saves"] ?? 0,
-                        likeBuilder: (isLiked) {
-                          return Icon(
-                            isLiked ? Icons.bookmark : Icons.bookmark_border,
-                            color: const Color.fromARGB(255, 182, 67, 202),
-                            size: 40,
-                          );
-                        },
-                        onTap: (isLiked) async {
-                          List<String> savedProfs =
-                              sharedPref.getStringList("savedProfs") ?? [];
-                          if (isLiked) {
-                            savedProfs.remove(widget.profUid);
-                            FirebaseFirestore.instance
-                                .collection("Profs")
-                                .doc(widget.profUid)
-                                .update({"saves": FieldValue.increment(-1)});
-                            userType == "client"
-                                ? FirebaseFirestore.instance
-                                      .collection("Clients")
-                                      .doc(email)
-                                      .update({
-                                        "savedProfs": FieldValue.arrayRemove([
-                                          widget.profUid,
-                                        ]),
-                                      })
-                                : FirebaseFirestore.instance
-                                      .collection("Profs")
-                                      .doc(email)
-                                      .update({
-                                        "savedProfs": FieldValue.arrayRemove([
-                                          widget.profUid,
-                                        ]),
-                                      });
-                          } else {
-                            savedProfs.add(widget.profUid);
-                            FirebaseFirestore.instance
-                                .collection("Profs")
-                                .doc(widget.profUid)
-                                .update({"saves": FieldValue.increment(1)});
-                            userType == "client"
-                                ? FirebaseFirestore.instance
-                                      .collection("Clients")
-                                      .doc(email)
-                                      .update({
-                                        "savedProfs": FieldValue.arrayUnion([
-                                          widget.profUid,
-                                        ]),
-                                      })
-                                : FirebaseFirestore.instance
-                                      .collection("Profs")
-                                      .doc(email)
-                                      .update({
-                                        "savedProfs": FieldValue.arrayUnion([
-                                          widget.profUid,
-                                        ]),
-                                      });
-                          }
-                          sharedPref.setStringList("savedProfs", savedProfs);
-                          // .whenComplete(() => setState(() {}));
-                          return !isLiked;
-                        },
-                      ),
-                    ],
-                  ),
+                  Column(children: [TitleText(title: data["name"] ?? "")]),
                   SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      whatsapp != ""
-                          ? ContactButton(
-                              label: "واتساب",
-                              icon: FontAwesomeIcons.whatsapp,
-                              onTap: () {
-                                final Uri launchUri = Uri(
-                                  scheme: 'https',
-                                  host: 'wa.me',
-                                  path: data["whatsapp"],
-                                );
-                                launchUrl(
-                                  launchUri,
-                                  mode: LaunchMode.externalApplication,
-                                );
-                              },
-                            )
-                          : SizedBox(),
-                      facebook != ""
-                          ? ContactButton(
-                              label: "فيسبوك",
-                              icon: FontAwesomeIcons.facebook,
-                              onTap: () {
-                                launchUrl(
-                                  Uri.parse(data["facebook"] ?? ""),
-                                  mode: LaunchMode.externalApplication,
-                                );
-                              },
-                            )
-                          : SizedBox(),
-                      instagram != ""
-                          ? ContactButton(
-                              label: "إنستغرام",
-                              icon: FontAwesomeIcons.instagram,
-                              onTap: () {
-                                launchUrl(
-                                  Uri.parse(data["instagram"] ?? ""),
-                                  mode: LaunchMode.externalApplication,
-                                );
-                              },
-                            )
-                          : SizedBox(),
-                    ],
-                  ),
-                  services.isNotEmpty
-                      ? TitleText(title: "الخدمات")
-                      : SizedBox.shrink(),
-                  services.isNotEmpty
-                      ? Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
-                          child: Text(
-                            services,
-                            style: TextStyle(fontSize: 23, color: Colors.white),
-                          ),
-                        )
-                      : SizedBox.shrink(),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
-                    child: Text(
-                      available == true ? "متاح✅" : "غير متاح❌",
-                      style: TextStyle(fontSize: 23, color: Colors.white),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
-                    child: Text(
-                      travel == true ? "أستطيع التنقل✅" : "لا أستطيع التنقل❌",
-                      style: TextStyle(fontSize: 23, color: Colors.white),
+                    padding: const EdgeInsets.all(15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        whatsapp != ""
+                            ? ContactButton(
+                                label: "واتساب",
+                                icon: FontAwesomeIcons.whatsapp,
+                                onTap: () {
+                                  final Uri launchUri = Uri(
+                                    scheme: 'https',
+                                    host: 'wa.me',
+                                    path: data["whatsapp"],
+                                  );
+                                  launchUrl(
+                                    launchUri,
+                                    mode: LaunchMode.externalApplication,
+                                  );
+                                },
+                              )
+                            : SizedBox(),
+                        facebook != ""
+                            ? ContactButton(
+                                label: "فيسبوك",
+                                icon: FontAwesomeIcons.facebook,
+                                onTap: () {
+                                  launchUrl(
+                                    Uri.parse(data["facebook"] ?? ""),
+                                    mode: LaunchMode.externalApplication,
+                                  );
+                                },
+                              )
+                            : SizedBox(),
+                        instagram != ""
+                            ? ContactButton(
+                                label: "إنستغرام",
+                                icon: FontAwesomeIcons.instagram,
+                                onTap: () {
+                                  launchUrl(
+                                    Uri.parse(data["instagram"] ?? ""),
+                                    mode: LaunchMode.externalApplication,
+                                  );
+                                },
+                              )
+                            : SizedBox(),
+                      ],
                     ),
                   ),
 
                   SizedBox(height: 10),
                   TitleText(title: "المنشورات"),
                   StreamBuilder(
-                    stream: readPosts(widget.profUid, true),
+                    stream: readPosts(widget.profUid, false),
                     builder: (context, snapshot) {
                       if (snapshot.hasError) {
                         return Text('حدث خطأ ما! ${snapshot.error}');

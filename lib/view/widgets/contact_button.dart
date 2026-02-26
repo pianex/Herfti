@@ -18,7 +18,7 @@ class ContactButton extends StatelessWidget {
       onTap: onTap,
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 5),
-        padding: EdgeInsets.all(10),
+        padding: EdgeInsets.all(15),
         // height: 30,
         // width: double.infinity,
         decoration: BoxDecoration(
@@ -27,16 +27,16 @@ class ContactButton extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Icon(icon, color: Colors.white),
-            SizedBox(width: 10),
-            Text(
-              label,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 23,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            Icon(icon, color: Colors.white, size: 30),
+            // SizedBox(width: 10),
+            // Text(
+            //   label,
+            //   style: TextStyle(
+            //     color: Colors.white,
+            //     fontSize: 23,
+            //     fontWeight: FontWeight.bold,
+            //   ),
+            // ),
           ],
         ),
       ),

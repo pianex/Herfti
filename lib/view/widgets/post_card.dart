@@ -8,6 +8,7 @@ import 'package:like_button/like_button.dart';
 import 'package:popover/popover.dart';
 import 'package:project_a/core/functions/formatters.dart';
 import 'package:project_a/main.dart';
+import 'package:project_a/view/pages/client_profile.dart';
 import 'package:project_a/view/pages/comments_page.dart';
 import 'package:project_a/view/pages/prof_profile.dart';
 import 'package:project_a/view/widgets/post_menu.dart';
@@ -91,6 +92,16 @@ class _PostCardState extends State<PostCard> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => ProfessionalProfile(
+                      tag: widget.userImagePath,
+                      profUid: widget.userUid,
+                    ),
+                  ),
+                );
+              } else {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ClientProfile(
                       tag: widget.userImagePath,
                       profUid: widget.userUid,
                     ),

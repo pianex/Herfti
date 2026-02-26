@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:project_a/core/models/post_model.dart';
 
-Stream<List<PostModel>> readPosts(String? uid) {
+Stream<List<PostModel>> readPosts(String? uid, bool isProf) {
   return uid == null
       ? FirebaseFirestore.instance
             .collection("Posts")
@@ -15,6 +15,7 @@ Stream<List<PostModel>> readPosts(String? uid) {
       : FirebaseFirestore.instance
             .collection("Posts")
             .where("userUid", isEqualTo: uid)
+            .where("isProf", isEqualTo: isProf)
             .orderBy("timeAdded", descending: true)
             .snapshots()
             .map(

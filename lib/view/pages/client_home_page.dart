@@ -85,7 +85,7 @@ class ClientHomePage extends StatelessWidget {
             TitleText(title: "آخر المنشورات"),
 
             StreamBuilder(
-              stream: readPosts(null),
+              stream: readPosts(null, true),
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
                   return Text('حدث خطأ ما! ${snapshot.error}');
