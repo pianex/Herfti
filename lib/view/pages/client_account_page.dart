@@ -1,11 +1,15 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:csc_picker/csc_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:project_a/core/constants/app_theme.dart';
 import 'package:project_a/core/functions/image_functions.dart';
+import 'package:project_a/core/functions/show_progress_dialog.dart';
 import 'package:project_a/core/functions/validators.dart';
+import 'package:project_a/core/models/client_model.dart';
 import 'package:project_a/main.dart';
 import 'package:project_a/view/widgets/cust_text_form_field.dart';
 
@@ -89,9 +93,86 @@ class _ClientAccountPageState extends State<ClientAccountPage> {
           centerTitle: true,
           actions: [
             IconButton(
-              onPressed: () async {},
-
               icon: Icon(Icons.save, color: Colors.white, size: 30),
+              onPressed: () async {
+                if (_formKey.currentState!.validate()) {
+                  if (stateValue.isNotEmpty && cityValue.isNotEmpty) {
+                    showProgressDialog(
+                      context,
+                      Size(
+                        MediaQuery.of(context).size.width / 2,
+                        MediaQuery.of(context).size.width / 2,
+                      ),
+                    );
+                    String imagePath = '';
+                    if (image != null) {
+                      UploadTask uploadTask = FirebaseStorage.instance
+                          .ref()
+                          .child(
+                            "Clients/ClientPics/${email.toLowerCase().replaceAll("@gmail.com", "")}.jpg",
+                          )
+                          .putFile(image!);
+                      TaskSnapshot snapshot = await uploadTask;
+                      // ignore: unused_local_variable
+                      String downloadlUrl = await snapshot.ref
+                          .getDownloadURL()
+                          .then((link) => imagePath = link)
+                          .whenComplete(() {
+                            if (imagePath.isNotEmpty) {
+                              sharedPref.setString("imagePath", imagePath);
+                            }
+                          });
+                    }
+                    Map<String, dynamic> json = ClientModel(
+                      uid: email,
+                      name: nameController.text,
+                      imagePath: imagePath.isNotEmpty
+                          ? imagePath
+                          : currentImagePath ?? googleImagePath,
+                      phone: phoneController.text,
+                      email: email,
+                      facebook: facebookController.text,
+                      instagram: instagramController.text,
+                      whatsapp: whatsappController.text,
+                      description: descController.text,
+                      country: countryValue,
+                      state: stateValue,
+                      city: cityValue,
+                      timeAdded: DateTime.now().toString(),
+                      tokens: [],
+                      savedProfs: [],
+                      likedPosts: [],
+                    ).toJson();
+                    FirebaseFirestore.instance
+                        .collection("Clients")
+                        .doc(email)
+                        .update(json)
+                        .whenComplete(() {
+                          sharedPref.setString("uid", email);
+                          sharedPref.setString("name", name);
+                          sharedPref.setString("desc", descController.text);
+                          sharedPref.setString("phone", phoneController.text);
+                          sharedPref.setString(
+                            "facebook",
+                            facebookController.text,
+                          );
+                          sharedPref.setString(
+                            "instagram",
+                            instagramController.text,
+                          );
+                          sharedPref.setString(
+                            "whatsapp",
+                            whatsappController.text,
+                          );
+                          sharedPref.setString("state", stateValue);
+                        })
+                        .whenComplete(() {
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                        });
+                  }
+                }
+              },
             ),
           ],
         ),
