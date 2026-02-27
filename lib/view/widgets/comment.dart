@@ -32,11 +32,11 @@ class Comment extends StatefulWidget {
 }
 
 class _CommentState extends State<Comment> {
-  final email = sharedPref.getString("email") ?? "";
+  final email = sharedPref.getString("uid") ?? "";
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onLongPress: () async {
+      onLongPress: () {
         if (widget.userUid == email) {
           showPopover(
             context: context,

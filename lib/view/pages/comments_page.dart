@@ -440,38 +440,16 @@ class _CommentsPageState extends State<CommentsPage> {
                           shrinkWrap: true,
                           itemCount: comments.length,
                           itemBuilder: (context, index) {
-                            return GestureDetector(
-                              onLongPress: () async {
-                                List comments = await FirebaseFirestore.instance
-                                    .collection("Posts")
-                                    .doc(widget.postUid)
-                                    .get()
-                                    .then((doc) {
-                                      return doc.data()!["comments"] ?? [];
-                                    });
-                                comments.removeAt(index);
-                                FirebaseFirestore.instance
-                                    .collection("Posts")
-                                    .doc(widget.postUid)
-                                    .update({
-                                      "comments": comments,
-                                      "commentsCount": comments.length,
-                                    })
-                                    .whenComplete(() {
-                                      setState(() {});
-                                    });
-                              },
-                              child: Comment(
-                                text: comments[index]["text"],
-                                postUid: widget.postUid,
-                                index: index,
-                                uid: comments[index]["uid"],
-                                timeAdded: comments[index]["timeAdded"],
-                                userUid: comments[index]["userUid"],
-                                userName: comments[index]["userName"],
-                                profType: comments[index]["profType"],
-                                userImagePath: comments[index]["userImagePath"],
-                              ),
+                            return Comment(
+                              text: comments[index]["text"],
+                              postUid: widget.postUid,
+                              index: index,
+                              uid: comments[index]["uid"],
+                              timeAdded: comments[index]["timeAdded"],
+                              userUid: comments[index]["userUid"],
+                              userName: comments[index]["userName"],
+                              profType: comments[index]["profType"],
+                              userImagePath: comments[index]["userImagePath"],
                             );
                           },
                         );
@@ -494,46 +472,49 @@ class _CommentsPageState extends State<CommentsPage> {
               child: CustTextFormField(
                 label: "أكتب تعليقا...",
                 controller: commentController,
+
                 suffix: GestureDetector(
                   onDoubleTap: () {},
                   onTap: () async {
-                    showProgressDialog(
-                      context,
-                      Size(
-                        MediaQuery.of(context).size.width / 2,
-                        MediaQuery.of(context).size.width / 2,
-                      ),
-                    );
-                    List comments = await FirebaseFirestore.instance
-                        .collection("Posts")
-                        .doc(widget.postUid)
-                        .get()
-                        .then((doc) {
-                          return doc.data()!["comments"] ?? [];
-                        });
-                    final json = CommentModel(
-                      uid: DateTime.now().microsecondsSinceEpoch.toString(),
-                      timeAdded: DateTime.now().toString(),
-                      postUid: widget.postUid,
-                      userUid: widget.userUid,
-                      userName: userName,
-                      profType: "النوع",
-                      userImagePath: imagePath,
-                      text: commentController.text,
-                    ).toJson();
-                    comments.add(json);
-                    FirebaseFirestore.instance
-                        .collection("Posts")
-                        .doc(widget.postUid)
-                        .update({
-                          "comments": comments,
-                          "commentsCount": comments.length,
-                        })
-                        .then((value) {
-                          // Navigator.pop(context);
-                          commentController.clear();
-                          Navigator.pop(context);
-                        });
+                    if (commentController.text.isNotEmpty) {
+                      showProgressDialog(
+                        context,
+                        Size(
+                          MediaQuery.of(context).size.width / 2,
+                          MediaQuery.of(context).size.width / 2,
+                        ),
+                      );
+                      List comments = await FirebaseFirestore.instance
+                          .collection("Posts")
+                          .doc(widget.postUid)
+                          .get()
+                          .then((doc) {
+                            return doc.data()!["comments"] ?? [];
+                          });
+                      final json = CommentModel(
+                        uid: DateTime.now().microsecondsSinceEpoch.toString(),
+                        timeAdded: DateTime.now().toString(),
+                        postUid: widget.postUid,
+                        userUid: email,
+                        userName: userName,
+                        profType: "النوع",
+                        userImagePath: imagePath,
+                        text: commentController.text,
+                      ).toJson();
+                      comments.add(json);
+                      FirebaseFirestore.instance
+                          .collection("Posts")
+                          .doc(widget.postUid)
+                          .update({
+                            "comments": comments,
+                            "commentsCount": comments.length,
+                          })
+                          .then((value) {
+                            // Navigator.pop(context);
+                            commentController.clear();
+                            Navigator.pop(context);
+                          });
+                    }
                   },
                   child: Icon(Icons.send, color: Colors.white),
                 ),
