@@ -1,5 +1,8 @@
+import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:like_button/like_button.dart';
 import 'package:project_a/core/constants/app_theme.dart';
 import 'package:project_a/core/functions/formatters.dart';
@@ -16,7 +19,7 @@ class CommentsPage extends StatefulWidget {
     super.key,
     required this.postUid,
     required this.userUid,
-    required this.imagePath,
+    required this.imagePaths,
     required this.userImagePath,
     required this.name,
     required this.text,
@@ -32,7 +35,7 @@ class CommentsPage extends StatefulWidget {
   final String postUid;
   final String userUid;
   final String userImagePath;
-  final String imagePath;
+  final List<dynamic> imagePaths;
   final String name;
   final String type;
   final String time;
@@ -51,6 +54,7 @@ class CommentsPage extends StatefulWidget {
 class _CommentsPageState extends State<CommentsPage> {
   bool isLiked = false;
   TextEditingController commentController = TextEditingController();
+  int image = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +71,6 @@ class _CommentsPageState extends State<CommentsPage> {
     } else {
       isLiked = false;
     }
-    Image asset = Image.asset(widget.imagePath, fit: BoxFit.cover);
 
     return Directionality(
       textDirection: TextDirection.rtl,
@@ -164,25 +167,120 @@ class _CommentsPageState extends State<CommentsPage> {
                     style: TextStyle(color: Colors.white, fontSize: 23),
                   ),
                 ),
-                widget.imagePath.isNotEmpty
-                    ? Hero(
-                        tag: "tag2",
-                        child: Container(
-                          margin: EdgeInsets.symmetric(horizontal: 15),
-                          width: double.infinity,
-                          height: asset.height,
-                          clipBehavior: Clip.hardEdge,
-                          decoration: BoxDecoration(
-                            color: Colors.transparent,
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: Image.network(
-                            widget.imagePath,
-                            fit: BoxFit.cover,
-                          ),
+                widget.imagePaths.isNotEmpty
+                    ? Container(
+                        constraints: BoxConstraints(maxHeight: 400),
+                        child: PageView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: widget.imagePaths.length,
+
+                          physics: BouncingScrollPhysics(),
+                          onPageChanged: (value) {
+                            setState(() {
+                              image = value;
+                            });
+                          },
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => BackdropFilter(
+                                    filter: ImageFilter.blur(
+                                      sigmaX: 10,
+                                      sigmaY: 10,
+                                    ),
+                                    child:
+                                        Dialog(
+                                          shadowColor: Colors.black,
+                                          child: Container(
+                                            width: double.infinity,
+                                            // height: asset.height,
+                                            clipBehavior: Clip.hardEdge,
+                                            decoration: BoxDecoration(
+                                              color: Colors.transparent,
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                              border: Border.all(
+                                                color: Colors.white,
+                                                strokeAlign: BorderSide
+                                                    .strokeAlignOutside,
+                                                width: 5,
+                                              ),
+                                            ),
+                                            child: widget.imagePaths.isNotEmpty
+                                                ? Image.network(
+                                                    widget.imagePaths[index],
+                                                    fit: BoxFit.cover,
+                                                  )
+                                                : Container(),
+                                          ),
+                                        ).animate().untint(
+                                          duration: Duration(milliseconds: 350),
+                                        ),
+                                  ),
+                                );
+                              },
+                              child: Hero(
+                                tag: imagePath,
+                                child: Container(
+                                  margin: EdgeInsets.symmetric(horizontal: 15),
+                                  width: double.infinity,
+                                  // height: asset.height,
+                                  clipBehavior: Clip.hardEdge,
+                                  decoration: BoxDecoration(
+                                    color: Color(0xFF11152E),
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  child: widget.imagePaths.isNotEmpty
+                                      ? Image.network(
+                                          widget.imagePaths[index],
+                                          fit: BoxFit.cover,
+                                          loadingBuilder: (context, child, loadingProgress) {
+                                            if (loadingProgress == null)
+                                              return child;
+                                            return Center(
+                                              child: CircularProgressIndicator(
+                                                value:
+                                                    loadingProgress
+                                                                .expectedTotalBytes !=
+                                                            null &&
+                                                        loadingProgress
+                                                                .expectedTotalBytes !=
+                                                            null
+                                                    ? loadingProgress
+                                                              .cumulativeBytesLoaded /
+                                                          loadingProgress
+                                                              .expectedTotalBytes!
+                                                    : null,
+                                                color: Colors.white,
+                                              ),
+                                            );
+                                          },
+                                        )
+                                      : Container(),
+                                ),
+                              ),
+                            );
+                          },
                         ),
                       )
                     : Container(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(
+                    widget.imagePaths.length < 5 ? widget.imagePaths.length : 5,
+                    (index) => Container(
+                      margin: const EdgeInsets.all(8),
+                      height: image == index ? 8 : 7,
+                      width: image == index ? 8 : 7,
+                      decoration: BoxDecoration(
+                        color: image == index ? Colors.white : Colors.grey[800],
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                  ),
+                ),
                 SizedBox(height: 10),
                 StreamBuilder(
                   stream: FirebaseFirestore.instance
