@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project_a/view/pages/about_page.dart';
 import 'package:project_a/view/pages/professionals_page.dart';
+import 'package:project_a/view/pages/saved_profs_page.dart';
 import 'package:project_a/view/widgets/settings_list_tile.dart';
 import 'package:project_a/view/widgets/title_text.dart';
 
@@ -29,6 +30,12 @@ class CustDrawer extends StatelessWidget {
               iconData: Icons.attractions_sharp,
               routeName: "",
               route: ProfessionalsPage(),
+            ),
+            SettingsListTile(
+              label: "المفضلة",
+              iconData: Icons.bookmark,
+              routeName: "",
+              route: SavedProfsPage(),
             ),
             // SettingsListTile(
             //   label: "التصنيفات",
