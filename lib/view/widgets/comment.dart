@@ -43,7 +43,7 @@ class _CommentState extends State<Comment> {
             bodyBuilder: (context) =>
                 CommentMenu(postUid: widget.postUid, index: widget.index),
             width: 250,
-            height: 150,
+            height: 50,
             backgroundColor: Colors.red[700]!,
             radius: 20,
             arrowHeight: 20,

@@ -68,7 +68,7 @@ class _PostCardState extends State<PostCard> {
   Widget build(BuildContext context) {
     // Image? asset = Image.asset(widget.imagePath ?? "", fit: BoxFit.cover);
     List<String> likedPosts = sharedPref.getStringList("likedPosts") ?? [];
-    String email = sharedPref.getString("email")!;
+    String email = sharedPref.getString("uid")!;
     if (likedPosts.contains(widget.uid)) {
       isLiked = true;
     } else {
@@ -153,21 +153,30 @@ class _PostCardState extends State<PostCard> {
                   ),
 
                   Spacer(),
-                  IconButton(
-                    onPressed: () {
-                      showPopover(
-                        context: context,
-                        bodyBuilder: (context) => PostMenu(),
-                        width: 250,
-                        height: 150,
-                        backgroundColor: Colors.red[700]!,
-                        radius: 20,
-                        arrowHeight: 20,
-                        arrowWidth: 30,
-                      );
-                    },
-                    icon: Icon(Icons.more_horiz, color: Colors.white, size: 25),
-                  ),
+                  widget.userUid == email
+                      ? IconButton(
+                          onPressed: () {
+                            showPopover(
+                              context: context,
+                              bodyBuilder: (context) => PostMenu(
+                                isMe: widget.userUid == email ? true : false,
+                                postUid: widget.uid,
+                              ),
+                              width: 250,
+                              height: widget.userUid == email ? 50 : 50,
+                              backgroundColor: Colors.red[700]!,
+                              radius: 20,
+                              arrowHeight: 20,
+                              arrowWidth: 30,
+                            );
+                          },
+                          icon: Icon(
+                            Icons.more_horiz,
+                            color: Colors.white,
+                            size: 25,
+                          ),
+                        )
+                      : SizedBox.shrink(),
                 ],
               ),
             ),
