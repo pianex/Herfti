@@ -35,3 +35,7 @@ Stream<PostModel> readPost(String postUid) {
             snapshot.docs.map((doc) => PostModel.fromJson(doc.data())).first,
       );
 }
+
+Future deletePost(String postUid) async {
+  await FirebaseFirestore.instance.collection("Posts").doc(postUid).delete();
+}
